@@ -14,7 +14,7 @@
 /* Layout: a war-room table. The sketch map takes the main column; the field report (zone panel) and the top-5 sit beside it on desktop and stack under it on phones. Same dark BigD look as the rest of the site. */
 :root{
   --ink:#13110f; --panel:#1c1915; --panel2:#24201a; --line:#342e26; --paper:#ece4d6; --muted:#a69c8b; --gold:#d9a441;
-  --ally:#6f9be0; --ally-deep:#2a4f8f; --horde:#e2574a; --horde-deep:#b3261e;
+  --ally:#6f9be0; --ally-deep:#2a4f8f; --horde:#e0352a; --horde-deep:#b3261e;
   --display:"Grenze Gotisch","Times New Roman",serif; --cond:"Barlow Condensed","Arial Narrow",sans-serif;
   --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
   color-scheme:dark;
@@ -133,8 +133,8 @@ svg.small .zl,svg.small .cap-name,svg.small .seanote{display:none}
 footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
 /*fix-top*/@media (max-width:420px){.top .back{font-size:14px}.top a.brand{font-size:21px}}
 </style>
-<link rel="stylesheet" href="assets/faction.css?v=20261104k">
-<script src="assets/faction.js?v=20261104k"></script>
+<link rel="stylesheet" href="assets/faction.css?v=20261104r">
+<script src="assets/faction.js?v=20261104r"></script>
 </head>
 <body>
 <header class="top"><a class="brand" href="./"><img src="emblem.jpg" alt="">Big<span>D</span>Forever</a><a class="back" href="./">Back to the war</a></header>
@@ -340,7 +340,7 @@ function fills(name,maxT){
   if(s==="n")return[NEUTRAL,"#5f513b"];
   if(s==="c")return["url(#contested)","url(#contestedH)"];
   const k=.35+.65*Math.min(1,t/Math.max(1,maxT));               // more kills = deeper colour
-  const deep=s==="a"?"#2a4f8f":"#b3261e",lite=s==="a"?"#6f9be0":"#e2574a";
+  const deep=s==="a"?"#2a4f8f":"#b3261e",lite=s==="a"?"#6f9be0":"#e0352a";
   const f=mix(mix(NEUTRAL,deep,.55+.45*k),lite,.3*k);
   return[f,mix(f,"#ffffff",.15)];
 }

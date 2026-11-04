@@ -9,8 +9,8 @@ html[data-side="alliance"]{
 }
 html[data-side="horde"]{
   --ink:#0a0605; --panel:#170d0b; --panel2:#221210; --line:#5a2a1c; --muted:#b59c95;
-  --gold:#e2574a; --tint:#e2574a; --tint-deep:#3a1512;
-  --side:#b3231b; --side-2:#c08a3e; --side-deep:#3a1512; --side-glow:rgba(226,87,74,.55);
+  --gold:#d42a20; --tint:#e0352a; --tint-deep:#3a1512;
+  --side:#b3231b; --side-2:#c08a3e; --side-deep:#3a1512; --side-glow:rgba(224,53,42,.55);
 }
 /* the faction "line mark" under the header and a faint war-paint wash at the top of every page */
 html[data-side] body{
@@ -93,9 +93,9 @@ html.fx-gating body > *:not(.fx-gate){visibility:hidden}
 .fx-half:hover .fx-glow,.fx-half:focus-visible .fx-glow{opacity:1}
 .fx-half:hover .fx-art,.fx-half:focus-visible .fx-art{transform:scale(1.06)}
 .fx-alliance:hover .fx-art,.fx-alliance:focus-visible .fx-art{filter:drop-shadow(0 0 28px rgba(122,166,234,.75)) brightness(1.12)}
-.fx-horde:hover .fx-art,.fx-horde:focus-visible .fx-art{filter:drop-shadow(0 0 28px rgba(226,87,74,.8)) brightness(1.12)}
+.fx-horde:hover .fx-art,.fx-horde:focus-visible .fx-art{filter:drop-shadow(0 0 28px rgba(224,53,42,.8)) brightness(1.12)}
 .fx-alliance:hover .fx-name,.fx-alliance:focus-visible .fx-name{filter:drop-shadow(0 0 18px rgba(201,162,74,.65))}
-.fx-horde:hover .fx-name,.fx-horde:focus-visible .fx-name{filter:drop-shadow(0 0 18px rgba(226,87,74,.7))}
+.fx-horde:hover .fx-name,.fx-horde:focus-visible .fx-name{filter:drop-shadow(0 0 18px rgba(224,53,42,.7))}
 .fx-halves:has(.fx-half:hover) .fx-half:not(:hover),
 .fx-halves:has(.fx-half:focus-visible) .fx-half:not(:focus-visible){opacity:.28;filter:grayscale(.85) brightness(.7)}
 .fx-halves:has(.fx-half:hover) .fx-vs{opacity:.3}
@@ -169,6 +169,7 @@ html[data-side="horde"] main > div:first-child h1::after,html[data-side="horde"]
 
 /* ---------- Horde red buttons get the bronze edge ---------- */
 html[data-side="horde"] .btn:not(.ghost),html[data-side="horde"] .fx-btn:not(.fx-dc){box-shadow:inset 0 0 0 2px #c08a3e}
+html[data-side="horde"] .btn:not(.ghost):not(.discord){color:#fff}
 
 /* settings block in the menu (cogwheel) */
 .fx-set{display:flex;flex-direction:column;gap:8px;padding-top:12px;border-top:1px solid var(--line)}

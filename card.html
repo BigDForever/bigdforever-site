@@ -53,7 +53,7 @@ canvas{width:100%;height:auto;border-radius:10px;border:1px solid var(--line);ba
 footer{color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:16px}
 @media (max-width:820px){.bench{grid-template-columns:1fr}.preview{position:static;order:-1}}
 </style>
-<link rel="stylesheet" href="assets/faction.css?v=20261104k"><script src="assets/faction.js?v=20261104k"></script>
+<link rel="stylesheet" href="assets/faction.css?v=20261104r"><script src="assets/faction.js?v=20261104r"></script>
 </head>
 <body>
 <header class="top"><a class="brand" href="./"><img src="emblem.jpg" alt="">Big<span>D</span>Forever</a><a class="back" href="./">Back to the war</a></header>
@@ -101,7 +101,7 @@ footer{color:var(--muted);font-size:14px;border-top:1px solid var(--line);paddin
   var W=1080,H=1350,c=document.getElementById("c"),x=c.getContext("2d");
   var F={
     alliance:{name:"ALLIANCE",bg:"assets/art/alliance-bg-phone.jpg",art:"assets/art/alliance-crest.png",word:"assets/art/alliance-lettering.png",accent:"#c9a24a",frame:"#c9a24a",tint:"11,24,52",chip:"#1b3a73",chipText:"#ece4d6"},
-    horde:{name:"HORDE",bg:"assets/art/horde-bg-phone.jpg",art:"assets/art/horde-banner.png",word:"assets/art/horde-lettering.png",accent:"#e2574a",frame:"#c08a3e",tint:"10,6,5",chip:"#b3231b",chipText:"#ece4d6"}
+    horde:{name:"HORDE",bg:"assets/art/horde-bg-phone.jpg",art:"assets/art/horde-banner.png",word:"assets/art/horde-lettering.png",accent:"#e0352a",frame:"#c08a3e",tint:"10,6,5",chip:"#b3231b",chipText:"#ece4d6"}
   };
   var cache={},shot=null;
   function img(src){ if(cache[src])return cache[src]; cache[src]=new Promise(function(ok){var i=new Image();i.onload=function(){ok(i)};i.onerror=function(){ok(null)};i.src=src}); return cache[src]; }
