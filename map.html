@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The War Map · BigDForever</title>
+<meta name="description" content="Every zone of Azeroth, coloured by who's winning it. Alliance vs Horde kill counts per zone in WoW Forever.">
+<meta property="og:title" content="The War Map · BigDForever">
+<meta property="og:image" content="emblem.jpg">
+<link rel="icon" href="emblem.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@800;900&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a war-room table. The sketch map takes the main column; the field report (zone panel) and the top-5 sit beside it on desktop and stack under it on phones. Same dark BigD look as the rest of the site. */
+:root{
+  --ink:#13110f; --panel:#1c1915; --panel2:#24201a; --line:#342e26; --paper:#ece4d6; --muted:#a69c8b; --gold:#d9a441;
+  --ally:#6f9be0; --ally-deep:#2a4f8f; --horde:#e2574a; --horde-deep:#b3261e;
+  --display:"Grenze Gotisch","Times New Roman",serif; --cond:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--body);font-size:17px;line-height:1.6;overflow-x:hidden;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+a{color:var(--gold)}
+.top,.wrap{max-width:1240px;margin-inline:auto}
+.wrap{display:flex;flex-direction:column;gap:28px}
+.top{display:flex;align-items:center;gap:12px;padding-block:14px;border-bottom:1px solid var(--line);margin-bottom:28px}
+.top a.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--paper);font-family:var(--display);font-weight:800;font-size:24px}
+.top img{width:34px;height:34px;border-radius:50%}
+.top .brand span{color:var(--gold)}
+.top .back{margin-left:auto;font-family:var(--cond);font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(46px,9vw,84px);line-height:.9;margin:8px 0 14px;text-wrap:balance}
+h2{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,38px);line-height:1;margin:0}
+h3{font-family:var(--cond);font-weight:700;font-size:20px;letter-spacing:.04em;text-transform:uppercase;margin:0}
+p{margin:0;max-width:64ch}
+.lede{font-size:19px}
+.muted{color:var(--muted)}
+.demo-badge[hidden]{display:none}
+.demo-badge{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:3px;background:var(--gold);color:var(--ink);font-family:var(--mono);font-size:11px;letter-spacing:.1em}
+
+/* board */
+.board{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:22px;align-items:start}
+.mapcol{display:flex;flex-direction:column;gap:14px;min-width:0}
+.side{display:flex;flex-direction:column;gap:18px;position:sticky;top:16px}
+@media (max-width:920px){.board{grid-template-columns:minmax(0,1fr)}.side{position:static}}
+
+.views{display:none;gap:6px}
+.views button{flex:1;font-family:var(--cond);font-weight:700;font-size:16px;letter-spacing:.05em;text-transform:uppercase;padding:9px 6px;border-radius:4px;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer}
+.views button[aria-pressed="true"]{border-color:var(--gold);color:var(--paper);background:var(--panel2)}
+@media (max-width:720px){.views{display:flex}}
+
+.map{position:relative;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#17130f;box-shadow:inset 0 0 60px rgba(0,0,0,.6)}
+.map svg{display:block;width:100%;height:auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+.zone{fill:var(--f);stroke:#d8c49a;stroke-opacity:.5;stroke-width:1;cursor:pointer;outline:none;transition:fill .15s}
+.zone:hover{fill:var(--fh)}
+.zone:focus{outline:none}
+.zl{font-family:var(--cond);font-weight:700;font-size:11.5px;letter-spacing:.09em;fill:#f1e6cf;stroke:#17120d;stroke-width:3px;stroke-linejoin:round;paint-order:stroke;pointer-events:none}
+.zl.forever{fill:#f3cf7e}
+.cap-name{font-family:var(--body);font-style:italic;font-weight:600;font-size:9.5px;fill:#e9d9b4;stroke:#17120d;stroke-width:2.6px;paint-order:stroke;pointer-events:none}
+.cont{font-family:var(--display);font-weight:800;fill:#6d5d44;opacity:.85;pointer-events:none}
+.seanote{font-family:var(--body);font-style:italic;font-size:11px;fill:#6d5d44;pointer-events:none}
+svg.small .zl,svg.small .cap-name,svg.small .seanote{display:none}
+.ring{fill:none;pointer-events:none}
+#selRing{stroke:var(--gold);stroke-width:3}
+#focusRing{stroke:#fff;stroke-width:2;stroke-dasharray:5 4}
+.hotdot{fill:none;stroke:var(--gold);stroke-width:1.6;pointer-events:none;transform-box:fill-box;transform-origin:center;animation:pulse 1.8s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.5);opacity:1}100%{transform:scale(1.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){.hotdot{animation:none;opacity:.8}}
+
+.empty-note{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(330px,78%);pointer-events:none;text-align:center;
+  background:rgba(19,17,15,.86);border:1px solid #5a4520;border-radius:6px;padding:14px 16px;box-shadow:0 6px 30px rgba(0,0,0,.5)}
+.empty-note b{display:block;font-family:var(--display);font-weight:800;font-size:clamp(20px,3.4vw,28px);line-height:1.05;color:var(--paper)}
+.empty-note span{display:block;margin-top:6px;font-family:var(--cond);font-weight:600;font-size:clamp(14px,2vw,17px);letter-spacing:.04em;color:var(--gold)}
+.empty-note[hidden]{display:none}
+@media (max-width:480px){.empty-note{padding:9px 10px}}
+
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:var(--cond);font-weight:600;font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:18px;height:14px;border-radius:2px;border:1px solid #d8c49a80;flex:none}
+.sw.a{background:#3f6cb4}.sw.h{background:#b73a2c}.sw.n{background:#514431}
+.sw.c{background:repeating-linear-gradient(45deg,#3f6cb4 0 4px,#b73a2c 4px 8px)}
+.legend svg{width:16px;height:16px;flex:none}
+
+.offmap{display:flex;flex-direction:column;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--cond);font-weight:700;font-size:16px;letter-spacing:.04em;text-transform:uppercase;
+  padding:8px 12px;min-height:44px;border-radius:4px;border:1px solid var(--line);background:var(--panel);color:var(--paper);cursor:pointer}
+.chip:hover,.chip:focus-visible{border-color:var(--gold);outline:none}
+.chip[aria-pressed="true"]{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.chip i{width:11px;height:11px;border-radius:50%;background:#514431;border:1px solid #d8c49a80;flex:none}
+.chip small{font-family:var(--body);font-weight:500;font-size:13px;letter-spacing:0;text-transform:none;color:var(--muted)}
+.jump{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-family:var(--cond);font-weight:600;font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.jump select{flex:1;min-width:0;max-width:320px;font:inherit;font-family:var(--body);text-transform:none;letter-spacing:0;font-size:16px;color:var(--paper);background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:8px 10px}
+
+/* side */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:12px}
+.panel.on{border-color:#5a4520}
+.ctrl{align-self:flex-start;font-family:var(--cond);font-weight:700;font-size:16px;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:3px;background:var(--panel2);color:var(--muted);border:1px solid var(--line)}
+.ctrl.a{background:var(--ally-deep);color:#fff;border-color:var(--ally)}
+.ctrl.h{background:var(--horde-deep);color:#fff;border-color:var(--horde)}
+.ctrl.c{background:repeating-linear-gradient(45deg,var(--ally-deep) 0 8px,var(--horde-deep) 8px 16px);color:#fff;border-color:var(--gold)}
+.flags{display:flex;flex-wrap:wrap;gap:8px}
+.hot{font-family:var(--cond);font-weight:700;font-size:16px;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:3px;background:#2a2112;border:1px solid var(--gold);color:var(--gold)}
+.score{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.score div{display:flex;flex-direction:column;line-height:1.1}
+.score .lab{font-family:var(--cond);font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase}
+.score b{font-family:var(--mono);font-weight:500;font-size:30px}
+.score .sa .lab,.score .sa b{color:var(--ally)}
+.score .sh{text-align:right}
+.score .sh .lab,.score .sh b{color:var(--horde)}
+.split{display:flex;height:10px;border-radius:5px;overflow:hidden;background:#2b251d;border:1px solid var(--line)}
+.split i{display:block;height:100%}
+.split .ia{background:var(--ally)}.split .ih{background:var(--horde)}
+.panel .note{font-size:15px;color:var(--muted)}
+.btn{display:inline-flex;justify-content:center;font-family:var(--cond);font-weight:700;font-size:19px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;padding:12px 22px;border-radius:4px;background:var(--gold);color:var(--ink)}
+.btn:focus-visible{outline:2px solid var(--paper);outline-offset:2px}
+
+.top5{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.top5 ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.top5 button{width:100%;display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:4px 8px;text-align:left;background:none;border:1px solid transparent;border-radius:4px;padding:6px 6px;color:var(--paper);font:inherit;cursor:pointer}
+.top5 button:hover,.top5 button:focus-visible{border-color:var(--line);background:var(--panel2);outline:none}
+.top5 .no{font-family:var(--display);font-weight:800;font-size:20px;color:var(--gold);line-height:1}
+.top5 .nm{font-family:var(--cond);font-weight:700;font-size:17px;letter-spacing:.03em;text-transform:uppercase;line-height:1.1}
+.top5 .k{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.top5 .split{grid-column:2/4;height:5px}
+.top5 .none{font-size:15px;color:var(--muted)}
+
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<header class="top"><a class="brand" href="./"><img src="emblem.jpg" alt="">Big<span>D</span>Forever</a><a class="back" href="./">Back to the war</a></header>
+<main class="wrap">
+  <section>
+    <div class="eyebrow">Tally as of: <span id="updated">…</span><span id="demoBadge" class="demo-badge" hidden>DEMO NUMBERS</span></div>
+    <h1>The War Map</h1>
+    <p class="lede">Every kill you send us lands on this map. Each zone turns <b style="color:var(--ally)">Alliance blue</b> or <b style="color:var(--horde)">Horde red</b> for whoever has spilled more blood there. Tap a zone for the tally.</p>
+  </section>
+
+  <div class="board">
+    <div class="mapcol">
+      <div class="views" role="group" aria-label="Map view">
+        <button type="button" data-view="world" aria-pressed="true">Whole world</button>
+        <button type="button" data-view="kal" aria-pressed="false">Kalimdor</button>
+        <button type="button" data-view="ek" aria-pressed="false">Eastern Kingdoms</button>
+      </div>
+      <div class="map">
+        <svg id="war" viewBox="0 0 1000 840" role="group" aria-label="Sketch map of Azeroth. Each zone is a button."></svg>
+        <div class="empty-note" id="emptyNote" hidden><b>No blood spilled yet.</b><span>The war starts 4 Nov 23:00 UTC.</span></div>
+      </div>
+      <div class="legend" aria-label="Legend">
+        <span><i class="sw a"></i>Alliance-held</span>
+        <span><i class="sw h"></i>Horde-held</span>
+        <span><i class="sw c"></i>Contested</span>
+        <span><i class="sw n"></i>No blood yet</span>
+        <span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 15V2" stroke="#e9d9b4" stroke-width="1.5"/><path d="M4.5 2.5h9l-2.5 3 2.5 3h-9z" fill="#d9a441" stroke="#17120d" stroke-width=".8"/></svg>Capital</span>
+        <span><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="#d9a441" stroke-width="1.6"/><circle cx="8" cy="8" r="2" fill="#d9a441"/></svg>Hot right now</span>
+      </div>
+      <div class="offmap">
+        <h3>Off the map</h3>
+        <div class="chips" id="chips"></div>
+      </div>
+      <label class="jump">Jump to a zone <select id="jump"><option value="">Pick one…</option></select></label>
+    </div>
+
+    <aside class="side">
+      <section class="panel" id="panel" aria-live="polite"></section>
+      <section class="top5">
+        <h3>Most fought-over zones</h3>
+        <ol id="top5"></ol>
+      </section>
+    </aside>
+  </div>
+
+  <footer>BigDForever is a fan site. Not affiliated with or endorsed by Blizzard Entertainment. Map is an original fan sketch.</footer>
+</main>
+
+<script>
+/* =====================================================================
+   EDIT THIS BLOCK
+   a = Alliance kills, h = Horde kills. Zone names must match exactly.
+   ===================================================================== */
+const WAR = {
+  updated: "Launch night, 4 Nov",
+  hot: 25,            // a zone with at least this many kills (both sides) shows "Hot right now"
+  zones: {
+    // Kalimdor
+    "Ashenvale": {a:0,h:0}, "Azshara": {a:0,h:0}, "Darkshore": {a:0,h:0}, "Desolace": {a:0,h:0},
+    "Durotar": {a:0,h:0}, "Dustwallow Marsh": {a:0,h:0}, "Felwood": {a:0,h:0}, "Feralas": {a:0,h:0},
+    "Moonglade": {a:0,h:0}, "Mount Hyjal": {a:0,h:0}, "Mulgore": {a:0,h:0}, "Silithus": {a:0,h:0},
+    "Stonetalon Mountains": {a:0,h:0}, "Tanaris": {a:0,h:0}, "Teldrassil": {a:0,h:0}, "The Barrens": {a:0,h:0},
+    "Thousand Needles": {a:0,h:0}, "Un'Goro Crater": {a:0,h:0}, "Winterspring": {a:0,h:0},
+    // Eastern Kingdoms
+    "Alterac Mountains": {a:0,h:0}, "Arathi Highlands": {a:0,h:0}, "Badlands": {a:0,h:0}, "Blasted Lands": {a:0,h:0},
+    "Burning Steppes": {a:0,h:0}, "Deadwind Pass": {a:0,h:0}, "Dun Morogh": {a:0,h:0}, "Duskwood": {a:0,h:0},
+    "Elwynn Forest": {a:0,h:0}, "Eastern Plaguelands": {a:0,h:0}, "Hillsbrad Foothills": {a:0,h:0}, "Loch Modan": {a:0,h:0},
+    "Redridge Mountains": {a:0,h:0}, "Searing Gorge": {a:0,h:0}, "Silverpine Forest": {a:0,h:0}, "Stranglethorn Vale": {a:0,h:0},
+    "Swamp of Sorrows": {a:0,h:0}, "The Hinterlands": {a:0,h:0}, "Tirisfal Glades": {a:0,h:0}, "Western Plaguelands": {a:0,h:0},
+    "Westfall": {a:0,h:0}, "Wetlands": {a:0,h:0},
+    // New in WoW Forever
+    "Riverglades": {a:0,h:0}, "Shen'dralas": {a:0,h:0}, "Zephras Isle": {a:0,h:0},
+    // Off the map
+    "Battleground": {a:0,h:0}, "Dungeon or raid": {a:0,h:0}, "Twisting Nether (somewhere weird)": {a:0,h:0}
+  }
+};
+// Optional: a published CSV (e.g. Google Sheets "Publish to web" as CSV) with columns zone,alliance,horde.
+// If set, it is loaded and replaces the numbers above. If it fails, the block above is used.
+const WAR_CSV = "";
+/* ===================== END OF EDIT BLOCK ===================== */
+
+const TALLY = "https://tally.so/r/5XbVeZ";
+const SVGNS = "http://www.w3.org/2000/svg";
+
+/* ---------- Geography: our own sketch, not traced from any game map ----------
+   x,y = seed point of the zone (cells are grown around these), w = size weight,
+   lx,ly = label position if not the seed, lab = label lines. North is up.        */
+const GEO = [
+  // Kalimdor (mainland cells; Teldrassil is its own island below)
+  {n:"Darkshore", c:"K", x:132,y:222, w:-400, lv:"10–20", lab:["Darkshore"], lx:128, ly:232},
+  {n:"Moonglade", c:"K", x:212,y:142, w:-1400, lv:"55–60", lab:["Moonglade"], ly:146},
+  {n:"Winterspring", c:"K", x:330,y:128, w:1200, lv:"55–60", lab:["Winterspring"]},
+  {n:"Felwood", c:"K", x:215,y:222, lv:"48–55", lab:["Felwood"]},
+  {n:"Mount Hyjal", c:"K", x:315,y:215, w:-300, lv:"New in Forever", lab:["Mount","Hyjal"], forever:true,
+    note:"A max-level zone opened at launch. Sketched north of Ashenvale, between Felwood and Winterspring, where it sits in the lore."},
+  {n:"Azshara", c:"K", x:408,y:250, w:-200, lv:"45–55", lab:["Azshara"], lx:402},
+  {n:"Ashenvale", c:"K", x:235,y:300, w:1400, lv:"18–30", lab:["Ashenvale"]},
+  {n:"Stonetalon Mountains", c:"K", x:118,y:335, lv:"15–27", lab:["Stonetalon","Mountains"], lx:122},
+  {n:"Durotar", c:"K", x:395,y:350, w:-500, lv:"1–10", lab:["Durotar"], ly:372, cap:{n:"Orgrimmar", x:392,y:322, side:"l"}},
+  {n:"The Barrens", c:"K", x:308,y:420, w:2400, lv:"10–25", lab:["The","Barrens"]},
+  {n:"Desolace", c:"K", x:82,y:445, w:300, lv:"30–40", lab:["Desolace"], lx:74, ly:478},
+  {n:"Shen'dralas", c:"K", x:160,y:430, w:-700, lv:"New in Forever", lab:["Shen'dralas"], forever:true, lx:172, ly:426,
+    note:"New Highborne and centaur land, hidden between Desolace and Mulgore."},
+  {n:"Mulgore", c:"K", x:225,y:488, lv:"1–10", lab:["Mulgore"], ly:510, cap:{n:"Thunder Bluff", x:212,y:470, side:"r"}},
+  {n:"Dustwallow Marsh", c:"K", x:395,y:495, w:-200, lv:"35–45", lab:["Dustwallow","Marsh"]},
+  {n:"Feralas", c:"K", x:98,y:575, w:600, lv:"40–50", lab:["Feralas"]},
+  {n:"Thousand Needles", c:"K", x:255,y:572, w:-200, lv:"25–35", lab:["Thousand","Needles"]},
+  {n:"Un'Goro Crater", c:"K", x:215,y:668, w:-500, lv:"48–55", lab:["Un'Goro","Crater"]},
+  {n:"Silithus", c:"K", x:112,y:695, lv:"55–60", lab:["Silithus"], ly:700},
+  {n:"Tanaris", c:"K", x:350,y:675, w:900, lv:"40–50", lab:["Tanaris"]},
+  // Eastern Kingdoms
+  {n:"Tirisfal Glades", c:"E", x:648,y:112, lv:"1–10", lab:["Tirisfal","Glades"], lx:640, ly:100, cap:{n:"Undercity", x:676,y:140, side:"r"}},
+  {n:"Western Plaguelands", c:"E", x:765,y:118, lv:"51–58", lab:["Western","Plaguelands"]},
+  {n:"Eastern Plaguelands", c:"E", x:885,y:115, w:500, lv:"53–60", lab:["Eastern","Plaguelands"]},
+  {n:"Silverpine Forest", c:"E", x:612,y:212, lv:"10–20", lab:["Silverpine","Forest"], lx:620},
+  {n:"Alterac Mountains", c:"E", x:722,y:198, w:-300, lv:"30–40", lab:["Alterac","Mountains"]},
+  {n:"The Hinterlands", c:"E", x:878,y:220, w:600, lv:"40–50", lab:["The","Hinterlands"]},
+  {n:"Hillsbrad Foothills", c:"E", x:695,y:268, lv:"20–30", lab:["Hillsbrad","Foothills"], lx:688},
+  {n:"Arathi Highlands", c:"E", x:815,y:290, w:400, lv:"30–40", lab:["Arathi","Highlands"]},
+  {n:"Wetlands", c:"E", x:790,y:368, lv:"20–30", lab:["Wetlands"], lx:778},
+  {n:"Dun Morogh", c:"E", x:712,y:432, w:300, lv:"1–10", lab:["Dun","Morogh"], lx:700, ly:448, cap:{n:"Ironforge", x:742,y:420, side:"r"}},
+  {n:"Loch Modan", c:"E", x:848,y:418, lv:"10–20", lab:["Loch","Modan"]},
+  {n:"Searing Gorge", c:"E", x:760,y:485, w:-400, lv:"43–50", lab:["Searing","Gorge"]},
+  {n:"Badlands", c:"E", x:868,y:482, lv:"35–45", lab:["Badlands"], lx:860},
+  {n:"Burning Steppes", c:"E", x:770,y:540, w:-300, lv:"50–58", lab:["Burning","Steppes"]},
+  {n:"Riverglades", c:"E", x:925,y:548, w:-300, lv:"New in Forever", lab:["Riverglades"], forever:true, lx:914,
+    note:"A new zone on the east coast, wedged between Redridge, the Badlands and the Swamp of Sorrows. Boats run here from Tanaris."},
+  {n:"Elwynn Forest", c:"E", x:690,y:592, w:600, lv:"1–10", lab:["Elwynn","Forest"], lx:700, ly:604, cap:{n:"Stormwind", x:650,y:568, side:"r"}},
+  {n:"Redridge Mountains", c:"E", x:838,y:592, lv:"15–25", lab:["Redridge","Mountains"], lx:832},
+  {n:"Westfall", c:"E", x:610,y:625, lv:"10–20", lab:["Westfall"], lx:614},
+  {n:"Duskwood", c:"E", x:712,y:668, lv:"18–30", lab:["Duskwood"]},
+  {n:"Deadwind Pass", c:"E", x:798,y:668, w:-700, lv:"55–60", lab:["Deadwind","Pass"]},
+  {n:"Swamp of Sorrows", c:"E", x:895,y:640, lv:"35–45", lab:["Swamp of","Sorrows"], lx:893},
+  {n:"Blasted Lands", c:"E", x:860,y:712, w:-300, lv:"45–55", lab:["Blasted","Lands"], ly:708},
+  {n:"Stranglethorn Vale", c:"E", x:690,y:752, w:1500, lv:"30–45", lab:["Stranglethorn","Vale"], lx:688, ly:762},
+];
+// Islands drawn as their own shapes
+const ISLANDS = [
+  {n:"Teldrassil", c:"K", cx:64, cy:96, rx:30, ry:36, lv:"1–10", lab:["Teldrassil"], lx:64, ly:46, cap:{n:"Darnassus", x:60,y:98, side:"b"}},
+  // Zephras Isle: per warcraft.wiki.gg / allthings.how it is a floating island in Skywall (the Elemental
+  // Plane of Air), reached by airship, so it is not on either continent. We draw it floating in the
+  // sky over the sea between the two continents. Exact placement is our own artistic choice.
+  {n:"Zephras Isle", c:"S", cx:500, cy:98, rx:40, ry:24, lv:"New in Forever", lab:["Zephras Isle"], forever:true, lx:500, ly:150,
+    note:"Skyborne starting isle. It floats in Skywall, the Elemental Plane of Air, and is reached by airship, so we drew it in the sky between the continents."},
+];
+const OFFMAP = [
+  {n:"Battleground", lv:"Instanced PvP", sub:"Warsong, Arathi, Alterac…", note:"Kills made inside a battleground."},
+  {n:"Dungeon or raid", lv:"Instanced", sub:"inside an instance", note:"Kills inside a dungeon or raid. Yes, it happens."},
+  {n:"Twisting Nether (somewhere weird)", short:"Twisting Nether", lv:"???", sub:"somewhere weird", note:"Out of bounds, up a mountain, on a boat, in a place we don't have a name for."},
+];
+const CONT = {K:"Kalimdor", E:"Eastern Kingdoms", S:"Skywall (floating isle)", O:"Off the map"};
+
+// Coastlines (hand-placed key points, roughened below)
+const KAL = [[115,150],[175,108],[258,82],[338,70],[402,96],[428,160],[448,228],[440,290],[420,338],[430,400],[446,470],[426,540],[434,612],[414,690],[372,772],[300,792],[220,776],[150,756],[88,702],[54,622],[42,540],[38,452],[56,372],[82,312],[102,252],[98,196]];
+const EK = [[600,70],[662,46],[742,56],[822,44],[902,54],[962,92],[974,162],[956,232],[932,292],[908,334],[898,384],[928,432],[958,482],[970,544],[952,604],[934,654],[908,720],[860,740],[802,704],[762,730],[742,792],[700,818],[650,802],[628,742],[612,682],[578,642],[568,580],[598,522],[636,482],[652,440],[676,398],[702,360],[672,328],[624,306],[588,262],[574,202],[584,132]];
+
+/* ---------- small helpers ---------- */
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function hash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function el(tag,attrs,parent){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function pathD(pts){return "M"+pts.map(p=>p[0].toFixed(1)+" "+p[1].toFixed(1)).join("L")+"Z";}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+// roughen a closed outline by midpoint displacement
+function subdiv(a,b,d,amp,r){
+  if(d===0)return[a,b];
+  const dx=b[0]-a[0],dy=b[1]-a[1],len=Math.hypot(dx,dy)||1,off=(r()-.5)*2*amp*len;
+  const m=[(a[0]+b[0])/2-dy/len*off,(a[1]+b[1])/2+dx/len*off];
+  return subdiv(a,m,d-1,amp,r).concat(subdiv(m,b,d-1,amp,r).slice(1));
+}
+function rough(pts,seed,depth,amp){const r=rng(seed),out=[];for(let i=0;i<pts.length;i++){const s=subdiv(pts[i],pts[(i+1)%pts.length],depth,amp,r);s.pop();out.push(...s);}return out;}
+function blob(cx,cy,rx,ry,seed){const r=rng(seed),pts=[];for(let i=0;i<11;i++){const a=i/11*Math.PI*2,k=.82+r()*.3;pts.push([cx+Math.cos(a)*rx*k,cy+Math.sin(a)*ry*k]);}return rough(pts,seed+1,2,.12);}
+
+// power-diagram cells: each zone is the area closer (weighted) to its seed than to any other
+function clipHalf(poly,ax,ay,b){const out=[];for(let i=0;i<poly.length;i++){const P=poly[i],Q=poly[(i+1)%poly.length];
+  const fp=ax*P[0]+ay*P[1]-b,fq=ax*Q[0]+ay*Q[1]-b;if(fp<=0)out.push(P);
+  if((fp<0&&fq>0)||(fp>0&&fq<0)){const t=fp/(fp-fq);out.push([P[0]+t*(Q[0]-P[0]),P[1]+t*(Q[1]-P[1])]);}}return out;}
+function cells(seeds,box){return seeds.map((s,i)=>{let poly=[[box[0],box[1]],[box[2],box[1]],[box[2],box[3]],[box[0],box[3]]];
+  seeds.forEach((t,j)=>{if(i===j)return;poly=clipHalf(poly,2*(t.x-s.x),2*(t.y-s.y),(t.x*t.x+t.y*t.y)-(s.x*s.x+s.y*s.y)+(s.w||0)-(t.w||0));});return poly;});}
+// wobble every border the same way from both sides, so neighbours still meet
+const key=p=>p[0].toFixed(1)+","+p[1].toFixed(1);
+function wobble(poly){const out=[];for(let i=0;i<poly.length;i++){const a=poly[i],b=poly[(i+1)%poly.length];out.push(a);
+  const ka=key(a),kb=key(b),flip=ka>kb,A=flip?b:a,B=flip?a:b,len=Math.hypot(B[0]-A[0],B[1]-A[1]),n=Math.floor(len/11);
+  if(n<2)continue;const r=rng(hash(flip?kb+ka:ka+kb)),nx=-(B[1]-A[1])/len,ny=(B[0]-A[0])/len,amp=Math.min(3.4,len*.05),mid=[];
+  for(let k=1;k<n;k++){const t=k/n,o=(r()-.5)*2*amp*Math.sin(Math.PI*t);mid.push([A[0]+(B[0]-A[0])*t+nx*o,A[1]+(B[1]-A[1])*t+ny*o]);}
+  if(flip)mid.reverse();out.push(...mid);}return out;}
+
+/* ---------- data ---------- */
+const norm=s=>String(s).toLowerCase().replace(/\(.*?\)/g,"").replace(/[^a-z0-9]/g,"");
+const ALL=[...GEO,...ISLANDS,...OFFMAP.map(o=>({...o,c:"O"}))];
+const BYNORM={};ALL.forEach(z=>{BYNORM[norm(z.n)]=z.n;});
+let DATA={};
+function setData(src){DATA={};ALL.forEach(z=>{const v=src[z.n]||{};DATA[z.n]={a:Math.max(0,+v.a||0),h:Math.max(0,+v.h||0)};});}
+function status(z){const d=DATA[z]||{a:0,h:0},t=d.a+d.h;if(!t)return"n";if(d.a===d.h)return"c";return d.a>d.h?"a":"h";}
+const STATUS_TXT={a:"Alliance holds it",h:"Horde holds it",c:"Contested",n:"No blood yet"};
+
+function hex(c){return[1,3,5].map(i=>parseInt(c.slice(i,i+2),16));}
+function mix(c1,c2,t){const a=hex(c1),b=hex(c2);return"#"+a.map((v,i)=>Math.round(v+(b[i]-v)*t).toString(16).padStart(2,"0")).join("");}
+const NEUTRAL="#514431";
+function fills(name,maxT){
+  const s=status(name),d=DATA[name],t=d.a+d.h;
+  if(s==="n")return[NEUTRAL,"#5f513b"];
+  if(s==="c")return["url(#contested)","url(#contestedH)"];
+  const k=.35+.65*Math.min(1,t/Math.max(1,maxT));               // more kills = deeper colour
+  const deep=s==="a"?"#2a4f8f":"#b3261e",lite=s==="a"?"#6f9be0":"#e2574a";
+  const f=mix(mix(NEUTRAL,deep,.55+.45*k),lite,.3*k);
+  return[f,mix(f,"#ffffff",.15)];
+}
+
+/* ---------- build the SVG ---------- */
+const svg=document.getElementById("war");
+const ZONE_EL={};
+function build(){
+  const defs=el("defs",{},svg);
+  defs.innerHTML=`
+  <radialGradient id="sea" cx="50%" cy="45%" r="70%"><stop offset="0" stop-color="#2a231a"/><stop offset=".7" stop-color="#1b1712"/><stop offset="1" stop-color="#110e0b"/></radialGradient>
+  <pattern id="waves" width="26" height="14" patternUnits="userSpaceOnUse"><path d="M0 7q6.5-4 13 0t13 0" fill="none" stroke="#3f3528" stroke-width="1"/></pattern>
+  <pattern id="coastHatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><path d="M0 0v5" stroke="#8c7754" stroke-width="1.1"/></pattern>
+  <pattern id="landHatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(-50)"><path d="M0 0v7" stroke="#120e09" stroke-width=".8" stroke-opacity=".35"/></pattern>
+  <pattern id="contested" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="12" fill="#3f6cb4"/><rect x="6" width="6" height="12" fill="#b73a2c"/></pattern>
+  <pattern id="contestedH" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="12" fill="#5f88cc"/><rect x="6" width="6" height="12" fill="#cf5546"/></pattern>
+  <filter id="rough" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="3.5" xChannelSelector="R" yChannelSelector="G"/></filter>
+  <filter id="inky" x="-3%" y="-3%" width="106%" height="106%"><feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="1" seed="3"/><feDisplacementMap in="SourceGraphic" scale="2" xChannelSelector="R" yChannelSelector="G"/></filter>`;
+
+  const kal=rough(KAL,11,3,.12), ek=rough(EK,23,3,.12);
+  const islands=ISLANDS.map((z,i)=>blob(z.cx,z.cy,z.rx,z.ry,101+i*17));
+  const coasts=[kal,ek,...islands].map(pathD);
+  const clip=el("clipPath",{id:"land"},defs);coasts.forEach(d=>el("path",{d},clip));
+  el("path",{d:coasts[0]},el("clipPath",{id:"landK"},defs));
+  el("path",{d:coasts[1]},el("clipPath",{id:"landE"},defs));
+
+  // sea
+  el("rect",{width:1000,height:840,fill:"url(#sea)"},svg);
+  el("rect",{width:1000,height:840,fill:"url(#waves)",opacity:.55},svg);
+  // decorations: continent names, compass, a sea note, clouds under the floating isle
+  const deco=el("g",{"aria-hidden":"true"},svg);
+  const t1=el("text",{class:"cont","font-size":32,x:22,y:826,"text-anchor":"start"},deco);t1.textContent="Kalimdor";
+  const t2=el("text",{class:"cont","font-size":32,x:982,y:826,"text-anchor":"end"},deco);t2.textContent="Eastern Kingdoms";
+  const sn=el("text",{class:"seanote",x:500,y:430,"text-anchor":"middle"},deco);sn.innerHTML='<tspan x="500">here be</tspan><tspan x="500" dy="13">gankers</tspan>';
+  const comp=el("g",{transform:"translate(500 700)",stroke:"#7a6748","stroke-width":1.2,fill:"none",filter:"url(#inky)"},deco);
+  comp.innerHTML=`<circle r="26"/><circle r="20" stroke-dasharray="2 3"/><path d="M0-38L5-5 0 0-5-5Z M0 38L5 5 0 0-5 5Z" fill="#3a3024"/><path d="M-30 0L-5-4 0 0-5 4Z M30 0L5-4 0 0 5 4Z"/><path d="M0-38L5-5 0 0Z" fill="#a8916a" stroke="none"/>`;
+  const nN=el("text",{x:0,y:-42,"text-anchor":"middle",fill:"#a8916a","font-size":13,"font-family":"Grenze Gotisch, serif","font-weight":800,transform:"translate(500 700)"},deco);nN.textContent="N";
+  const cl=el("g",{fill:"#2e271e",stroke:"#6d5d44","stroke-width":1,filter:"url(#inky)"},deco);
+  cl.innerHTML=`<path d="M448 124q6-12 18-6q8-12 22-5q12-8 24 2q14-6 22 6q14 0 12 12q-6 8-20 5q-10 8-24 2q-12 7-24 0q-14 6-22-4q-12 2-8-12z"/>`;
+  el("path",{d:"M500 136 q 0 14 -6 22",stroke:"#6d5d44","stroke-dasharray":"3 4",fill:"none"},deco);
+
+  // coastal hatching halo + land base
+  const halo=el("g",{filter:"url(#inky)"},svg);
+  coasts.forEach(d=>el("path",{d,fill:"none",stroke:"url(#coastHatch)","stroke-width":18,"stroke-linejoin":"round",opacity:.75},halo));
+  coasts.forEach(d=>el("path",{d,fill:NEUTRAL},svg));
+
+  // zones
+  const zrough=el("g",{filter:"url(#rough)"},svg);
+  const zg={K:el("g",{"clip-path":"url(#landK)"},zrough),E:el("g",{"clip-path":"url(#landE)"},zrough),I:el("g",{},zrough)};
+  const kc=cells(GEO.filter(z=>z.c==="K"),[0,0,492,840]);
+  const ec=cells(GEO.filter(z=>z.c==="E"),[508,0,1000,840]);
+  const shapes={};
+  GEO.filter(z=>z.c==="K").forEach((z,i)=>shapes[z.n]=pathD(wobble(kc[i])));
+  GEO.filter(z=>z.c==="E").forEach((z,i)=>shapes[z.n]=pathD(wobble(ec[i])));
+  ISLANDS.forEach((z,i)=>shapes[z.n]=coasts[2+i]);
+  // tab order: islands with their continent, roughly north to south
+  const order=[ISLANDS[0],...GEO.filter(z=>z.c==="K"),ISLANDS[1],...GEO.filter(z=>z.c==="E")];
+  order.forEach(z=>{
+    const p=el("path",{d:shapes[z.n],class:"zone",tabindex:0,role:"button","data-zone":z.n},z.cx?zg.I:zg[z.c]);
+    p.addEventListener("click",()=>openZone(z.n));
+    p.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openZone(z.n);}});
+    p.addEventListener("focus",()=>{focusRing.setAttribute("d",shapes[z.n]);focusRing.style.display="";});
+    p.addEventListener("blur",()=>{focusRing.style.display="none";});
+    ZONE_EL[z.n]=p;
+  });
+  // texture over the land, then ink coastline
+  const tex=el("g",{"pointer-events":"none"},svg);
+  coasts.forEach(d=>el("path",{d,fill:"url(#landHatch)"},tex));
+  const ink=el("g",{"pointer-events":"none",filter:"url(#inky)"},svg);
+  coasts.forEach(d=>el("path",{d,fill:"none",stroke:"#d8c49a","stroke-width":1.8,"stroke-linejoin":"round"},ink));
+  coasts.forEach(d=>el("path",{d,fill:"none",stroke:"#d8c49a","stroke-width":.6,"stroke-opacity":.5,transform:"translate(1.6 1.2)"},ink));
+  // rings
+  const rings=el("g",{"clip-path":"url(#land)","pointer-events":"none"},svg);
+  window.selRing=el("path",{id:"selRing",class:"ring",style:"display:none"},rings);
+  window.focusRing=el("path",{id:"focusRing",class:"ring",style:"display:none"},rings);
+  window.SHAPES=shapes;
+  // hot markers layer
+  window.hotLayer=el("g",{"pointer-events":"none"},svg);
+  // capitals + labels
+  const lab=el("g",{"pointer-events":"none"},svg);
+  [...GEO,...ISLANDS].forEach(z=>{
+    const lx=z.lx??z.x??z.cx, ly=z.ly??z.y??z.cy;
+    z._lx=lx;z._ly=ly;
+    if(z.cap){
+      const g=el("g",{transform:`translate(${z.cap.x} ${z.cap.y})`},lab);
+      g.innerHTML=`<path d="M0 6V-11" stroke="#17120d" stroke-width="3.2"/><path d="M0 6V-11" stroke="#e9d9b4" stroke-width="1.4"/><path d="M.5-11h10l-3 3.6 3 3.6h-10z" fill="#d9a441" stroke="#17120d" stroke-width="1"/><circle cy="6" r="2" fill="#d9a441" stroke="#17120d" stroke-width=".8"/>`;
+      const s=z.cap.side,tx=el("text",{class:"cap-name",x:s==="l"?-4:s==="b"?0:13,y:s==="b"?18:3,"text-anchor":s==="l"?"end":s==="b"?"middle":"start"},g);tx.textContent=z.cap.n;
+    }
+    const t=el("text",{class:"zl"+(z.forever?" forever":""),"text-anchor":"middle",x:lx,y:ly},lab);
+    const lines=z.lab,h=12.5;
+    lines.forEach((ln,i)=>{const ts=el("tspan",{x:lx,y:(ly-(lines.length-1)*h/2+i*h+4).toFixed(1)},t);ts.textContent=ln.toUpperCase();});
+  });
+}
+
+/* ---------- render data onto the map ---------- */
+function render(){
+  const names=Object.keys(ZONE_EL);
+  const maxT=Math.max(1,...ALL.map(z=>DATA[z.n].a+DATA[z.n].h));
+  names.forEach(n=>{const [f,fh]=fills(n,maxT),p=ZONE_EL[n];p.style.setProperty("--f",f);p.style.setProperty("--fh",fh);
+    const d=DATA[n],t=d.a+d.h;p.setAttribute("aria-label",`${n}: ${STATUS_TXT[status(n)]}${t?`, Alliance ${d.a}, Horde ${d.h}`:""}`);});
+  // hot markers
+  hotLayer.innerHTML="";
+  [...GEO,...ISLANDS].forEach(z=>{const d=DATA[z.n];if(d.a+d.h>=WAR.hot){el("circle",{class:"hotdot",cx:z._lx,cy:z._ly,r:16},hotLayer);}});
+  // off-map chips
+  const chips=document.getElementById("chips");chips.innerHTML="";
+  OFFMAP.forEach(o=>{const s=status(o.n),b=document.createElement("button");b.type="button";b.className="chip";b.dataset.zone=o.n;
+    b.setAttribute("aria-pressed",String(current===o.n));
+    const col={a:"#3f6cb4",h:"#b73a2c",c:"repeating-linear-gradient(45deg,#3f6cb4 0 3px,#b73a2c 3px 6px)",n:"#514431"}[s];
+    const d=DATA[o.n],t=d.a+d.h;
+    b.innerHTML=`<i style="background:${col}"></i>${esc(o.short||o.n)}<small>${t?t+" kills":esc(o.sub)}</small>`;
+    b.addEventListener("click",()=>openZone(o.n));chips.appendChild(b);});
+  // totals, empty note, top 5
+  const tot=ALL.reduce((s,z)=>({a:s.a+DATA[z.n].a,h:s.h+DATA[z.n].h}),{a:0,h:0});
+  document.getElementById("emptyNote").hidden=(tot.a+tot.h)>0;
+  window.TOT=tot;
+  const top=ALL.map(z=>({n:z.n,...DATA[z.n],t:DATA[z.n].a+DATA[z.n].h})).filter(z=>z.t>0).sort((x,y)=>y.t-x.t||x.n.localeCompare(y.n)).slice(0,5);
+  const ol=document.getElementById("top5");
+  ol.innerHTML=top.length?top.map((z,i)=>`<li><button type="button" data-zone="${esc(z.n)}"><span class="no">${i+1}</span><span class="nm">${esc(shortName(z.n))}</span><span class="k">${z.t} kills</span>${bar(z.a,z.h)}</button></li>`).join("")
+    :`<li class="none">Nothing yet. The first kill takes the top spot.</li>`;
+  ol.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>openZone(b.dataset.zone)));
+  if(current)openZone(current,true);else showDefault();
+}
+const shortName=n=>(ALL.find(z=>z.n===n)||{}).short||n;
+function bar(a,h){const t=a+h;if(!t)return`<div class="split" aria-hidden="true"></div>`;
+  return`<div class="split" role="img" aria-label="Alliance ${a}, Horde ${h}"><i class="ia" style="width:${(a/t*100).toFixed(1)}%"></i><i class="ih" style="width:${(h/t*100).toFixed(1)}%"></i></div>`;}
+
+/* ---------- the info panel ---------- */
+const panel=document.getElementById("panel");
+let current=null;
+function showDefault(){
+  panel.classList.remove("on");
+  const t=TOT||{a:0,h:0};
+  panel.innerHTML=`<div class="eyebrow">Field report</div><h2>Pick a zone</h2>
+  <p class="note">Tap or click any zone on the map (or use Tab and Enter) to see who owns it and how bloody it's been.</p>
+  <div class="score"><div class="sa"><span class="lab">Alliance</span><b>${t.a}</b></div><div class="sh"><span class="lab">Horde</span><b>${t.h}</b></div></div>
+  ${bar(t.a,t.h)}<p class="note">${t.a+t.h?"Kills logged across all of Azeroth.":"Kills logged so far: none. Be the first."}</p>
+  <a class="btn" href="${TALLY}" target="_blank" rel="noopener">Post a brag</a>`;
+}
+function openZone(name,quiet){
+  const z=ALL.find(q=>q.n===name);if(!z)return;
+  current=name;
+  const d=DATA[name],t=d.a+d.h,s=status(name);
+  panel.classList.add("on");
+  panel.innerHTML=`<div class="eyebrow">${esc(CONT[z.c])} · ${z.lv==="New in Forever"?"New in Forever":"Levels "+esc(z.lv)}</div>
+  <h2>${esc(shortName(name))}</h2>
+  <div class="flags"><span class="ctrl ${s}">${STATUS_TXT[s]}</span>${t>=WAR.hot?'<span class="hot">Hot right now</span>':""}</div>
+  <div class="score"><div class="sa"><span class="lab">Alliance kills</span><b>${d.a}</b></div><div class="sh"><span class="lab">Horde kills</span><b>${d.h}</b></div></div>
+  ${bar(d.a,d.h)}
+  ${z.cap?`<p class="note">Capital here: <b style="color:var(--paper)">${esc(z.cap.n)}</b></p>`:""}
+  ${z.note?`<p class="note">${esc(z.note)}</p>`:""}
+  ${t?"":`<p class="note">No kills logged here yet. Make it yours.</p>`}
+  <a class="btn" href="${TALLY}" target="_blank" rel="noopener">Post a brag from here</a>`;
+  // highlight
+  if(SHAPES[name]){selRing.setAttribute("d",SHAPES[name]);selRing.style.display="";}else selRing.style.display="none";
+  document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",String(c.dataset.zone===name)));
+  document.getElementById("jump").value=name;
+  if(!quiet&&matchMedia("(max-width:920px)").matches){const r=panel.getBoundingClientRect();if(r.top>innerHeight-120||r.bottom<0)panel.scrollIntoView({behavior:"smooth",block:"start"});}
+}
+
+/* ---------- views (phones) + label sizing ---------- */
+const VIEWS={world:"0 0 1000 840",kal:"14 30 462 790",ek:"548 24 446 806"};
+function setView(v){svg.setAttribute("viewBox",VIEWS[v]);document.querySelectorAll(".views button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.view===v)));sizeLabels();}
+function sizeLabels(){const vb=svg.viewBox.baseVal,scale=svg.clientWidth/(vb.width||1000);svg.classList.toggle("small",scale*11.5<7.2);}
+document.querySelectorAll(".views button").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
+const wide=matchMedia("(min-width:721px)");
+wide.addEventListener?.("change",e=>{if(e.matches)setView("world");});
+addEventListener("resize",sizeLabels);
+
+/* ---------- jump menu ---------- */
+function buildJump(){
+  const sel=document.getElementById("jump");
+  const groups=[["Kalimdor",[...GEO.filter(z=>z.c==="K"),ISLANDS[0]]],["Eastern Kingdoms",GEO.filter(z=>z.c==="E")],["Skywall",[ISLANDS[1]]],["Off the map",OFFMAP]];
+  groups.forEach(([lab,zs])=>{const og=document.createElement("optgroup");og.label=lab;
+    zs.map(z=>z.n).sort().forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=shortName(n);og.appendChild(o);});sel.appendChild(og);});
+  sel.addEventListener("change",()=>{if(sel.value)openZone(sel.value);});
+}
+
+/* ---------- CSV + demo ---------- */
+function parseCSV(text){
+  const rows=text.replace(/\r/g,"").split("\n").filter(l=>l.trim()).map(line=>{const out=[];let cur="",q=false;
+    for(let i=0;i<line.length;i++){const ch=line[i];if(q){if(ch==='"'&&line[i+1]==='"'){cur+='"';i++;}else if(ch==='"')q=false;else cur+=ch;}
+      else if(ch==='"')q=true;else if(ch===","){out.push(cur);cur="";}else cur+=ch;}out.push(cur);return out.map(s=>s.trim());});
+  if(!rows.length)return null;
+  let iz=0,ia=1,ih=2,start=0;const head=rows[0].map(s=>s.toLowerCase());
+  if(head.includes("zone")){iz=head.indexOf("zone");ia=head.findIndex(s=>s.startsWith("alliance"));ih=head.findIndex(s=>s.startsWith("horde"));start=1;}
+  if(ia<0||ih<0)return null;
+  const out={};let hits=0;
+  rows.slice(start).forEach(r=>{const n=BYNORM[norm(r[iz]||"")];if(!n)return;hits++;out[n]={a:parseInt(r[ia],10)||0,h:parseInt(r[ih],10)||0};});
+  return hits?out:null;
+}
+function demoData(){
+  const out={};
+  ALL.forEach(z=>{const r=Math.random();if(r<.18){out[z.n]={a:0,h:0};return;}
+    const big=Math.random()**2*70;out[z.n]={a:Math.round(big*Math.random()*1.4),h:Math.round(big*Math.random()*1.4)};});
+  out["Hillsbrad Foothills"]={a:48,h:48};out["Arathi Highlands"]={a:12,h:12};   // show "contested"
+  out["Ashenvale"]={a:71,h:58};out["Stranglethorn Vale"]={a:64,h:90};
+  return out;
+}
+
+/* ---------- go ---------- */
+document.getElementById("updated").textContent=WAR.updated;
+build();buildJump();
+const DEMO=new URLSearchParams(location.search).get("demo")==="1";
+if(DEMO){setData(demoData());document.getElementById("demoBadge").hidden=false;}else setData(WAR.zones);
+render();
+setView("world");
+if(WAR_CSV&&!DEMO){
+  fetch(WAR_CSV,{cache:"no-store"}).then(r=>r.ok?r.text():Promise.reject()).then(txt=>{const d=parseCSV(txt);if(d){setData({...WAR.zones,...d});render();}}).catch(()=>{});
+}
+</script>
+</body>
+</html>
