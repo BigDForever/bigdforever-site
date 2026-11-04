@@ -331,6 +331,11 @@ const BIGD = {
   youtube: "",                       // add the channel link when the handle is final
   launch: "2026-11-04T23:00:00Z",    // WoW Forever servers open
   scoreTitle: "Launch Night Body Count",
+  // Automatic mode: paste the "Publish to web" CSV links of the Google Sheet's Score and Featured tabs.
+  // Score tab rows:    alliance,<number> / horde,<number> / updated,<text>
+  // Featured tab rows: title,character,faction,category,url,image (first row = these headers)
+  sheets: { score: "", featured: "" },
+  // Manual fallback, used when the sheet links are empty or can't be loaded
   score: { alliance: 0, horde: 0, updated: "" },   // e.g. updated: "Thu 5 Nov, 18:00"
   challenge: { week: 1, target: 10, ends: "Tuesday 10 November, 23:59 UTC" },
   featured: [
@@ -348,11 +353,15 @@ const L = [["Join the Discord", BIGD.discord, true], ["Submit a brag", BIGD.form
 L.filter(x => x[1]).forEach(([t, u, main]) => { const a = document.createElement("a"); a.className = "btn" + (main ? "" : " ghost"); a.href = u; a.target = "_blank"; a.rel = "noopener"; a.textContent = t; $("links").append(a); });
 
 // score
-const A = +BIGD.score.alliance || 0, H = +BIGD.score.horde || 0, T = A + H;
-$("score-eyebrow").textContent = BIGD.scoreTitle;
-$("n-alliance").textContent = A; $("n-horde").textContent = H;
-$("b-alliance").style.width = (T ? A / T * 100 : 50) + "%"; $("b-horde").style.width = (T ? H / T * 100 : 50) + "%";
-$("score-note").textContent = (T ? (A === H ? "Dead even." : (A > H ? "Alliance" : "Horde") + " leads by " + Math.abs(A - H) + ".") : "No kills counted yet. First Blood is still up for grabs.") + " Approved world PvP kills only, counted by hand" + (BIGD.score.updated ? ", last updated " + BIGD.score.updated : "") + ".";
+function renderScore(alliance, horde, updated, auto) {
+  const A = +alliance || 0, H = +horde || 0, T = A + H;
+  $("score-eyebrow").textContent = BIGD.scoreTitle;
+  $("n-alliance").textContent = A; $("n-horde").textContent = H;
+  $("b-alliance").style.width = (T ? A / T * 100 : 50) + "%"; $("b-horde").style.width = (T ? H / T * 100 : 50) + "%";
+  $("score-note").textContent = (T ? (A === H ? "Dead even." : (A > H ? "Alliance" : "Horde") + " leads by " + Math.abs(A - H) + ".") : "No kills counted yet. First Blood is still up for grabs.") +
+    " Approved world PvP brags only" + (auto ? ", updated automatically" : ", counted by hand") + (updated ? ", last update " + updated : "") + ".";
+}
+renderScore(BIGD.score.alliance, BIGD.score.horde, BIGD.score.updated, false);
 
 // challenge
 $("ch-eyebrow").textContent = "Week " + BIGD.challenge.week + " challenges";
@@ -360,23 +369,58 @@ $("ch-gnome").textContent = $("ch-milk").textContent = "Target: " + BIGD.challen
 $("ch-lede").textContent = "Ends " + BIGD.challenge.ends + ". First three per faction to hit the target go into the Hall of Fame.";
 
 // feed
-const feed = $("feed");
-if (!BIGD.featured.length) {
-  feed.innerHTML = '<div class="empty"><h3>First Blood is still up for grabs.</h3><p>The very first brag ever posted gets a permanent spot in the Hall of Fame. Featured brags appear here once the crowd has picked them.</p></div>';
-  const a = document.createElement("a"); a.className = "btn"; a.href = BIGD.form; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Claim First Blood"; feed.firstChild.append(a);
-} else {
+const isLink = u => /^https?:\/\//i.test(String(u || "").trim());
+function renderFeed(list) {
+  const feed = $("feed"); feed.textContent = "";
+  list = (list || []).filter(p => p && p.title && isLink(p.url));
+  if (!list.length) {
+    feed.innerHTML = '<div class="empty"><h3>First Blood is still up for grabs.</h3><p>The very first brag ever posted gets a permanent spot in the Hall of Fame. Featured brags appear here once the crowd has picked them.</p></div>';
+    const a = document.createElement("a"); a.className = "btn"; a.href = BIGD.form; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Claim First Blood"; feed.firstChild.append(a);
+    return;
+  }
   const g = document.createElement("div"); g.className = "feed";
-  BIGD.featured.forEach(p => {
-    const a = document.createElement("a"); a.className = "card " + (p.faction === "alliance" ? "a" : "h"); a.href = p.url; a.target = "_blank"; a.rel = "noopener";
-    const im = document.createElement("div"); im.className = "img"; if (p.image) im.style.backgroundImage = "url('" + p.image.replace(/'/g, "%27") + "')";
+  list.forEach(p => {
+    const fac = String(p.faction || "").toLowerCase().includes("alliance") ? "alliance" : "horde";
+    const a = document.createElement("a"); a.className = "card " + (fac === "alliance" ? "a" : "h"); a.href = p.url.trim(); a.target = "_blank"; a.rel = "noopener";
+    const im = document.createElement("div"); im.className = "img"; if (isLink(p.image)) im.style.backgroundImage = "url('" + p.image.trim().replace(/'/g, "%27") + "')";
     const bd = document.createElement("div"); bd.className = "bd";
-    const m = document.createElement("span"); m.className = "meta"; m.textContent = (p.faction || "") + " · " + (p.category || "Brag");
+    const m = document.createElement("span"); m.className = "meta"; m.textContent = fac + " · " + (p.category || "Brag");
     const h = document.createElement("h3"); h.textContent = p.title;
     const c = document.createElement("span"); c.className = "meta"; c.textContent = p.character ? "by " + p.character : "";
     bd.append(m, h, c); a.append(im, bd); g.append(a);
   });
   feed.append(g);
 }
+renderFeed(BIGD.featured);
+
+// automatic mode: read the published Google Sheet tabs
+function parseCSV(text) {
+  const rows = []; let row = [], cell = "", q = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (q) { if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += ch; }
+    else if (ch === '"') q = true;
+    else if (ch === ",") { row.push(cell); cell = ""; }
+    else if (ch === "\n" || ch === "\r") { if (ch === "\r" && text[i + 1] === "\n") i++; row.push(cell); rows.push(row); row = []; cell = ""; }
+    else cell += ch;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows.map(r => r.map(c => c.trim())).filter(r => r.some(Boolean));
+}
+async function loadCSV(url) {
+  const r = await fetch(url, { cache: "no-store" });
+  if (!r.ok) throw new Error(r.status);
+  return parseCSV(await r.text());
+}
+if (BIGD.sheets.score) loadCSV(BIGD.sheets.score).then(rows => {
+  const v = {}; rows.forEach(r => { v[(r[0] || "").toLowerCase()] = r[1]; });
+  if (v.alliance !== undefined || v.horde !== undefined) renderScore(v.alliance, v.horde, v.updated, true);
+}).catch(() => {});
+if (BIGD.sheets.featured) loadCSV(BIGD.sheets.featured).then(rows => {
+  if (rows.length < 2) return;
+  const head = rows[0].map(h => h.toLowerCase());
+  renderFeed(rows.slice(1).map(r => Object.fromEntries(head.map((h, i) => [h, r[i] || ""]))));
+}).catch(() => {});
 
 // countdown
 const launch = new Date(BIGD.launch).getTime();
