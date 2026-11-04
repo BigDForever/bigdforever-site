@@ -19,6 +19,7 @@
     ["halls.html", "Hall of Fame & Shame"],
     ["past.html", "Taste of the Past"],
     ["spotlight.html", "Streamer Spotlight"],
+    ["vault.html", "Clip Vault"],
     ["clips.html", "How to clip"],
     ["card.html", "Brag card maker"]
   ];

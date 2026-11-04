@@ -198,19 +198,19 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 .wl .no{position:absolute;top:14px;right:18px;font-family:var(--cond);font-weight:700;font-size:30px;letter-spacing:.06em;line-height:1;color:var(--tint);transition:color .3s}
 .wl b{font-family:var(--cond);font-weight:700;font-size:23px;letter-spacing:.02em;text-transform:uppercase;line-height:1.1;padding-right:64px}
 .wl span:last-child{color:var(--muted);font-size:15px}
-.wl.wide{grid-column:1/-1}
+.wl.wide2{grid-column:span 2}
 .wl.big{grid-row:span 2;justify-content:flex-end;min-height:220px;
   background:radial-gradient(circle at 30% 30%,color-mix(in srgb,var(--navy) 35%,transparent),transparent 55%),radial-gradient(circle at 75% 70%,color-mix(in srgb,var(--crimson) 35%,transparent),transparent 55%),var(--panel)}
 .wl.big .no{font-size:44px;top:16px;right:22px}
 .wl.big b{font-size:32px}
-@media (max-width:860px){.war-links{grid-template-columns:1fr 1fr}.wl.big{grid-column:span 2;grid-row:auto;min-height:160px}}
-@media (max-width:440px){.war-links{grid-template-columns:1fr}.wl.big{grid-column:auto}}
+@media (max-width:860px){.war-links{grid-template-columns:1fr 1fr}.wl.wide2{grid-column:span 1}.wl.big{grid-column:span 2;grid-row:auto;min-height:160px}}
+@media (max-width:440px){.war-links{grid-template-columns:1fr}.wl.wide2{grid-column:auto}.wl.big{grid-column:auto}}
 .tile,.ch{position:relative}
 .ch::after{content:"WANTED";position:absolute;top:16px;right:14px;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.18em;color:var(--muted);border:1.5px solid var(--line);padding:2px 6px;transform:rotate(4deg)}
 </style>
 
-<link rel="stylesheet" href="assets/faction.css?v=20261104w">
-<script src="assets/faction.js?v=20261104w"></script>
+<link rel="stylesheet" href="assets/faction.css?v=20261104x">
+<script src="assets/faction.js?v=20261104x"></script>
 </head>
 <body>
 <header class="top band">
@@ -275,7 +275,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
         <a class="wl" href="halls.html"><span class="no">III</span><b>Hall of Fame</b><span>Heroes, villains, and next door, the Hall of Shame.</span></a>
         <a class="wl" href="past.html"><span class="no">IV</span><b>Taste of the Past</b><span>Beta chaos and Classic Hardcore legends.</span></a>
         <a class="wl" href="clips.html"><span class="no">V</span><b>How to clip</b><span>Save the moment with one key.</span></a>
-        <a class="wl wide" href="spotlight.html"><span class="no">VI</span><b>Streamer Spotlight</b><span>The streamers riding with BigD. First in: Hozitojones.</span></a>
+        <a class="wl wide2" href="spotlight.html"><span class="no">VI</span><b>Streamer Spotlight</b><span>The streamers riding with BigD. First in: Hozitojones.</span></a>
+        <a class="wl" href="vault.html"><span class="no">VII</span><b>Clip Vault</b><span>Every clip. Filter by who, side or tag.</span></a>
       </div>
     </div>
   </section>

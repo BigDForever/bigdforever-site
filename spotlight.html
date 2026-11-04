@@ -66,8 +66,8 @@ main.wrap{margin-top:28px}
 @media (max-width:760px){.poster{grid-template-columns:1fr;padding:18px}}
 @media (max-width:420px){.top .back{font-size:14px}.top a.brand{font-size:21px}}
 </style>
-<link rel="stylesheet" href="assets/faction.css?v=20261104w">
-<script src="assets/faction.js?v=20261104w"></script>
+<link rel="stylesheet" href="assets/faction.css?v=20261104x">
+<script src="assets/faction.js?v=20261104x"></script>
 </head>
 <body>
 <header class="top"><a class="brand" href="./"><img src="emblem.jpg" alt="">Big<span>D</span>Forever</a><a class="back" href="./">Back to the war</a></header>
@@ -135,7 +135,7 @@ document.getElementById("list").innerHTML = SPOT.map(p => `
         <div class="cap">${esc(p.featured.t)}</div>
       </div>
     </article>
-    <div class="grid">${p.clips.map(c => `
+    <div class="grid">${[...p.clips].sort((a,b) => b.v - a.v).slice(0, 3).map(c => `
       <article class="card">
         ${player(c, c.t)}
         <h3>${esc(c.t)}</h3>
@@ -143,7 +143,19 @@ document.getElementById("list").innerHTML = SPOT.map(p => `
         <div class="meta"><span>${esc(c.d)}</span><span>${c.len}s</span><span>${fmt(c.v)} views</span><a href="${clipUrl(p.login,c.s)}" target="_blank" rel="noopener">Open on Twitch</a></div>
       </article>`).join('')}
     </div>
+    <div class="cta" style="margin-top:16px"><a class="btn ghost" data-all="${p.login}" href="vault.html?who=${encodeURIComponent(p.login)}">See all ${p.clips.length + 1} ${esc(p.name)} clips in the Vault →</a></div>
   </section>`).join('');
+// Live clip count per streamer from the Clips tab of the moderation sheet (same source as the Vault).
+fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSML71-50n_CFnIRmaFP1wiJG7Lw41zfRsSMJcQ_gvIa04f5SYwQy-s5gga52sbK9KZ6sFjzqL2mNAw/pub?single=true&output=csv&gid=2110458744", {cache:"no-store"})
+  .then(r => r.ok ? r.text() : "").then(t => {
+    const lines = t.split(/\r?\n/).slice(1).filter(Boolean);
+    document.querySelectorAll("a[data-all]").forEach(a => {
+      const login = a.dataset.all.toLowerCase();
+      const n = lines.filter(l => !/^hide,/i.test(l) && l.toLowerCase().includes(`,${login},`)).length;
+      const p = SPOT.find(s => s.login === a.dataset.all);
+      if (n) a.textContent = `See all ${n} ${p.name} clips in the Vault →`;
+    });
+  }).catch(() => {});
 document.addEventListener("click", e => {
   const b = e.target.closest("button[data-clip]"); if (!b) return;
   const f = document.createElement("iframe");

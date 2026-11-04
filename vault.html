@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Clip Vault · BigDForever</title>
+<meta name="description" content="Every BigDForever clip in one place: player brags, streamer moments and the legends of the past. Filter by streamer, faction, tag or category.">
+<meta property="og:title" content="Clip Vault · BigDForever">
+<meta property="og:image" content="https://bigdforever.com/assets/art/share.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:type" content="website"><meta property="og:site_name" content="BigDForever"><meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/art/icon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="assets/art/icon-192.png"><link rel="apple-touch-icon" href="assets/art/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@800;900&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: the evidence locker. A sticky filter bar (search + 5 selects) over a card grid. Cards load the player only when tapped. Tag and name on a card are buttons that filter. */
+:root{
+  --ink:#13110f; --panel:#1c1915; --panel2:#24201a; --line:#342e26; --paper:#ece4d6; --muted:#a69c8b; --gold:#d9a441;
+  --crimson-hi:#e0352a; --navy-hi:#6f9be0; --twitch:#9146ff;
+  --display:"Grenze Gotisch","Times New Roman",serif; --cond:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--body);font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+a{color:var(--gold)}
+.wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+.top{display:flex;align-items:center;gap:12px;padding-block:14px;border-bottom:1px solid var(--line);max-width:1100px;margin:0 auto}
+.top a.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--paper);font-family:var(--display);font-weight:800;font-size:24px}
+.top img{width:34px;height:34px;border-radius:50%}
+.top .brand span{color:var(--gold)}
+.top .back{margin-left:auto;white-space:nowrap;font-family:var(--cond);font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(46px,9vw,88px);line-height:.9;margin:8px 0 14px;text-wrap:balance}
+p{margin:0;max-width:66ch}
+.lede{font-size:19px}
+.muted{color:var(--muted)}
+main.wrap{margin-top:28px}
+.bar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--ink) 92%,transparent);backdrop-filter:blur(6px);padding:12px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,2fr) repeat(5,minmax(0,1fr));gap:8px}
+.bar label{display:flex;flex-direction:column;gap:2px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);min-width:0}
+.bar input,.bar select{font:500 16px var(--body);color:var(--paper);background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:8px 10px;min-width:0;width:100%}
+.bar input:focus,.bar select:focus{outline:2px solid var(--gold);outline-offset:1px}
+.status{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.status b{color:var(--paper);font-weight:500}
+.clear[hidden]{display:none!important}
+.clear{all:unset;cursor:pointer;font-family:var(--cond);font-weight:700;font-size:15px;letter-spacing:.05em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid currentColor}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 12px 14px;display:flex;flex-direction:column;gap:7px;min-width:0}
+.player{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,#1b2440 0 50%,#2a0f0c 50% 100%);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.player img.th{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.player img.mark{position:absolute;left:50%;top:50%;width:64px;height:64px;transform:translate(-50%,-50%);opacity:.35}
+.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.player button{all:unset;cursor:pointer;position:absolute;inset:0;display:grid;place-items:center}
+.player button::after{content:"";width:58px;height:58px;border-radius:50%;background:rgba(19,17,15,.78) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5v14l11-7z' fill='%23ece4d6'/%3E%3C/svg%3E") center/28px no-repeat;border:2px solid var(--gold)}
+.player button:focus-visible::after{outline:3px solid var(--paper);outline-offset:3px}
+.player .kind{position:absolute;left:8px;top:8px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:rgba(19,17,15,.82);color:var(--paper);border-radius:3px;padding:1px 7px}
+.card h3{font-family:var(--cond);font-size:21px;line-height:1.1;text-transform:uppercase;letter-spacing:.02em;margin:4px 0 0;overflow-wrap:anywhere}
+.row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip{all:unset;cursor:pointer;font-family:var(--cond);font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;border:1px solid #5a4520;background:#2a2112;color:var(--gold);border-radius:3px;padding:1px 8px}
+.chip.shame{border-color:#5a2420;background:#2a1412;color:var(--crimson-hi)}
+.chip.who{border-color:var(--line);background:var(--panel2);color:var(--paper);text-transform:none;letter-spacing:0;font-size:15px}
+.chip.fa-alliance{border-color:#2b4170;background:#121c33;color:var(--navy-hi)}
+.chip.fa-horde{border-color:#5a2420;background:#2a1412;color:var(--crimson-hi)}
+.chip:focus-visible{outline:2px solid var(--paper);outline-offset:2px}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.meta a{color:var(--muted)}
+.more{align-self:center;font-family:var(--cond);font-weight:700;font-size:19px;letter-spacing:.05em;text-transform:uppercase;padding:11px 22px;border-radius:4px;background:var(--panel2);color:var(--paper);border:1px solid var(--line);cursor:pointer}
+.empty{border:1px dashed var(--line);border-radius:8px;padding:28px;text-align:center;color:var(--muted)}
+.btn{display:inline-flex;font-family:var(--cond);font-weight:700;font-size:19px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;padding:11px 20px;border-radius:4px;background:var(--gold);color:var(--ink)}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+@media (max-width:900px){.bar{grid-template-columns:repeat(3,minmax(0,1fr))}.bar label.q{grid-column:1/-1}}
+@media (max-width:700px){.bar{position:static}}
+@media (max-width:420px){.bar{grid-template-columns:repeat(2,minmax(0,1fr))}.top .back{font-size:14px}.top a.brand{font-size:21px}}
+</style>
+<link rel="stylesheet" href="assets/faction.css?v=20261104x">
+<script src="assets/faction.js?v=20261104x"></script>
+</head>
+<body>
+<header class="top"><a class="brand" href="./"><img src="emblem.jpg" alt="">Big<span>D</span>Forever</a><a class="back" href="./">Back to the war</a></header>
+<main class="wrap">
+  <section>
+    <div class="eyebrow">The evidence locker</div>
+    <h1>The Clip Vault.</h1>
+    <p class="lede">Every clip on BigD in one place: player brags, streamer moments and the legends of the past. Filter by who, faction, tag or category. Tap a tag or a name on any card to see more like it.</p>
+  </section>
+
+  <div class="bar" role="search">
+    <label class="q">Search<input id="q" type="search" placeholder="Title, name or tag" autocomplete="off"></label>
+    <label>Who<select id="who"></select></label>
+    <label>Faction<select id="faction"></select></label>
+    <label>Tag<select id="tag"></select></label>
+    <label>Type<select id="kind"></select></label>
+    <label>Sort<select id="sort">
+      <option value="new">Newest</option><option value="views">Most viewed</option><option value="old">Oldest</option><option value="az">A to Z</option>
+    </select></label>
+  </div>
+
+  <div class="status" aria-live="polite"><span id="count">Loading the vault…</span><button class="clear" id="clear" type="button" hidden>Clear filters</button></div>
+  <div class="grid" id="grid"></div>
+  <button class="more" id="more" type="button" hidden>Show more</button>
+
+  <section class="empty" style="text-align:left">
+    <p><b style="font-family:var(--cond);font-size:20px;text-transform:uppercase;letter-spacing:.04em;color:var(--paper)">Want your clip in here?</b><br>Post it and if the mods like it, it lands in the vault, credited to you. Made one of these and want it gone? Say so on our Discord and it's out.</p>
+    <div class="row" style="margin-top:12px"><a class="btn" href="https://tally.so/r/5XbVeZ" target="_blank" rel="noopener">Submit a brag</a><a class="btn" style="background:#5865f2;color:#fff" href="https://discord.gg/Q4wMTybW6b" target="_blank" rel="noopener">Discord</a></div>
+  </section>
+
+  <footer>BigDForever is a fan site. Not affiliated with or endorsed by Blizzard Entertainment, Twitch or YouTube. Clips belong to their creators and play from where they were posted; nothing is re-hosted.</footer>
+</main>
+<script>
+// Data comes from the moderation sheet (published CSV):
+//   Clips tab: Show, Link, Title, Who, Kind, Faction, Tag, Category, Date, Views, Seconds, Thumb, Note  (rows with Show = "Hide" are skipped)
+//   Featured tab: approved player brags (title, character, faction, category, url, image)
+const PUB = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSML71-50n_CFnIRmaFP1wiJG7Lw41zfRsSMJcQ_gvIa04f5SYwQy-s5gga52sbK9KZ6sFjzqL2mNAw/pub?single=true&output=csv&gid=";
+const SRC = { clips: PUB + "2110458744", featured: PUB + "890798058" };
+const SHAME = new Set(["tiny d","hall of shame","so close","mc cliff","crouching rogue, hidden coward","sheeped & shamed","lag excuse","duel gone wrong","corpse camp","pet sematary","zzz","charged guilty"]);
+const KIND_LABEL = { Streamer:"Streamers", Player:"Players", Past:"Taste of the Past" };
+const PAGE = 24;
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = n => n >= 1000 ? (n/1000).toFixed(n >= 100000 ? 0 : 1).replace(/\.0$/,"") + "K" : String(n);
+function csv(text){ // RFC-4180-ish parser
+  const rows=[]; let row=[], f="", q=false;
+  for (let i=0;i<text.length;i++){ const c=text[i];
+    if (q){ if (c==='"'){ if (text[i+1]==='"'){ f+='"'; i++; } else q=false; } else f+=c; }
+    else if (c==='"') q=true; else if (c===','){ row.push(f); f=""; }
+    else if (c==='\n'){ row.push(f); rows.push(row); row=[]; f=""; } else if (c!=='\r') f+=c; }
+  if (f!=="" || row.length){ row.push(f); rows.push(row); }
+  const head = (rows.shift()||[]).map(h => h.trim().toLowerCase());
+  return rows.filter(r => r.some(x => x.trim())).map(r => Object.fromEntries(head.map((h,i) => [h, (r[i]||"").trim()])));
+}
+function day(s){ // yyyy-mm-dd, dd.mm.yyyy, m/d/yyyy -> timestamp
+  if (!s) return 0; let m;
+  if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) return Date.UTC(+m[1], m[2]-1, +m[3]);
+  if ((m = s.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})/))) return Date.UTC(+m[3], m[2]-1, +m[1]);
+  if ((m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/))) { let a=+m[1], b=+m[2]; if (a>12) [a,b]=[b,a]; return Date.UTC(+m[3], a-1, b); }
+  const t = Date.parse(s); return isNaN(t) ? 0 : t;
+}
+const showDay = t => t ? new Date(t).toLocaleDateString([], {day:"numeric", month:"short", year:"numeric", timeZone:"UTC"}) : "";
+function media(url){
+  let m;
+  if ((m = url.match(/clips\.twitch\.tv\/(?:embed\?clip=)?([\w-]+)/i)) || (m = url.match(/twitch\.tv\/[\w]+\/clip\/([\w-]+)/i)))
+    return { type:"twitch", id:m[1] };
+  if ((m = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})/i)))
+    return { type:"youtube", id:m[1] };
+  return { type:"link" };
+}
+const PARENTS = ["bigdforever.com","www.bigdforever.com",location.hostname].filter((h,i,a)=>h && a.indexOf(h)===i).map(h=>"parent="+encodeURIComponent(h)).join("&");
+function embedSrc(md){
+  if (md.type==="twitch") return `https://clips.twitch.tv/embed?clip=${encodeURIComponent(md.id)}&${PARENTS}&autoplay=true`;
+  if (md.type==="youtube") return `https://www.youtube-nocookie.com/embed/${md.id}?autoplay=1&rel=0`;
+  return "";
+}
+function thumb(c){
+  if (c.thumb) return /^https?:/.test(c.thumb) ? c.thumb : `https://static-cdn.jtvnw.net/twitch-video-assets/twitch-vap-video-assets-prod-us-west-2/${c.thumb}/landscape/thumb/thumb-0000000000-1920x1080.jpg`;
+  if (c.md.type==="youtube") return `https://i.ytimg.com/vi/${c.md.id}/hqdefault.jpg`;
+  if (c.image) return c.image;
+  return "";
+}
+
+let ALL = [], shown = PAGE;
+const F = { q:"", who:"", faction:"", tag:"", kind:"", sort:"new" };
+
+function readURL(){ const u = new URLSearchParams(location.search); for (const k in F) if (u.has(k)) F[k] = u.get(k); }
+function writeURL(){
+  const u = new URLSearchParams(); for (const k in F) if (F[k] && !(k==="sort" && F[k]==="new")) u.set(k, F[k]);
+  const s = u.toString(); history.replaceState(null, "", location.pathname + (s ? "?" + s : ""));
+}
+function opts(sel, label, values, cur){
+  sel.innerHTML = `<option value="">${label}</option>` + values.map(v => `<option value="${esc(v)}"${v===cur?" selected":""}>${esc(v)}</option>`).join("");
+}
+function fillSelects(){
+  const uniq = k => [...new Set(ALL.map(c => c[k]).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  opts($("who"), "Everyone", uniq("who"), F.who);
+  opts($("faction"), "Both sides", ["Alliance","Horde"], F.faction);
+  opts($("tag"), "Any tag", uniq("tag"), F.tag);
+  $("kind").innerHTML = `<option value="">Everything</option>` + ["Player","Streamer","Past"].map(k => `<option value="${k}"${k===F.kind?" selected":""}>${KIND_LABEL[k]}</option>`).join("");
+  $("sort").value = F.sort; $("q").value = F.q;
+}
+function filtered(){
+  const q = F.q.toLowerCase();
+  let list = ALL.filter(c =>
+    (!F.who || c.who === F.who) && (!F.faction || c.faction === F.faction) && (!F.tag || c.tag === F.tag) && (!F.kind || c.kind === F.kind) &&
+    (!q || [c.title, c.who, c.tag, c.category, c.note].join(" ").toLowerCase().includes(q)));
+  const by = { new:(a,b)=>b.t-a.t || b.views-a.views, old:(a,b)=>a.t-b.t, views:(a,b)=>b.views-a.views, az:(a,b)=>a.title.localeCompare(b.title) }[F.sort] || ((a,b)=>b.t-a.t);
+  return list.sort(by);
+}
+function card(c, i){
+  const th = thumb(c), playable = c.md.type !== "link";
+  const fa = c.faction ? `<button class="chip fa-${c.faction.toLowerCase()}" data-f="faction" data-v="${esc(c.faction)}">${esc(c.faction)}</button>` : "";
+  const tag = c.tag ? `<button class="chip${SHAME.has(c.tag.toLowerCase()) ? " shame" : ""}" data-f="tag" data-v="${esc(c.tag)}">${esc(c.tag)}</button>` : "";
+  const who = c.who ? `<button class="chip who" data-f="who" data-v="${esc(c.who)}">${esc(c.who)}</button>` : "";
+  const open = c.link ? `<a href="${esc(c.link)}" target="_blank" rel="noopener">${c.md.type==="twitch" ? "Open on Twitch" : c.md.type==="youtube" ? "Open on YouTube" : "Open"}</a>` : "";
+  return `<article class="card">
+    <div class="player">${th ? `<img class="th" src="${esc(th)}" alt="" loading="lazy" onerror="this.remove()">` : `<img class="mark" src="assets/art/icon-192.png" alt="">`}
+      <span class="kind">${esc(KIND_LABEL[c.kind] ? c.kind : (c.kind || "Clip"))}</span>
+      ${playable ? `<button type="button" data-i="${i}" aria-label="Play: ${esc(c.title)}"></button>` : (c.link ? `<a href="${esc(c.link)}" target="_blank" rel="noopener" aria-label="Open: ${esc(c.title)}" style="position:absolute;inset:0"></a>` : "")}
+    </div>
+    <h3>${esc(c.title || "Untitled brag")}</h3>
+    <div class="row">${who}${fa}${tag}</div>
+    <div class="meta">${c.t ? `<span>${showDay(c.t)}</span>` : ""}${c.seconds ? `<span>${c.seconds}s</span>` : ""}${c.views ? `<span>${fmt(c.views)} views</span>` : ""}${c.category ? `<span>${esc(c.category)}</span>` : ""}${open}</div>
+  </article>`;
+}
+let VIEW = [];
+function render(reset){
+  if (reset) shown = PAGE;
+  VIEW = filtered();
+  const active = F.q || F.who || F.faction || F.tag || F.kind;
+  $("count").innerHTML = ALL.length ? `<b>${VIEW.length}</b> of ${ALL.length} clips${F.who ? ` · by <b>${esc(F.who)}</b>` : ""}${F.tag ? ` · tagged <b>${esc(F.tag)}</b>` : ""}` : "The vault is empty for now. First Blood is still up for grabs.";
+  $("clear").hidden = !active;
+  $("grid").innerHTML = VIEW.length ? VIEW.slice(0, shown).map(card).join("") : (ALL.length ? `<div class="empty" style="grid-column:1/-1">Nothing matches. Try another tag, or <button class="clear" type="button" onclick="clearAll()">clear the filters</button>.</div>` : "");
+  $("more").hidden = VIEW.length <= shown;
+  $("more").textContent = `Show more (${VIEW.length - shown} left)`;
+  writeURL();
+}
+function clearAll(){ Object.assign(F, { q:"", who:"", faction:"", tag:"", kind:"" }); fillSelects(); render(true); }
+window.clearAll = clearAll;
+
+for (const k of ["who","faction","tag","kind","sort"]) $(k).addEventListener("change", e => { F[k] = e.target.value; render(true); });
+let tq; $("q").addEventListener("input", e => { clearTimeout(tq); tq = setTimeout(() => { F.q = e.target.value.trim(); render(true); }, 180); });
+$("clear").addEventListener("click", clearAll);
+$("more").addEventListener("click", () => { shown += PAGE; render(false); });
+document.addEventListener("click", e => {
+  const chip = e.target.closest("button.chip[data-f]");
+  if (chip){ F[chip.dataset.f] = chip.dataset.v; fillSelects(); render(true); window.scrollTo({ top: $("count").offsetTop - 90, behavior: "smooth" }); return; }
+  const b = e.target.closest(".player button[data-i]"); if (!b) return;
+  const c = VIEW[+b.dataset.i]; const src = embedSrc(c.md); if (!src) return;
+  const f = document.createElement("iframe"); f.src = src; f.allow = "autoplay; fullscreen; encrypted-media"; f.allowFullscreen = true; f.title = c.title;
+  b.parentElement.replaceChildren(f);
+});
+
+async function load(){
+  readURL();
+  const get = u => fetch(u, { cache: "no-store" }).then(r => r.ok ? r.text() : "").catch(() => "");
+  const [a, b] = await Promise.all([get(SRC.clips), get(SRC.featured)]);
+  const clips = csv(a).filter(r => r.link && (r.show || "Show").toLowerCase() !== "hide").map(r => ({
+    link:r.link, title:r.title, who:r.who, kind:r.kind || "Player", faction:/^a/i.test(r.faction) ? "Alliance" : /^h/i.test(r.faction) ? "Horde" : "",
+    tag:r.tag, category:r.category, t:day(r.date), views:+String(r.views).replace(/[^\d]/g,"") || 0, seconds:+r.seconds || 0, thumb:r.thumb, note:r.note }));
+  const seen = new Set(clips.map(c => c.link));
+  const brags = csv(b).filter(r => r.url && !seen.has(r.url)).map(r => ({
+    link:r.url, title:r.title, who:r.character, kind:"Player", faction:/^a/i.test(r.faction) ? "Alliance" : /^h/i.test(r.faction) ? "Horde" : "",
+    tag:"", category:r.category, t:0, views:0, seconds:0, image:r.image, note:"" }));
+  ALL = [...clips, ...brags].map(c => ({ ...c, md: media(c.link) }));
+  fillSelects(); render(true);
+}
+load();
+</script>
+</body>
+</html>
