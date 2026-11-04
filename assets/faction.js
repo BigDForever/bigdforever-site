@@ -6,7 +6,7 @@
   var FORM = "https://tally.so/r/5XbVeZ";
   var FEEDBACK = "https://tally.so/r/yXMa9W";
   var KOFI = "https://ko-fi.com/bigdforever";
-  var TALENTS = "https://sekvoja-dq.github.io/talentsmith/";
+  var TALENTS = "https://talentsmith.app/";
   var LINES = 8; // number of funny hoard lines set up in the Tally form
   var SIDES = {
     alliance: { name: "Alliance", form: "Alliance", img: "assets/art/alliance-crest.png", badge: "assets/art/alliance-badge.png", word: "assets/art/alliance-lettering.png", tag: "Order, honour, polished boots", cry: "For the Alliance" },
