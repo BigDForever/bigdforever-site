@@ -62,7 +62,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 html[data-side] .hero::before{opacity:.14}
 .hero .wrap{position:relative;display:grid;grid-template-columns:1.25fr .75fr;gap:32px;align-items:center;padding-block:56px 48px}
 .hero h1{font-family:var(--display);font-weight:900;font-size:clamp(56px,10vw,118px);line-height:.86;letter-spacing:-.01em}
-.hero h1 em{font-style:normal;color:var(--gold)}
+.hero h1 em{font-style:normal;color:inherit}
+.hero h1 .bd{color:var(--gold)}
+html[data-side="alliance"] .hero h1{text-shadow:3px 3px 0 #1b3a73,-2px -1px 0 rgba(0,0,0,.45)}
 .hero .copy{display:flex;flex-direction:column;gap:20px;min-width:0}
 .hero .copy p{font-size:19px;max-width:46ch;margin:0}
 .emblem{width:100%;max-width:360px;justify-self:center;border-radius:50%;box-shadow:0 0 0 1px var(--line),0 30px 80px -20px #000}
@@ -193,12 +195,12 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 .wl{grid-column:span 1;display:flex;flex-direction:column;gap:6px;min-width:0;text-decoration:none;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:18px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s}
 .wl:hover{border-color:var(--tint);transform:translateY(-2px)}
 .wl:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
-.wl .no{font-family:var(--display);font-weight:900;font-size:40px;line-height:.9;color:var(--tint);transition:color .3s}
-.wl b{font-family:var(--cond);font-weight:700;font-size:23px;letter-spacing:.02em;text-transform:uppercase;line-height:1.1}
+.wl .no{position:absolute;top:14px;right:18px;font-family:var(--cond);font-weight:700;font-size:30px;letter-spacing:.06em;line-height:1;color:var(--tint);transition:color .3s}
+.wl b{font-family:var(--cond);font-weight:700;font-size:23px;letter-spacing:.02em;text-transform:uppercase;line-height:1.1;padding-right:64px}
 .wl span:last-child{color:var(--muted);font-size:15px}
 .wl.big{grid-row:span 2;justify-content:flex-end;min-height:220px;
   background:radial-gradient(circle at 30% 30%,color-mix(in srgb,var(--navy) 35%,transparent),transparent 55%),radial-gradient(circle at 75% 70%,color-mix(in srgb,var(--crimson) 35%,transparent),transparent 55%),var(--panel)}
-.wl.big .no{font-size:56px}
+.wl.big .no{font-size:44px;top:16px;right:22px}
 .wl.big b{font-size:32px}
 @media (max-width:860px){.war-links{grid-template-columns:1fr 1fr}.wl.big{grid-column:span 2;grid-row:auto;min-height:160px}}
 @media (max-width:440px){.war-links{grid-template-columns:1fr}.wl.big{grid-column:auto}}
@@ -229,7 +231,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
     <div class="wrap">
       <div class="copy">
         <div class="eyebrow">WoW Forever · the faction war brag board</div>
-        <h1>BigD<br>or <em>Go Home.</em></h1>
+        <h1><span class="bd">BigD</span><br>or <em>Go Home.</em></h1>
         <p>Post your kills, your loot and your most glorious fails. The crowd judges, every brag counts for your faction, and the best make the weekly video.</p>
         <div class="cta">
           <a class="btn" id="cta-discord" href="#">Join the war on Discord</a>
