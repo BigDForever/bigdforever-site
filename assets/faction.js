@@ -66,7 +66,7 @@
       badge.innerHTML = '<img src="' + S.badge + '" alt=""><span class="fx-badge-t"><b>' + S.name + '</b><small>BigDForever</small></span>';
       badge.setAttribute("aria-label", "BigDForever home, playing as " + S.name);
     } else {
-      badge.innerHTML = '<img src="emblem.jpg" alt="" class="fx-round"><span class="fx-badge-t"><b>Pick a side</b><small>BigDForever</small></span>';
+      badge.innerHTML = '<img src="assets/art/icon-192.png" alt="" class="fx-round"><span class="fx-badge-t"><b>Pick a side</b><small>BigDForever</small></span>';
     }
     box.appendChild(badge);
 
@@ -91,7 +91,7 @@
     if (other) {
       swap = '<button type="button" class="fx-swap" data-to="' + other + '"><img src="' + SIDES[other].badge + '" alt=""><span><small>Changed your mind?</small><b>Switch to ' + SIDES[other].name + "</b></span></button>";
     } else {
-      swap = '<a class="fx-swap" href="./?pick"><img src="emblem.jpg" alt="" class="fx-round"><span><small>Not chosen yet</small><b>Pick your side</b></span></a>';
+      swap = '<a class="fx-swap" href="./?pick"><img src="assets/art/icon-192.png" alt="" class="fx-round"><span><small>Not chosen yet</small><b>Pick your side</b></span></a>';
     }
     menu.innerHTML = '<div class="fx-menu-in"><div class="fx-links">' + list + "</div>" +
       '<div class="fx-cta"><a class="fx-btn" href="' + FORM + '" target="_blank" rel="noopener">Submit a brag</a>' +
