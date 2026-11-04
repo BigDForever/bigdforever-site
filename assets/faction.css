@@ -137,6 +137,29 @@ html.fx-gating body > *:not(.fx-gate){visibility:hidden}
 .fx-alliance .fx-art{height:calc(min(46vh,340px) * .85)}
 @media (max-width:700px){.fx-alliance .fx-art{height:calc(min(24vh,170px) * .85)}}
 
+/* 4 Nov 14:15 (Dejan): everything on the pick screen bigger, especially VS */
+.fx-word{font-size:26px}
+.fx-gate h1{font-size:clamp(46px,7vw,80px)}
+.fx-vs{font-size:clamp(44px,5vw,72px);color:#8a7f6f;padding:0 10px;text-shadow:0 2px 0 #000}
+.fx-half .fx-art{height:min(54vh,420px)}
+.fx-alliance .fx-art{height:calc(min(54vh,420px) * .85)}
+.fx-name{height:clamp(68px,9.5vw,128px)}
+.fx-tag{font-size:20px}
+@media (max-width:700px){
+  .fx-word{font-size:24px}
+  .fx-gate h1{font-size:44px}
+  .fx-vs{font-size:52px;line-height:1;padding:0}
+  .fx-half{column-gap:12px}
+  .fx-half .fx-art{height:min(29vh,215px)}
+  .fx-alliance .fx-art{height:calc(min(29vh,215px) * .85)}
+  .fx-name{height:62px}
+  .fx-tag{font-size:16px}
+}
+@media (max-width:380px){
+  .fx-name{height:52px}
+  .fx-tag{font-size:14px}
+}
+
 /* ---------- faction scenery (Dejan's art): a scene at the top of every page, fading into the page colour ---------- */
 html[data-side="alliance"] body{
   background-image:
