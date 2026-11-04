@@ -3,14 +3,14 @@
 
 /* ---------- faction palettes (override each page's :root tokens) ---------- */
 html[data-side="alliance"]{
-  --ink:#0b1220; --panel:#111b2e; --panel2:#17233b; --line:#27385c; --muted:#9ca8c0;
-  --gold:#d9a441; --tint:#7aa6ea; --tint-deep:#14233f;
-  --side:#7aa6ea; --side-2:#d9a441; --side-deep:#14233f; --side-glow:rgba(122,166,234,.55);
+  --ink:#0b1834; --panel:#10204a; --panel2:#152a5c; --line:#1b3a73; --muted:#a3b0cc;
+  --gold:#c9a24a; --tint:#7aa6ea; --tint-deep:#1b3a73;
+  --side:#7aa6ea; --side-2:#c9a24a; --side-deep:#1b3a73; --side-glow:rgba(122,166,234,.55);
 }
 html[data-side="horde"]{
-  --ink:#120a09; --panel:#1c110f; --panel2:#261614; --line:#42251f; --muted:#b59c95;
+  --ink:#0a0605; --panel:#170d0b; --panel2:#221210; --line:#5a2a1c; --muted:#b59c95;
   --gold:#e2574a; --tint:#e2574a; --tint-deep:#3a1512;
-  --side:#e2574a; --side-2:#13110f; --side-deep:#3a1512; --side-glow:rgba(226,87,74,.55);
+  --side:#b3231b; --side-2:#c08a3e; --side-deep:#3a1512; --side-glow:rgba(226,87,74,.55);
 }
 /* the faction "line mark" under the header and a faint war-paint wash at the top of every page */
 html[data-side] body{
