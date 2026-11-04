@@ -33,7 +33,7 @@ header.fx-head .fx-badge img.fx-round{width:36px;height:36px;border-radius:50%}
 .fx-badge-t b{font-family:var(--display);font-weight:800;font-size:26px;color:var(--side,var(--gold))}
 .fx-badge-t small{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:3px}
 .fx-badge:focus-visible,.fx-burger:focus-visible{outline:3px solid var(--paper);outline-offset:3px;border-radius:4px}
-.fx-burger{margin-left:auto;margin-right:12px;width:46px;height:42px;display:inline-grid;place-items:center;padding:0;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--paper,#ece4d6);cursor:pointer;-webkit-appearance:none;appearance:none}
+.fx-burger{margin-left:10px;margin-right:12px;width:46px;height:42px;display:inline-grid;place-items:center;padding:0;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--paper,#ece4d6);cursor:pointer;-webkit-appearance:none;appearance:none}
 .fx-burger .fx-ico{display:block;width:24px;height:24px;grid-area:1/1}
 .fx-burger .fx-ico-close{visibility:hidden}
 .fx-open .fx-burger .fx-ico-menu{visibility:hidden}
@@ -200,3 +200,9 @@ html[data-side="horde"] .btn:not(.ghost):not(.discord){color:#fff}
 .fx-cog{color:var(--side,var(--gold));flex:none}
 .fx-replay{font-size:14px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;padding:2px 2px}
 .fx-replay:hover{color:var(--paper)}
+
+/* Talentsmith link, just left of the menu button */
+.fx-talents{margin-left:auto;display:inline-flex;align-items:center;height:42px;padding:0 14px;border:1.5px solid var(--side,var(--gold));border-radius:5px;
+  font-family:var(--cond,"Barlow Condensed",sans-serif);font-weight:700;font-size:17px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--paper);background:color-mix(in srgb,var(--panel) 85%,transparent);white-space:nowrap}
+.fx-talents:hover,.fx-talents:focus-visible{background:var(--side,var(--gold));color:#0a0605;outline:none}
+@media (max-width:420px){.fx-talents{padding:0 10px;font-size:15px}}
