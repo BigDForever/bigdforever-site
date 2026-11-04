@@ -7,7 +7,7 @@
 <meta name="description" content="This week's WoW Forever faction challenge: Gnomilation for the Horde, Milk Run for the Alliance. Rules, standings and the clock.">
 <meta property="og:title" content="Week 1: Hunting season is open · BigDForever">
 <meta property="og:image" content="emblem.jpg">
-<link rel="icon" href="emblem.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/art/icon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="assets/art/icon-192.png"><link rel="apple-touch-icon" href="assets/art/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@800;900&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@500&display=swap">
 <style>
@@ -78,6 +78,8 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);paddin
 /*fix-top*/main.wrap{margin-top:28px}
 @media (max-width:420px){.top .back{font-size:14px}.top a.brand{font-size:21px}}
 </style>
+<link rel="stylesheet" href="assets/faction.css">
+<script src="assets/faction.js"></script>
 </head>
 <body>
 <header class="top"><a class="brand" href="./"><img src="emblem.jpg" alt="">Big<span>D</span>Forever</a><a class="back" href="./">Back to the war</a></header>
@@ -94,14 +96,14 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);paddin
     <article class="bounty h">
       <span class="who">Horde only</span>
       <h3>Gnomilation</h3>
-      <p class="target"><b>Target:</b> player gnomes killed in world PvP</p>
+      <p class="target"><b>Target:</b> Gnome players killed in world PvP</p>
       <div class="total"><span class="n" id="tot-h">0</span><span class="u">gnomes down</span></div>
       <div class="slots" id="slots-h"></div>
     </article>
     <article class="bounty a">
       <span class="who">Alliance only</span>
       <h3>Milk Run</h3>
-      <p class="target"><b>Target:</b> player tauren killed in world PvP</p>
+      <p class="target"><b>Target:</b> Tauren players killed in world PvP</p>
       <div class="total"><span class="n" id="tot-a">0</span><span class="u">tauren down</span></div>
       <div class="slots" id="slots-a"></div>
     </article>
@@ -111,7 +113,7 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);paddin
     <h2>The rules</h2>
     <ol class="decree">
       <li><span>World PvP only. Battlegrounds and duels don't count.</span></li>
-      <li><span>Fair fights only: the victim can be at most 5 levels below you.</span></li>
+      <li><span>Fair fights only: the victim can be at most 3 levels below you.</span></li>
       <li><span>Each victim counts once per day. Camping the same gnome ten times is not ten kills.</span></li>
       <li><span>Proof: a clip, or screenshots showing the kill message in chat with chat timestamps on. Several kills can go in one post. Pick the challenge on the form.</span></li>
       <li><span>In launch week a moderator checks every entry.</span></li>

@@ -8,7 +8,7 @@
 <meta property="og:image" content="emblem.jpg">
 <title>BigDForever</title>
 <meta name="description" content="The WoW Forever brag board. Alliance vs Horde: post your kills, loot and glorious fails. BigD or Go Home.">
-<link rel="icon" href="emblem.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/art/icon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="assets/art/icon-192.png"><link rel="apple-touch-icon" href="assets/art/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@600;800;900&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@500&display=swap">
 <style>
@@ -62,7 +62,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 html[data-side] .hero::before{opacity:.14}
 .hero .wrap{position:relative;display:grid;grid-template-columns:1.25fr .75fr;gap:32px;align-items:center;padding-block:56px 48px}
 .hero h1{font-family:var(--display);font-weight:900;font-size:clamp(56px,10vw,118px);line-height:.86;letter-spacing:-.01em}
-.hero h1 em{font-style:normal;color:var(--gold)}
+.hero h1 em{font-style:normal;color:inherit}
+.hero h1 .bd{color:var(--gold)}
+html[data-side="alliance"] .hero h1{text-shadow:3px 3px 0 #1b3a73,-2px -1px 0 rgba(0,0,0,.45)}
 .hero .copy{display:flex;flex-direction:column;gap:20px;min-width:0}
 .hero .copy p{font-size:19px;max-width:46ch;margin:0}
 .emblem{width:100%;max-width:360px;justify-self:center;border-radius:50%;box-shadow:0 0 0 1px var(--line),0 30px 80px -20px #000}
@@ -193,12 +195,12 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 .wl{grid-column:span 1;display:flex;flex-direction:column;gap:6px;min-width:0;text-decoration:none;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:18px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s}
 .wl:hover{border-color:var(--tint);transform:translateY(-2px)}
 .wl:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
-.wl .no{font-family:var(--display);font-weight:900;font-size:40px;line-height:.9;color:var(--tint);transition:color .3s}
-.wl b{font-family:var(--cond);font-weight:700;font-size:23px;letter-spacing:.02em;text-transform:uppercase;line-height:1.1}
+.wl .no{position:absolute;top:14px;right:18px;font-family:var(--cond);font-weight:700;font-size:30px;letter-spacing:.06em;line-height:1;color:var(--tint);transition:color .3s}
+.wl b{font-family:var(--cond);font-weight:700;font-size:23px;letter-spacing:.02em;text-transform:uppercase;line-height:1.1;padding-right:64px}
 .wl span:last-child{color:var(--muted);font-size:15px}
 .wl.big{grid-row:span 2;justify-content:flex-end;min-height:220px;
   background:radial-gradient(circle at 30% 30%,color-mix(in srgb,var(--navy) 35%,transparent),transparent 55%),radial-gradient(circle at 75% 70%,color-mix(in srgb,var(--crimson) 35%,transparent),transparent 55%),var(--panel)}
-.wl.big .no{font-size:56px}
+.wl.big .no{font-size:44px;top:16px;right:22px}
 .wl.big b{font-size:32px}
 @media (max-width:860px){.war-links{grid-template-columns:1fr 1fr}.wl.big{grid-column:span 2;grid-row:auto;min-height:160px}}
 @media (max-width:440px){.war-links{grid-template-columns:1fr}.wl.big{grid-column:auto}}
@@ -206,6 +208,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 .ch::after{content:"WANTED";position:absolute;top:16px;right:14px;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.18em;color:var(--muted);border:1.5px solid var(--line);padding:2px 6px;transform:rotate(4deg)}
 </style>
 
+<link rel="stylesheet" href="assets/faction.css">
+<script src="assets/faction.js"></script>
 </head>
 <body>
 <header class="top band">
@@ -227,7 +231,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
     <div class="wrap">
       <div class="copy">
         <div class="eyebrow">WoW Forever · the faction war brag board</div>
-        <h1>BigD<br>or <em>Go Home.</em></h1>
+        <h1><span class="bd">BigD</span><br>or <em>Go Home.</em></h1>
         <p>Post your kills, your loot and your most glorious fails. The crowd judges, every brag counts for your faction, and the best make the weekly video.</p>
         <div class="cta">
           <a class="btn" id="cta-discord" href="#">Join the war on Discord</a>
@@ -241,16 +245,6 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 
   <div class="ticker" aria-hidden="true"><div class="track"><span>BigD or Go Home</span><span>For the Horde</span><span>For the Alliance</span><span>Pics or it didn't happen</span><span>Enemy salt counts double</span><span>No kill-trading</span><span>Tarren Mill remembers</span><span>BigD or Go Home</span><span>For the Horde</span><span>For the Alliance</span><span>Pics or it didn't happen</span><span>Enemy salt counts double</span><span>No kill-trading</span><span>Tarren Mill remembers</span></div></div>
 
-  <section class="pick band" aria-labelledby="pick-h">
-    <div class="wrap">
-      <h2 id="pick-h">Pick your side.</h2>
-      <div class="sides" role="group" aria-label="Faction">
-        <button type="button" class="side a" id="side-alliance" data-side="alliance" aria-pressed="false"><span class="t">Alliance</span><span class="s">Order, honour, polished boots</span></button>
-        <button type="button" class="side h" id="side-horde" data-side="horde" aria-pressed="false"><span class="t">Horde</span><span class="s">Zug zug. Lok'tar.</span></button>
-      </div>
-      <p class="cry" id="cry"></p>
-    </div>
-  </section>
 
   <section class="sec band" id="score" aria-labelledby="score-h">
     <div class="wrap">
@@ -501,15 +495,6 @@ function tick() {
 }
 tick();
 
-// pick side
-const CRY = { alliance: "For the Alliance. Polish your boots, the war report is watching.", horde: "Lok'tar. The war camp is open, and the gnomes are nervous." };
-function setSide(s) {
-  document.documentElement.dataset.side = s;
-  ["alliance", "horde"].forEach(x => $("side-" + x).setAttribute("aria-pressed", x === s));
-  $("cry").textContent = CRY[s] || "";
-}
-document.querySelectorAll(".side").forEach(b => b.addEventListener("click", () => { setSide(b.dataset.side); try { localStorage.setItem("bigd-side", b.dataset.side); } catch (e) {} }));
-try { const s = localStorage.getItem("bigd-side"); if (s === "alliance" || s === "horde") setSide(s); } catch (e) {}
 </script>
 
 </body>
