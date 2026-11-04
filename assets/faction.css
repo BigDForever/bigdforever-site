@@ -118,3 +118,10 @@ html.fx-gating body > *:not(.fx-gate){visibility:hidden}
   .fx-half .fx-tag{align-self:start}
 }
 @media (prefers-reduced-motion:reduce){.fx-gate,.fx-half,.fx-half .fx-art,.fx-name,.fx-glow,.fx-vs,.fx-swap,.fx-burger span{transition:none!important}}
+/* phones: Horde mirrors Alliance (lettering left, banner right) */
+@media (max-width:700px){
+  .fx-horde{grid-template-columns:1fr auto;justify-items:end;text-align:right}
+  .fx-horde .fx-art{grid-column:2;grid-row:1 / span 2}
+  .fx-horde .fx-name,.fx-horde .fx-tag{grid-column:1}
+  .fx-horde .fx-name{grid-row:1}.fx-horde .fx-tag{grid-row:2}
+}
