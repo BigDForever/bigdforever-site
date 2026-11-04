@@ -73,7 +73,7 @@
     }
     box.appendChild(badge);
 
-    var burger = el("button", "fx-burger", "<span></span><span></span><span></span>");
+    var burger = el("button", "fx-burger", '<svg class="fx-ico fx-ico-menu" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" fill="none"/></svg><svg class="fx-ico fx-ico-close" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" fill="none"/></svg>');
     burger.type = "button";
     burger.setAttribute("aria-label", "Menu");
     burger.setAttribute("aria-expanded", "false");

@@ -33,11 +33,11 @@ header.fx-head .fx-badge img.fx-round{width:36px;height:36px;border-radius:50%}
 .fx-badge-t b{font-family:var(--display);font-weight:800;font-size:26px;color:var(--side,var(--gold))}
 .fx-badge-t small{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:3px}
 .fx-badge:focus-visible,.fx-burger:focus-visible{outline:3px solid var(--paper);outline-offset:3px;border-radius:4px}
-.fx-burger{margin-left:auto;margin-right:12px;width:46px;height:42px;display:flex;flex-direction:column;justify-content:center;gap:6px;padding:0 10px;border:1px solid var(--line);border-radius:5px;background:var(--panel);cursor:pointer}
-.fx-burger span{display:block;height:3px;border-radius:2px;background:var(--paper);transition:transform .2s,opacity .2s}
-.fx-open .fx-burger span:nth-child(1){transform:translateY(9px) rotate(45deg)}
-.fx-open .fx-burger span:nth-child(2){opacity:0}
-.fx-open .fx-burger span:nth-child(3){transform:translateY(-9px) rotate(-45deg)}
+.fx-burger{margin-left:auto;margin-right:12px;width:46px;height:42px;display:inline-grid;place-items:center;padding:0;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--paper,#ece4d6);cursor:pointer;-webkit-appearance:none;appearance:none}
+.fx-burger .fx-ico{display:block;width:24px;height:24px;grid-area:1/1}
+.fx-burger .fx-ico-close{visibility:hidden}
+.fx-open .fx-burger .fx-ico-menu{visibility:hidden}
+.fx-open .fx-burger .fx-ico-close{visibility:visible}
 
 /* ---------- menu ---------- */
 header.fx-head > .wrap{position:relative}
@@ -125,7 +125,7 @@ html.fx-gating body > *:not(.fx-gate){visibility:hidden}
   .fx-half .fx-name{align-self:end}
   .fx-half .fx-tag{align-self:start}
 }
-@media (prefers-reduced-motion:reduce){.fx-gate,.fx-half,.fx-half .fx-art,.fx-name,.fx-glow,.fx-vs,.fx-swap,.fx-burger span{transition:none!important}}
+@media (prefers-reduced-motion:reduce){.fx-gate,.fx-half,.fx-half .fx-art,.fx-name,.fx-glow,.fx-vs,.fx-swap{transition:none!important}}
 /* phones: Horde mirrors Alliance (lettering left, banner right) */
 @media (max-width:700px){
   .fx-horde{grid-template-columns:1fr auto;justify-items:end;text-align:right}
