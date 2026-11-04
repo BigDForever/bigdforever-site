@@ -6,8 +6,8 @@
   var FORM = "https://tally.so/r/5XbVeZ";
   var LINES = 8; // number of funny hoard lines set up in the Tally form
   var SIDES = {
-    alliance: { name: "Alliance", form: "Alliance", img: "assets/alliance.svg", tag: "Order, honour, polished boots", cry: "For the Alliance" },
-    horde: { name: "Horde", form: "Horde", img: "assets/horde.svg", tag: "Zug zug. Lok'tar.", cry: "For the Horde" }
+    alliance: { name: "Alliance", form: "Alliance", img: "assets/art/alliance-crest.png", badge: "assets/art/alliance-badge.png", word: "assets/art/alliance-lettering.png", tag: "Order, honour, polished boots", cry: "For the Alliance" },
+    horde: { name: "Horde", form: "Horde", img: "assets/art/horde-banner.png", badge: "assets/art/horde-badge.png", word: "assets/art/horde-lettering.png", tag: "Zug zug. Lok'tar.", cry: "For the Horde" }
   };
   var PAGES = [
     ["./", "Home"],
@@ -63,7 +63,7 @@
     var badge = el("a", "fx-badge");
     badge.href = s ? "./" : "./?pick";
     if (S) {
-      badge.innerHTML = '<img src="' + S.img + '" alt=""><span class="fx-badge-t"><b>' + S.name + '</b><small>BigDForever</small></span>';
+      badge.innerHTML = '<img src="' + S.badge + '" alt=""><span class="fx-badge-t"><b>' + S.name + '</b><small>BigDForever</small></span>';
       badge.setAttribute("aria-label", "BigDForever home, playing as " + S.name);
     } else {
       badge.innerHTML = '<img src="emblem.jpg" alt="" class="fx-round"><span class="fx-badge-t"><b>Pick a side</b><small>BigDForever</small></span>';
@@ -89,7 +89,7 @@
     var other = s === "alliance" ? "horde" : s === "horde" ? "alliance" : "";
     var swap = "";
     if (other) {
-      swap = '<button type="button" class="fx-swap" data-to="' + other + '"><img src="' + SIDES[other].img + '" alt=""><span><small>Changed your mind?</small><b>Switch to ' + SIDES[other].name + "</b></span></button>";
+      swap = '<button type="button" class="fx-swap" data-to="' + other + '"><img src="' + SIDES[other].badge + '" alt=""><span><small>Changed your mind?</small><b>Switch to ' + SIDES[other].name + "</b></span></button>";
     } else {
       swap = '<a class="fx-swap" href="./?pick"><img src="emblem.jpg" alt="" class="fx-round"><span><small>Not chosen yet</small><b>Pick your side</b></span></a>';
     }
@@ -120,8 +120,8 @@
       var S = SIDES[k];
       return '<button type="button" class="fx-half fx-' + k + '" data-side="' + k + '" aria-label="Join the ' + S.name + '">' +
         '<span class="fx-glow" aria-hidden="true"></span>' +
-        '<img src="' + S.img + '" alt="">' +
-        '<span class="fx-name">' + S.name + "</span>" +
+        '<img class="fx-art" src="' + S.img + '" alt="">' +
+        '<img class="fx-name" src="' + S.word + '" alt="' + S.name + '">' +
         '<span class="fx-tag">' + esc(S.tag) + "</span></button>";
     }
     g.innerHTML = '<div class="fx-gate-top"><span class="fx-word">Big<span>D</span>Forever</span><h1 id="fx-gate-h">Pick your side.</h1></div>' +
