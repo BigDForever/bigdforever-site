@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>How to Clip · BigDForever</title>
+<meta name="description" content="Save your best WoW Forever moments with one key. Free clipping setup for NVIDIA, AMD, Windows, Medal and Mac.">
+<meta property="og:title" content="How to Clip · BigDForever">
+<meta property="og:image" content="emblem.jpg">
+<link rel="icon" href="emblem.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@800;900&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a field manual. One reading column; each capture tool is a numbered card with its keys in key-cap chips. Same dark BigD look as the home page. */
+:root{
+  --ink:#13110f; --panel:#1c1915; --panel2:#24201a; --line:#342e26; --paper:#ece4d6; --muted:#a69c8b; --gold:#d9a441;
+  --display:"Grenze Gotisch","Times New Roman",serif; --cond:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--body);font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+a{color:var(--gold)}
+.wrap{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
+.top{display:flex;align-items:center;gap:12px;padding-block:14px;border-bottom:1px solid var(--line)}
+.top a.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--paper);font-family:var(--display);font-weight:800;font-size:24px}
+.top img{width:34px;height:34px;border-radius:50%}
+.top .brand span{color:var(--gold)}
+.top .back{margin-left:auto;font-family:var(--cond);font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(46px,9vw,84px);line-height:.9;margin:8px 0 14px;text-wrap:balance}
+h2{font-family:var(--display);font-weight:800;font-size:clamp(30px,5vw,40px);line-height:1;margin:0 0 6px}
+p{margin:0;max-width:64ch}
+.lede{font-size:19px;color:var(--paper)}
+.muted{color:var(--muted)}
+kbd{font-family:var(--mono);font-size:14px;font-weight:500;background:var(--panel2);border:1px solid var(--line);border-bottom-width:3px;border-radius:5px;padding:2px 7px;white-space:nowrap;color:var(--paper)}
+.pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.pick a{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--paper);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 16px}
+.pick a:hover{border-color:var(--gold)}
+.pick b{font-family:var(--cond);font-size:20px;text-transform:uppercase;letter-spacing:.03em}
+.pick span{font-size:14px;color:var(--muted)}
+.tool{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.tool .who{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.tool ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.save{display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:#2a2112;border:1px solid #5a4520;border-radius:6px;padding:12px 14px;font-weight:600}
+.save .l{font-family:var(--cond);font-size:17px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold)}
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.tip{border:1px solid var(--line);border-radius:6px;padding:16px;display:flex;flex-direction:column;gap:4px}
+.tip b{font-family:var(--cond);font-size:20px;text-transform:uppercase;letter-spacing:.03em}
+.tip p{font-size:15px;color:var(--muted)}
+.btn{display:inline-flex;font-family:var(--cond);font-weight:700;font-size:19px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;padding:12px 22px;border-radius:4px;background:var(--gold);color:var(--ink)}
+.btn.discord{background:#5865f2;color:#fff}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<header class="top"><a class="brand" href="./"><img src="emblem.jpg" alt="">Big<span>D</span>Forever</a><a class="back" href="./">Back to the war</a></header>
+<main class="wrap">
+  <section>
+    <div class="eyebrow">Field manual · 5 minutes to set up</div>
+    <h1>Clip it in one key.</h1>
+    <p class="lede">You don't need to record everything. Free tools quietly keep the <b>last 30 seconds to a few minutes</b> of your game. When something glorious happens, press one key and the clip is saved.</p>
+  </section>
+
+  <section>
+    <h2>Which one is yours?</h2>
+    <p class="muted" style="margin-bottom:14px">Not sure what's in your PC? Medal works on any Windows PC.</p>
+    <div class="pick">
+      <a href="#nvidia"><b>NVIDIA graphics card</b><span>GeForce / RTX</span></a>
+      <a href="#amd"><b>AMD graphics card</b><span>Radeon</span></a>
+      <a href="#medal"><b>Any Windows PC</b><span>Medal, easiest to share</span></a>
+      <a href="#gamebar"><b>Windows, nothing installed</b><span>Xbox Game Bar</span></a>
+      <a href="#mac"><b>Mac</b><span>Built-in or OBS</span></a>
+    </div>
+  </section>
+
+  <section class="tool" id="nvidia">
+    <div class="who">NVIDIA · free NVIDIA app</div>
+    <h2>Instant Replay</h2>
+    <ol>
+      <li>Install the free <b>NVIDIA app</b> from nvidia.com if you don't have it.</li>
+      <li>In WoW, press <kbd>Alt</kbd> + <kbd>Z</kbd> to open the overlay and make sure recording is allowed.</li>
+      <li>Turn on Instant Replay: <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>F10</kbd>. In the overlay you can set how long it keeps (start with 1 minute).</li>
+    </ol>
+    <div class="save"><span class="l">Save the moment</span><kbd>Alt</kbd> + <kbd>F10</kbd><span class="muted">Clips go to your Videos folder.</span></div>
+  </section>
+
+  <section class="tool" id="amd">
+    <div class="who">AMD · AMD Software: Adrenalin Edition</div>
+    <h2>Instant Replay</h2>
+    <ol>
+      <li>Open <b>AMD Software</b> (right-click the desktop) → <b>Record &amp; Stream</b>.</li>
+      <li>Switch on <b>Instant Replay</b> and pick how long it keeps (start with 1 minute).</li>
+      <li>Check your save key: search <b>Hotkey</b> in AMD Software → <b>Media Hotkeys</b> → <b>Save Instant Replay</b>.</li>
+    </ol>
+    <div class="save"><span class="l">Save the moment</span>your "Save Instant Replay" key<span class="muted">(often <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd>)</span></div>
+  </section>
+
+  <section class="tool" id="medal">
+    <div class="who">Any Windows PC · free app</div>
+    <h2>Medal</h2>
+    <ol>
+      <li>Install <b>Medal</b> from medal.tv and sign in.</li>
+      <li>Start WoW Forever. Medal records in the background.</li>
+      <li>In Medal's <b>Clip Settings</b>, pick the length: 30 or 60 seconds is plenty.</li>
+    </ol>
+    <div class="save"><span class="l">Save the moment</span><kbd>F8</kbd><span class="muted">Medal gives you a share link, perfect for the BigD form.</span></div>
+  </section>
+
+  <section class="tool" id="gamebar">
+    <div class="who">Windows 10 / 11 · already installed</div>
+    <h2>Xbox Game Bar</h2>
+    <ol>
+      <li>Open <b>Settings</b> → <b>Gaming</b> → <b>Captures</b>.</li>
+      <li>Turn on <b>Record what happened</b> (background recording).</li>
+      <li>Play. Windows keeps the last 30 seconds by default.</li>
+    </ol>
+    <div class="save"><span class="l">Save the moment</span><kbd>Win</kbd> + <kbd>Alt</kbd> + <kbd>G</kbd><span class="muted">Clips go to Videos → Captures.</span></div>
+  </section>
+
+  <section class="tool" id="mac">
+    <div class="who">Mac</div>
+    <h2>Screen recording or OBS</h2>
+    <ol>
+      <li><b>Quick way:</b> press <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>5</kbd> → <b>Record</b> before a fight you expect. Stop it from the menu bar.</li>
+      <li><b>One-key way:</b> install free <b>OBS Studio</b> → Settings → <b>Output</b> → turn on <b>Replay Buffer</b> → Settings → <b>Hotkeys</b> → set a key for <b>Save Replay</b>. Click <b>Start Replay Buffer</b> before you play.</li>
+    </ol>
+    <div class="save"><span class="l">Save the moment</span>your Save Replay key in OBS</div>
+  </section>
+
+  <section>
+    <h2>Make it count</h2>
+    <div class="tips">
+      <div class="tip"><b>Turn on chat timestamps</b><p>In WoW's Options, find <b>Chat Timestamps</b> (Social). Kill messages with a time are much stronger proof.</p></div>
+      <div class="tip"><b>Screenshots work too</b><p>Press <kbd>Print Screen</kbd> in game. Show the kill message in chat. Find them in the Screenshots folder inside your WoW Forever folder.</p></div>
+      <div class="tip"><b>Keep it short</b><p>15–60 seconds. Start just before the action, end on the kill (or the death).</p></div>
+      <div class="tip"><b>Getting it to us</b><p>Medal gives a link. Other clips: upload to YouTube as <b>Unlisted</b> and paste the link, or drop small files straight into Discord.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Got one? Show it off.</h2>
+    <div class="cta" style="margin-top:12px">
+      <a class="btn" href="https://tally.so/r/5XbVeZ" target="_blank" rel="noopener">Submit a brag</a>
+      <a class="btn discord" href="https://discord.gg/Q4wMTybW6b" target="_blank" rel="noopener">Drop it in Discord #brags</a>
+    </div>
+  </section>
+
+  <footer>BigDForever is a fan site. Not affiliated with or endorsed by Blizzard Entertainment, NVIDIA, AMD, Microsoft, Medal or OBS. Keys can change between app versions; check the app's own settings if one doesn't work.</footer>
+</main>
+</body>
+</html>
