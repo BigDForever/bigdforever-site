@@ -109,6 +109,10 @@ html[data-side] .hero::before{opacity:.14}
 .tile h3{font-family:var(--cond);font-weight:700;font-size:22px;letter-spacing:.02em;text-transform:uppercase;line-height:1.1}
 .tile p{margin:0;color:var(--muted);font-size:15px}
 
+.chaos-cta{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.chaos-cta .btn{width:100%;text-align:center}
+.btn.discord{background:#5865f2;border-color:#5865f2;color:#fff}
+.btn.discord:hover{background:#4752c4;border-color:#4752c4}
 /* how */
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;counter-reset:s}
 .step{display:flex;flex-direction:column;gap:8px;min-width:0}
@@ -237,9 +241,9 @@ footer .wrap{padding-block:28px;color:var(--muted);font-size:13px;display:flex;f
         <div class="tile"><h3>Tiny D moments</h3><p>You played yourself. The Tiny D Award is waiting.</p></div>
         <div class="tile"><h3>Postcards</h3><p>Loot, scenery, mounts, outfits. Make Love Not War.</p></div>
       </div>
-      <div class="cta">
+      <div class="chaos-cta">
         <a class="btn" id="chaos-submit" href="#" target="_blank" rel="noopener">Post it on the form</a>
-        <a class="btn ghost" id="chaos-discord" href="#" target="_blank" rel="noopener">Drop it in Discord #brags</a>
+        <a class="btn discord" id="chaos-discord" href="#" target="_blank" rel="noopener">Drop it in Discord #brags</a>
       </div>
     </div>
   </section>
