@@ -117,7 +117,7 @@ const embed = s => `https://clips.twitch.tv/embed?clip=${encodeURIComponent(s)}&
 const clipUrl = (login,s) => `https://www.twitch.tv/${login}/clip/${s}`;
 const fmt = n => n >= 1000 ? (n/1000).toFixed(1).replace(/\.0$/,'') + 'K' : String(n);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const player = (c, label) => `<div class="player"><img src="${TH(c.th)}" alt="" loading="lazy"><button type="button" data-clip="${esc(c.s)}" aria-label="Play: ${esc(label)}"></button></div>`;
+const player = (c, label) => `<div class="player"><img src="${TH(c.th)}" alt="" loading="lazy" onerror="this.remove()"><button type="button" data-clip="${esc(c.s)}" aria-label="Play: ${esc(label)}"></button></div>`;
 document.getElementById("list").innerHTML = SPOT.map(p => `
   <section aria-labelledby="sp-${p.login}">
     <article class="poster">
