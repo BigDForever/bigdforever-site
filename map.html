@@ -30,7 +30,7 @@ a{color:var(--gold)}
 .top a.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--paper);font-family:var(--display);font-weight:800;font-size:24px}
 .top img{width:34px;height:34px;border-radius:50%}
 .top .brand span{color:var(--gold)}
-.top .back{margin-left:auto;font-family:var(--cond);font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+.top .back{margin-left:auto;white-space:nowrap;font-family:var(--cond);font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
 h1{font-family:var(--display);font-weight:900;font-size:clamp(46px,9vw,84px);line-height:.9;margin:8px 0 14px;text-wrap:balance}
 h2{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,38px);line-height:1;margin:0}
@@ -49,6 +49,8 @@ p{margin:0;max-width:64ch}
 
 .views{display:none;gap:6px}
 .views button{flex:1;font-family:var(--cond);font-weight:700;font-size:16px;letter-spacing:.05em;text-transform:uppercase;padding:9px 6px;border-radius:4px;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer}
+.hint{font-size:14px;color:var(--muted);margin-top:-6px}
+.hint[hidden]{display:none}
 .views button[aria-pressed="true"]{border-color:var(--gold);color:var(--paper);background:var(--panel2)}
 @media (max-width:720px){.views{display:flex}}
 
@@ -129,6 +131,7 @@ svg.small .zl,svg.small .cap-name,svg.small .seanote{display:none}
 .top5 .none{font-size:15px;color:var(--muted)}
 
 footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+/*fix-top*/@media (max-width:420px){.top .back{font-size:14px}.top a.brand{font-size:21px}}
 </style>
 </head>
 <body>
@@ -147,6 +150,7 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);paddin
         <button type="button" data-view="kal" aria-pressed="false">Kalimdor</button>
         <button type="button" data-view="ek" aria-pressed="false">Eastern Kingdoms</button>
       </div>
+      <p class="hint" id="hint" hidden>Zone names are hidden at this size. Pick Kalimdor or Eastern Kingdoms above to zoom in, or just tap a zone.</p>
       <div class="map">
         <svg id="war" viewBox="0 0 1000 840" role="group" aria-label="Sketch map of Azeroth. Each zone is a button."></svg>
         <div class="empty-note" id="emptyNote" hidden><b>No blood spilled yet.</b><span>The war starts 4 Nov 23:00 UTC.</span></div>
@@ -272,7 +276,7 @@ const ISLANDS = [
   // Zephras Isle: per warcraft.wiki.gg / allthings.how it is a floating island in Skywall (the Elemental
   // Plane of Air), reached by airship, so it is not on either continent. We draw it floating in the
   // sky over the sea between the two continents. Exact placement is our own artistic choice.
-  {n:"Zephras Isle", c:"S", cx:500, cy:98, rx:40, ry:24, lv:"New in Forever", lab:["Zephras Isle"], forever:true, lx:500, ly:150,
+  {n:"Zephras Isle", c:"S", cx:500, cy:98, rx:40, ry:24, lv:"New in Forever", lab:["Zephras","Isle"], forever:true, lx:500, ly:156,
     note:"Skyborne starting isle. It floats in Skywall, the Elemental Plane of Air, and is reached by airship, so we drew it in the sky between the continents."},
 ];
 const OFFMAP = [
@@ -495,9 +499,9 @@ function openZone(name,quiet){
 }
 
 /* ---------- views (phones) + label sizing ---------- */
-const VIEWS={world:"0 0 1000 840",kal:"14 30 462 790",ek:"548 24 446 806"};
+const VIEWS={world:"0 0 1000 840",kal:"8 30 452 808",ek:"548 24 446 814"};
 function setView(v){svg.setAttribute("viewBox",VIEWS[v]);document.querySelectorAll(".views button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.view===v)));sizeLabels();}
-function sizeLabels(){const vb=svg.viewBox.baseVal,scale=svg.clientWidth/(vb.width||1000);svg.classList.toggle("small",scale*11.5<7.2);}
+function sizeLabels(){const vb=svg.viewBox.baseVal,scale=svg.clientWidth/(vb.width||1000),small=scale*11.5<7.2;svg.classList.toggle("small",small);document.getElementById("hint").hidden=!small;}
 document.querySelectorAll(".views button").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
 const wide=matchMedia("(min-width:721px)");
 wide.addEventListener?.("change",e=>{if(e.matches)setView("world");});
@@ -528,7 +532,7 @@ function parseCSV(text){
 function demoData(){
   const out={};
   ALL.forEach(z=>{const r=Math.random();if(r<.18){out[z.n]={a:0,h:0};return;}
-    const big=Math.random()**2*70;out[z.n]={a:Math.round(big*Math.random()*1.4),h:Math.round(big*Math.random()*1.4)};});
+    const big=4+Math.random()**2*70,a=Math.round(big*Math.random()*1.4),h=Math.round(big*Math.random()*1.4);out[z.n]={a,h:h===a?h+1:h};});
   out["Hillsbrad Foothills"]={a:48,h:48};out["Arathi Highlands"]={a:12,h:12};   // show "contested"
   out["Ashenvale"]={a:71,h:58};out["Stranglethorn Vale"]={a:64,h:90};
   return out;
