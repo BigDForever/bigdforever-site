@@ -389,6 +389,7 @@ const BIGD = {
   form: "https://tally.so/r/5XbVeZ",
   tiktok: "https://www.tiktok.com/@bigdforever",
   youtube: "",                       // add the channel link when the handle is final
+  kofi: "https://ko-fi.com/bigdforever",   // War chest (tips)
   launch: "2026-11-04T23:00:00Z",    // WoW Forever servers open
   scoreTitle: "Launch Night Body Count",
   // Automatic mode: paste the "Publish to web" CSV links of the Google Sheet's Score and Featured tabs.
@@ -410,7 +411,7 @@ $("cta-submit").href = BIGD.form;
 $("chaos-submit").href = BIGD.form; $("chaos-discord").href = BIGD.discord;
 
 // links
-const L = [["Join the Discord", BIGD.discord, true], ["Submit a brag", BIGD.form], ["TikTok", BIGD.tiktok], ["YouTube", BIGD.youtube]];
+const L = [["Join the Discord", BIGD.discord, true], ["Submit a brag", BIGD.form], ["TikTok", BIGD.tiktok], ["YouTube", BIGD.youtube], ["War chest (Ko-fi)", BIGD.kofi]];
 L.filter(x => x[1]).forEach(([t, u, main]) => { const a = document.createElement("a"); a.className = "btn" + (main ? "" : " ghost"); a.href = u; a.target = "_blank"; a.rel = "noopener"; a.textContent = t; $("links").append(a); });
 
 // score

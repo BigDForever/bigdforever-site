@@ -5,6 +5,7 @@
   var KEY = "bigd-side";
   var FORM = "https://tally.so/r/5XbVeZ";
   var FEEDBACK = "https://tally.so/r/yXMa9W";
+  var KOFI = "https://ko-fi.com/bigdforever";
   var LINES = 8; // number of funny hoard lines set up in the Tally form
   var SIDES = {
     alliance: { name: "Alliance", form: "Alliance", img: "assets/art/alliance-crest.png", badge: "assets/art/alliance-badge.png", word: "assets/art/alliance-lettering.png", tag: "Order, honour, polished boots", cry: "For the Alliance" },
@@ -87,7 +88,7 @@
     var list = PAGES.map(function (p) {
       var cur = (p[0] === here) || (p[0] === "./" && (here === "./" || here === "index.html"));
       return '<a href="' + p[0] + '"' + (cur ? ' aria-current="page"' : "") + ">" + p[1] + "</a>";
-    }).join("") + '<a href="' + FEEDBACK + '" target="_blank" rel="noopener" class="fx-ext">Feedback: tell us straight</a>';
+    }).join("") + '<a href="' + FEEDBACK + '" target="_blank" rel="noopener" class="fx-ext">Feedback: tell us straight</a>' + '<a href="' + KOFI + '" target="_blank" rel="noopener" class="fx-ext">War chest: fuel the site</a>';
     var other = s === "alliance" ? "horde" : s === "horde" ? "alliance" : "";
     var swap = "";
     if (other) {
