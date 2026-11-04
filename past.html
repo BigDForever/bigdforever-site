@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Taste of the Past · BigDForever</title>
+<meta name="description" content="Legendary moments from before WoW Forever: the beta tournament, Classic Hardcore deaths and the clips that started it all. Linked to the original creators.">
+<meta property="og:title" content="Taste of the Past · BigDForever">
+<meta property="og:image" content="emblem.jpg">
+<link rel="icon" href="emblem.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@800;900&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a museum wall. Two exhibits (Forever beta, Classic Hardcore); each clip is a framed "plaque" card with the creator's name big, our tag, and a single Watch on Twitch link out. Nothing re-hosted. */
+:root{
+  --ink:#13110f; --panel:#1c1915; --panel2:#24201a; --line:#342e26; --paper:#ece4d6; --muted:#a69c8b; --gold:#d9a441;
+  --navy-hi:#6f9be0; --crimson-hi:#e2574a; --twitch:#9146ff;
+  --display:"Grenze Gotisch","Times New Roman",serif; --cond:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--body);font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+a{color:var(--gold)}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:44px}
+.top{display:flex;align-items:center;gap:12px;padding-block:14px;border-bottom:1px solid var(--line);max-width:1040px;margin:0 auto}
+.top a.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--paper);font-family:var(--display);font-weight:800;font-size:24px}
+.top img{width:34px;height:34px;border-radius:50%}
+.top .brand span{color:var(--gold)}
+.top .back{margin-left:auto;white-space:nowrap;font-family:var(--cond);font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(46px,9vw,88px);line-height:.9;margin:8px 0 14px;text-wrap:balance}
+h2{font-family:var(--display);font-weight:800;font-size:clamp(30px,5vw,44px);line-height:1;margin:0 0 6px}
+p{margin:0;max-width:66ch}
+.lede{font-size:19px}
+.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;margin-top:18px}
+.plaque{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px;overflow:hidden}
+.plaque::before{content:"";position:absolute;inset:6px;border:1px solid #2b251e;border-radius:5px;pointer-events:none}
+.plaque .no{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.1em}
+.plaque h3{font-family:var(--cond);font-size:24px;line-height:1.1;text-transform:uppercase;letter-spacing:.02em;margin:0}
+.plaque .by{font-weight:600}
+.plaque .by b{color:var(--gold)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.tag{align-self:flex-start;font-family:var(--cond);font-weight:700;font-size:15px;letter-spacing:.05em;text-transform:uppercase;border:1px solid #5a4520;background:#2a2112;color:var(--gold);border-radius:3px;padding:2px 8px}
+.tag.shame{border-color:#5a2420;background:#2a1412;color:var(--crimson-hi)}
+.plaque .why{font-size:15px;color:var(--muted)}
+.watch{margin-top:auto;display:inline-flex;align-items:center;gap:8px;align-self:flex-start;font-family:var(--cond);font-weight:700;font-size:18px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:#fff;background:var(--twitch);border-radius:4px;padding:9px 16px}
+.watch:hover{filter:brightness(1.1)}
+.rules{border:1px solid var(--line);border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;background:var(--panel)}
+.rules b{font-family:var(--cond);font-size:20px;letter-spacing:.04em;text-transform:uppercase}
+.btn{display:inline-flex;font-family:var(--cond);font-weight:700;font-size:19px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;padding:12px 22px;border-radius:4px;background:var(--gold);color:var(--ink)}
+.btn.discord{background:#5865f2;color:#fff}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+/*fix-top*/main.wrap{margin-top:28px}
+@media (max-width:420px){.top .back{font-size:14px}.top a.brand{font-size:21px}}
+</style>
+</head>
+<body>
+<header class="top"><a class="brand" href="./"><img src="emblem.jpg" alt="">Big<span>D</span>Forever</a><a class="back" href="./">Back to the war</a></header>
+<main class="wrap">
+  <section>
+    <div class="eyebrow">The museum · before the war</div>
+    <h1>A Taste of the Past.</h1>
+    <p class="lede">Before WoW Forever there was the beta, and before that there was Classic Hardcore, where one bad jump ended a character forever. These are the moments the board was built for. Every clip plays on the creator's own Twitch channel.</p>
+  </section>
+
+  <section aria-labelledby="beta-h">
+    <div class="eyebrow">Exhibit I · October 2026</div>
+    <h2 id="beta-h">The Forever beta</h2>
+    <p class="muted">The tournament, the chaos, the first blood.</p>
+    <div class="grid" id="beta"></div>
+  </section>
+
+  <section aria-labelledby="hc-h">
+    <div class="eyebrow">Exhibit II · 2023 to 2025</div>
+    <h2 id="hc-h">The Classic Hardcore graveyard</h2>
+    <p class="muted">One life. Some of the most famous names in WoW. Pour one out.</p>
+    <div class="grid" id="hc"></div>
+  </section>
+
+  <section class="rules">
+    <b>Whose clips are these?</b>
+    <p>Theirs. We only link to the original clip on the creator's Twitch channel: nothing is downloaded, cut or re-uploaded, and the views go to them. If you made one of these and want it off the page, say so in <a href="https://discord.gg/Q4wMTybW6b" target="_blank" rel="noopener">#takedowns-and-appeals</a> on our Discord and it's gone, no questions asked.</p>
+  </section>
+
+  <section>
+    <h2>Make history yourself.</h2>
+    <p class="muted">The war starts 4 November. Clip it, post it, and the museum gets a new wing.</p>
+    <div class="cta">
+      <a class="btn" href="https://tally.so/r/5XbVeZ" target="_blank" rel="noopener">Submit a brag</a>
+      <a class="btn discord" href="https://discord.gg/Q4wMTybW6b" target="_blank" rel="noopener">Join the Discord</a>
+      <a class="btn" style="background:var(--panel2);color:var(--paper)" href="clips.html">How to clip</a>
+    </div>
+  </section>
+
+  <footer>BigDForever is a fan site. Not affiliated with or endorsed by Blizzard Entertainment or Twitch. All clips belong to their creators and are linked, not hosted. View counts are from 4 November 2026.</footer>
+</main>
+<script>
+// EDIT THIS BLOCK: add or remove clips. shame:true makes the tag red.
+const PAST = {
+  beta: [
+    {t:"Warlockguy wins the $50k Grand Prize", by:"xaryu", d:"19 Oct 2026", len:60, v:58418, url:"https://www.twitch.tv/xaryu/clip/JoyousBadOstrichKippa-J9RjAKnLSQsaOJZq", tag:"Go BigD or Go Home", why:"A level 30 WoW Forever tournament, fifty thousand dollars on the line, and a warlock walks away with it."},
+    {t:"Lost for words while beating down a lock", by:"hozitojones", d:"12 Oct 2026", len:60, v:18281, url:"https://www.twitch.tv/hozitojones/clip/RoughTangibleStarlingCclamChamp-dldvek3HVVis6IEw", tag:"Crit Happens", why:"Sometimes the damage speaks for itself."},
+    {t:"GMs spawn Azuregos after the tournament", by:"esfandtv", d:"19 Oct 2026", len:35, v:4069, url:"https://www.twitch.tv/esfandtv/clip/TentativeIcyOilAMPEnergy-DQTmuRkXSV5dRNtf", tag:"Wild Wild WoW", why:"The tournament is over. Then a dragon shows up."},
+    {t:"Esfand the Zombie Trainer", by:"esfandtv", d:"23 Oct 2026", len:15, v:7804, url:"https://www.twitch.tv/esfandtv/clip/ObliqueBlightedJamDatSheffy-FTgyUYFWFn7KLcwD", tag:"The Pet Did It", why:"Fifteen seconds. Watch it twice."},
+    {t:"Falls asleep and almost gets DQ'd", by:"hozitojones", d:"17 Oct 2026", len:39, v:4600, url:"https://www.twitch.tv/hozitojones/clip/PlacidFunSangPeoplesChamp-WiBTuWrIU5G9GgIE", tag:"Tiny D", shame:true, why:"Tournament day. Eyes closed. Bold strategy."}
+  ],
+  hc: [
+    {t:"esfand dies", by:"esfandtv", d:"19 Jan 2025", len:56, v:307803, url:"https://www.twitch.tv/esfandtv/clip/BusyCrypticSwanCurseLit-kpj8kfhuXUO_wZbX", tag:"Hall of Shame", shame:true, why:"Three hundred thousand people watched this one go wrong."},
+    {t:"Xaryu dead, ULTRA HARDCORE", by:"xaryu", d:"26 Sep 2025", len:29, v:77602, url:"https://www.twitch.tv/xaryu/clip/OilyAliveRabbitWoofer-uqh8gJOQwK4u9DVJ", tag:"So Close", shame:true, why:"Even the world PvP legend gets one life."},
+    {t:"Tank fails a critical jump in LBRS", by:"xaryu", d:"29 Apr 2023", len:44, v:75294, url:"https://www.twitch.tv/xaryu/clip/TalentedRespectfulSquirrelVoteNay-GD86VjujI6tVovR8", tag:"MC Cliff", shame:true, why:"Hardcore Classic, a dungeon, a ledge. You know how this ends."},
+    {t:"Savix 51 HC death", by:"savix", d:"26 Apr 2023", len:59, v:35555, url:"https://www.twitch.tv/savix/clip/YawningFrailBottleSMOrc-SY6oQATHUBcJ6cBT", tag:"So Close", shame:true, why:"Level 51. All of it, gone."},
+    {t:"Another dead rogue", by:"xaryu", d:"6 Mar 2025", len:18, v:73823, url:"https://www.twitch.tv/xaryu/clip/SquareDeafPepperoniSpicyBoy-t5QQ1f8nzQBwK6u7", tag:"Crouching Rogue, Hidden Coward", shame:true, why:"Stealth won't save you from everything."}
+  ]
+};
+const fmt = n => n >= 1000 ? (n/1000).toFixed(n >= 100000 ? 0 : 1).replace(/\.0$/,'') + 'K' : String(n);
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function render(id, list){
+  document.getElementById(id).innerHTML = list.map((c,i) => `
+    <article class="plaque">
+      <span class="no">No. ${String(i+1).padStart(2,'0')}</span>
+      <h3>${esc(c.t)}</h3>
+      <span class="by">by <b>${esc(c.by)}</b></span>
+      <span class="tag${c.shame ? ' shame' : ''}">${esc(c.tag)}</span>
+      <p class="why">${esc(c.why)}</p>
+      <div class="meta"><span>${esc(c.d)}</span><span>${c.len}s</span><span>${fmt(c.v)} views</span></div>
+      <a class="watch" href="${c.url}" target="_blank" rel="noopener">Watch on Twitch</a>
+    </article>`).join('');
+}
+render('beta', PAST.beta); render('hc', PAST.hc);
+</script>
+</body>
+</html>

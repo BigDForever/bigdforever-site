@@ -27,7 +27,7 @@ a{color:var(--gold)}
 .top a.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--paper);font-family:var(--display);font-weight:800;font-size:24px}
 .top img{width:34px;height:34px;border-radius:50%}
 .top .brand span{color:var(--gold)}
-.top .back{margin-left:auto;font-family:var(--cond);font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+.top .back{margin-left:auto;white-space:nowrap;font-family:var(--cond);font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
 .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
 h1{font-family:var(--display);font-weight:900;font-size:clamp(46px,9vw,84px);line-height:.9;margin:8px 0 14px;text-wrap:balance}
 h2{font-family:var(--display);font-weight:800;font-size:clamp(30px,5vw,40px);line-height:1;margin:0 0 6px}
@@ -53,6 +53,8 @@ kbd{font-family:var(--mono);font-size:14px;font-weight:500;background:var(--pane
 .btn.discord{background:#5865f2;color:#fff}
 .cta{display:flex;flex-wrap:wrap;gap:12px}
 footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+/*fix-top*/main.wrap{margin-top:28px}
+@media (max-width:420px){.top .back{font-size:14px}.top a.brand{font-size:21px}}
 </style>
 </head>
 <body>

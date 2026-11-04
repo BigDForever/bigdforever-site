@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Weekly Challenge · BigDForever</title>
+<meta name="description" content="This week's WoW Forever faction challenge: Gnomilation for the Horde, Milk Run for the Alliance. Rules, standings and the clock.">
+<meta property="og:title" content="Week 1: Hunting season is open · BigDForever">
+<meta property="og:image" content="emblem.jpg">
+<link rel="icon" href="emblem.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@800;900&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a bounty board. Clock across the top, the two faction bounties pinned side by side (red Horde notice, blue Alliance notice), each with its own hunter standings; rules below as a numbered decree. */
+:root{
+  --ink:#13110f; --panel:#1c1915; --panel2:#24201a; --line:#342e26; --paper:#ece4d6; --muted:#a69c8b; --gold:#d9a441;
+  --navy:#2a4f8f; --navy-hi:#6f9be0; --crimson:#b3261e; --crimson-hi:#e2574a;
+  --display:"Grenze Gotisch","Times New Roman",serif; --cond:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--body);font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+a{color:var(--gold)}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+.top{display:flex;align-items:center;gap:12px;padding-block:14px;border-bottom:1px solid var(--line);max-width:1040px;margin:0 auto}
+.top a.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--paper);font-family:var(--display);font-weight:800;font-size:24px}
+.top img{width:34px;height:34px;border-radius:50%}
+.top .brand span{color:var(--gold)}
+.top .back{margin-left:auto;white-space:nowrap;font-family:var(--cond);font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(46px,9vw,88px);line-height:.9;margin:8px 0 14px;text-wrap:balance}
+h2{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1;margin:0 0 6px}
+h3{font-family:var(--display);font-weight:900;font-size:clamp(38px,6vw,56px);line-height:.95;margin:4px 0 6px}
+p{margin:0;max-width:66ch}
+.lede{font-size:19px}
+.muted{color:var(--muted)}
+.clock{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:14px 18px}
+.clock .l{font-family:var(--cond);font-weight:700;font-size:17px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.clock .t{font-family:var(--mono);font-size:clamp(22px,4vw,30px);color:var(--paper)}
+.clock .end{font-size:15px;color:var(--muted);margin-left:auto}
+.boards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.bounty{position:relative;border-radius:8px;padding:22px 20px 18px;display:flex;flex-direction:column;gap:10px;border:1px solid}
+.bounty.h{background:linear-gradient(180deg,#2a1412,#1c1513);border-color:#5a2420}
+.bounty.a{background:linear-gradient(180deg,#14233f,#151a24);border-color:#2a4f8f}
+.bounty .who{align-self:flex-start;font-family:var(--cond);font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:3px;color:#fff}
+.bounty.h .who{background:var(--crimson)} .bounty.a .who{background:var(--navy)}
+.bounty .target{font-size:16px}
+.bounty .target b{font-family:var(--cond);font-size:20px;text-transform:uppercase;letter-spacing:.03em}
+.total{display:flex;align-items:baseline;gap:10px}
+.total .n{font-family:var(--display);font-weight:900;font-size:64px;line-height:.9}
+.bounty.h .total .n{color:var(--crimson-hi)} .bounty.a .total .n{color:var(--navy-hi)}
+.total .u{font-family:var(--cond);font-weight:700;font-size:18px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.slots{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.slot{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:10px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:8px 10px}
+.slot .pos{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.slot .nm{font-family:var(--cond);font-weight:700;font-size:19px;text-transform:uppercase;letter-spacing:.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slot .k{font-family:var(--mono);font-size:14px}
+.prog{height:6px;border-radius:3px;background:rgba(255,255,255,.08);grid-column:2/4;overflow:hidden}
+.prog i{display:block;height:100%}
+.bounty.h .prog i{background:var(--crimson-hi)} .bounty.a .prog i{background:var(--navy-hi)}
+.slot.done .nm::after{content:" ✓ Hall of Fame";font-family:var(--mono);font-size:11px;color:var(--gold);letter-spacing:.06em;text-transform:none}
+.slot.empty .nm{color:var(--muted);font-weight:600;text-transform:none;font-family:var(--body);font-size:15px}
+.decree{counter-reset:r;display:flex;flex-direction:column;gap:10px;margin:14px 0 0;padding:0;list-style:none}
+.decree li{counter-increment:r;display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start;border-bottom:1px solid var(--line);padding-bottom:10px}
+.decree li::before{content:counter(r);font-family:var(--display);font-weight:900;font-size:34px;line-height:1;color:var(--gold)}
+.prize{border:1px solid #5a4520;background:#2a2112;border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.prize b{font-family:var(--cond);font-size:20px;letter-spacing:.05em;text-transform:uppercase;color:var(--gold)}
+.next{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}
+.next div{border:1px dashed var(--line);border-radius:8px;padding:14px 16px}
+.next b{font-family:var(--cond);font-size:20px;text-transform:uppercase;letter-spacing:.03em}
+.next p{font-size:15px;color:var(--muted)}
+.btn{display:inline-flex;font-family:var(--cond);font-weight:700;font-size:19px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;padding:12px 22px;border-radius:4px;background:var(--gold);color:var(--ink)}
+.btn.discord{background:#5865f2;color:#fff}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+/*fix-top*/main.wrap{margin-top:28px}
+@media (max-width:420px){.top .back{font-size:14px}.top a.brand{font-size:21px}}
+</style>
+</head>
+<body>
+<header class="top"><a class="brand" href="./"><img src="emblem.jpg" alt="">Big<span>D</span>Forever</a><a class="back" href="./">Back to the war</a></header>
+<main class="wrap">
+  <section>
+    <div class="eyebrow" id="wk">Week 1 challenges</div>
+    <h1 id="ttl">Hunting season is open.</h1>
+    <p class="lede">One bounty per faction. Fair fights in the open world, proof in chat, first three hunters per side to hit the target get carved into the Hall of Fame. The faction with more challenge kills wins the week.</p>
+  </section>
+
+  <div class="clock" aria-live="polite"><span class="l" id="clock-l">Ends in</span><span class="t" id="clock">--</span><span class="end" id="clock-end"></span></div>
+
+  <section class="boards" aria-label="This week's bounties">
+    <article class="bounty h">
+      <span class="who">Horde only</span>
+      <h3>Gnomilation</h3>
+      <p class="target"><b>Target:</b> player gnomes killed in world PvP</p>
+      <div class="total"><span class="n" id="tot-h">0</span><span class="u">gnomes down</span></div>
+      <div class="slots" id="slots-h"></div>
+    </article>
+    <article class="bounty a">
+      <span class="who">Alliance only</span>
+      <h3>Milk Run</h3>
+      <p class="target"><b>Target:</b> player tauren killed in world PvP</p>
+      <div class="total"><span class="n" id="tot-a">0</span><span class="u">tauren down</span></div>
+      <div class="slots" id="slots-a"></div>
+    </article>
+  </section>
+
+  <section>
+    <h2>The rules</h2>
+    <ol class="decree">
+      <li><span>World PvP only. Battlegrounds and duels don't count.</span></li>
+      <li><span>Fair fights only: the victim can be at most 5 levels below you.</span></li>
+      <li><span>Each victim counts once per day. Camping the same gnome ten times is not ten kills.</span></li>
+      <li><span>Proof: a clip, or screenshots showing the kill message in chat with chat timestamps on. Several kills can go in one post. Pick the challenge on the form.</span></li>
+      <li><span>In launch week a moderator checks every entry.</span></li>
+      <li><span>Kill-trading with friends or alts is cheating and lands you in the Hall of Shame.</span></li>
+    </ol>
+  </section>
+
+  <div class="prize">
+    <b>What you win</b>
+    <p>The first 3 hunters per faction to reach the target go into the <a href="halls.html">Hall of Fame</a> and get named in the first War Report. The faction with more challenge kills wins week 1 and gets bragging rights until next Tuesday.</p>
+  </div>
+
+  <section>
+    <h2>Enter</h2>
+    <p class="muted">Turn on chat timestamps, then post your proof. Don't know how to clip? <a href="clips.html">It takes one key</a>.</p>
+    <div class="cta">
+      <a class="btn" href="https://tally.so/r/5XbVeZ" target="_blank" rel="noopener">Submit your kills</a>
+      <a class="btn discord" href="https://discord.gg/Q4wMTybW6b" target="_blank" rel="noopener">Talk trash in #challenges</a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Coming up</h2>
+    <p class="muted">Next weeks' bounties are voted on Discord. Some candidates:</p>
+    <div class="next">
+      <div><b>Behind Enemy Lines</b><p>Kills inside the other faction's home zones.</p></div>
+      <div><b>Tarren Mill Classic</b><p>Hillsbrad only. Southshore vs Tarren Mill, like the old days.</p></div>
+      <div><b>David and Goliath</b><p>Kill someone at least 3 levels above you.</p></div>
+      <div><b>Make Love Not War</b><p>Peace week: best screenshot of both factions together, alive.</p></div>
+    </div>
+  </section>
+
+  <footer>BigDForever is a fan site. Not affiliated with or endorsed by Blizzard Entertainment. Character names only, never real names.</footer>
+</main>
+<script>
+// EDIT THIS BLOCK. hunters: [{name, kills}] (checked kills only). Standings sort themselves.
+const CH = {
+  week: 1,
+  title: "Hunting season is open.",
+  target: 10,
+  starts: "2026-11-04T23:00:00Z",
+  ends: "2026-11-10T23:59:00Z",
+  endsText: "Tuesday 10 November, 23:59 UTC",
+  horde:    { hunters: [] },  // Gnomilation
+  alliance: { hunters: [] }   // Milk Run
+};
+const esc = s => String(s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function board(side, el, totEl){
+  const list = [...CH[side].hunters].sort((a,b) => b.kills - a.kills);
+  document.getElementById(totEl).textContent = list.reduce((s,h) => s + (+h.kills||0), 0);
+  const rows = list.slice(0, 8).map((h,i) => {
+    const pct = Math.min(100, Math.round(h.kills / CH.target * 100));
+    return `<div class="slot${h.kills >= CH.target && i < 3 ? ' done' : ''}"><span class="pos">${i+1}</span><span class="nm">${esc(h.name)}</span><span class="k">${h.kills}/${CH.target}</span><span></span><span class="prog"><i style="width:${pct}%"></i></span></div>`;
+  });
+  while (rows.length < 3) rows.push(`<div class="slot empty"><span class="pos">${rows.length+1}</span><span class="nm">Open spot. Could be you.</span><span class="k">0/${CH.target}</span></div>`);
+  document.getElementById(el).innerHTML = rows.join('');
+}
+board('horde','slots-h','tot-h'); board('alliance','slots-a','tot-a');
+document.getElementById('wk').textContent = `Week ${CH.week} challenges`;
+document.getElementById('ttl').textContent = CH.title;
+document.getElementById('clock-end').textContent = 'Ends ' + CH.endsText;
+function tick(){
+  const now = Date.now(), s = Date.parse(CH.starts), e = Date.parse(CH.ends);
+  let to, label;
+  if (now < s) { to = s; label = 'Starts in'; }
+  else if (now < e) { to = e; label = 'Ends in'; }
+  else { document.getElementById('clock-l').textContent = 'Finished'; document.getElementById('clock').textContent = 'Results in the War Report'; return; }
+  const d = to - now, D = Math.floor(d/864e5), H = Math.floor(d/36e5)%24, M = Math.floor(d/6e4)%60, S = Math.floor(d/1e3)%60;
+  document.getElementById('clock-l').textContent = label;
+  document.getElementById('clock').textContent = `${D}d ${String(H).padStart(2,'0')}h ${String(M).padStart(2,'0')}m ${String(S).padStart(2,'0')}s`;
+}
+tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>

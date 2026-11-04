@@ -45,6 +45,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .nav{margin-left:auto;display:flex;gap:18px;align-items:center;font-family:var(--cond);font-weight:600;font-size:17px;letter-spacing:.04em;text-transform:uppercase}
 .nav a{text-decoration:none;color:var(--muted)}
 .nav a:hover{color:var(--paper)}
+.nav a.btn{color:#fff;background:#5865f2;border-color:#5865f2}
+.nav a.btn:hover{background:#4752c4;border-color:#4752c4;color:#fff}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--cond);font-weight:700;font-size:19px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;padding:12px 22px;border-radius:4px;border:2px solid var(--gold);background:var(--gold);color:var(--ink);cursor:pointer}
 .btn.ghost{background:transparent;color:var(--paper);border-color:var(--line)}
 .btn.ghost:hover{border-color:var(--paper)}
@@ -166,6 +168,42 @@ td b{font-family:var(--cond);font-size:19px;letter-spacing:.03em;text-transform:
 @media (max-width:700px){.join .wrap{grid-template-columns:1fr}}
 footer .wrap{padding-block:28px;color:var(--muted);font-size:13px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* ===== propaganda polish (CSS only) ===== */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.hero::after{content:"";position:absolute;inset:-40%;pointer-events:none;
+  background:repeating-conic-gradient(from 0deg at 72% 50%,color-mix(in srgb,var(--gold) 9%,transparent) 0deg 6deg,transparent 6deg 18deg);
+  -webkit-mask:radial-gradient(circle at 72% 50%,#000 0 18%,transparent 46%);mask:radial-gradient(circle at 72% 50%,#000 0 18%,transparent 46%)}
+@media (max-width:760px){.hero::after{background:repeating-conic-gradient(from 0deg at 50% 22%,color-mix(in srgb,var(--gold) 9%,transparent) 0deg 6deg,transparent 6deg 18deg);
+  -webkit-mask:radial-gradient(circle at 50% 22%,#000 0 14%,transparent 40%);mask:radial-gradient(circle at 50% 22%,#000 0 14%,transparent 40%)}}
+.hero .wrap{z-index:1}
+.hero h1{text-shadow:3px 3px 0 color-mix(in srgb,var(--crimson) 75%,transparent),-2px -1px 0 color-mix(in srgb,var(--navy) 80%,transparent)}
+.emblem{box-shadow:0 0 0 6px var(--ink),0 0 0 8px color-mix(in srgb,var(--gold) 70%,transparent),0 0 0 14px var(--ink),0 0 0 15px var(--line),0 30px 80px -20px #000}
+.head .eyebrow{align-self:flex-start;border:1.5px solid currentColor;border-radius:2px;padding:3px 9px 2px;transform:rotate(-1.2deg);box-shadow:2px 2px 0 color-mix(in srgb,currentColor 25%,transparent)}
+.head h2{position:relative;padding-bottom:14px}
+.head h2::after{content:"";position:absolute;left:0;bottom:0;width:72px;height:6px;background:var(--tint);transition:background .3s;
+  clip-path:polygon(0 0,100% 0,94% 100%,0 100%)}
+.ticker{overflow:hidden;background:var(--gold);color:var(--ink);border-block:3px solid var(--ink);box-shadow:0 1px 0 var(--line),0 -1px 0 var(--line)}
+.ticker .track{display:flex;width:max-content;animation:tick 48s linear infinite}
+.ticker span{font-family:var(--cond);font-weight:700;font-size:17px;letter-spacing:.12em;text-transform:uppercase;padding:9px 0;white-space:nowrap}
+.ticker span::after{content:"\2605";margin:0 22px;font-size:13px;position:relative;top:-1px}
+@keyframes tick{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.ticker .track{animation:none}}
+.war-links{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:14px}
+.wl{grid-column:span 1;display:flex;flex-direction:column;gap:6px;min-width:0;text-decoration:none;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:18px;position:relative;overflow:hidden;transition:border-color .2s,transform .2s}
+.wl:hover{border-color:var(--tint);transform:translateY(-2px)}
+.wl:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
+.wl .no{font-family:var(--display);font-weight:900;font-size:40px;line-height:.9;color:var(--tint);transition:color .3s}
+.wl b{font-family:var(--cond);font-weight:700;font-size:23px;letter-spacing:.02em;text-transform:uppercase;line-height:1.1}
+.wl span:last-child{color:var(--muted);font-size:15px}
+.wl.big{grid-row:span 2;justify-content:flex-end;min-height:220px;
+  background:radial-gradient(circle at 30% 30%,color-mix(in srgb,var(--navy) 35%,transparent),transparent 55%),radial-gradient(circle at 75% 70%,color-mix(in srgb,var(--crimson) 35%,transparent),transparent 55%),var(--panel)}
+.wl.big .no{font-size:56px}
+.wl.big b{font-size:32px}
+@media (max-width:860px){.war-links{grid-template-columns:1fr 1fr}.wl.big{grid-column:span 2;grid-row:auto;min-height:160px}}
+@media (max-width:440px){.war-links{grid-template-columns:1fr}.wl.big{grid-column:auto}}
+.tile,.ch{position:relative}
+.ch::after{content:"WANTED";position:absolute;top:16px;right:14px;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.18em;color:var(--muted);border:1.5px solid var(--line);padding:2px 6px;transform:rotate(4deg)}
 </style>
 
 </head>
@@ -174,9 +212,10 @@ footer .wrap{padding-block:28px;color:var(--muted);font-size:13px;display:flex;f
   <div class="wrap">
     <a class="brand" href="#top"><img src="emblem.jpg" alt="">Big<span>D</span>Forever</a>
     <nav class="nav" aria-label="Main">
-      <a class="hide-m" href="#score">Body Count</a>
-      <a class="hide-m" href="#brags">Brags</a>
-      <a class="hide-m" href="#challenge">Challenge</a>
+      <a class="hide-m" href="map.html">War Map</a>
+      <a class="hide-m" href="challenge.html">Challenge</a>
+      <a class="hide-m" href="halls.html">Halls</a>
+      <a class="hide-m" href="past.html">Past</a>
       <a class="hide-m" href="clips.html">How to clip</a>
       <a class="btn sm" id="nav-discord" href="#">Discord</a>
     </nav>
@@ -199,6 +238,8 @@ footer .wrap{padding-block:28px;color:var(--muted);font-size:13px;display:flex;f
       <img class="emblem" src="emblem.jpg" alt="BigDForever emblem: a golden D made of a sword and a battle-axe">
     </div>
   </section>
+
+  <div class="ticker" aria-hidden="true"><div class="track"><span>BigD or Go Home</span><span>For the Horde</span><span>For the Alliance</span><span>Pics or it didn't happen</span><span>Enemy salt counts double</span><span>No kill-trading</span><span>Tarren Mill remembers</span><span>BigD or Go Home</span><span>For the Horde</span><span>For the Alliance</span><span>Pics or it didn't happen</span><span>Enemy salt counts double</span><span>No kill-trading</span><span>Tarren Mill remembers</span></div></div>
 
   <section class="pick band" aria-labelledby="pick-h">
     <div class="wrap">
@@ -224,6 +265,22 @@ footer .wrap{padding-block:28px;color:var(--muted);font-size:13px;display:flex;f
       </div>
       <div class="bar" aria-hidden="true"><i class="ba" id="b-alliance" style="width:50%"></i><i class="bh" id="b-horde" style="width:50%"></i></div>
       <p class="note" id="score-note"></p>
+    </div>
+  </section>
+
+  <section class="sec band" id="war" aria-labelledby="war-h">
+    <div class="wrap">
+      <div class="head">
+        <div class="eyebrow">Report to the front</div>
+        <h2 id="war-h">The war room</h2>
+      </div>
+      <div class="war-links">
+        <a class="wl big" href="map.html"><span class="no">I</span><b>The War Map</b><span>Every zone, coloured by who's winning it.</span></a>
+        <a class="wl" href="challenge.html"><span class="no">II</span><b>This week's bounty</b><span>Gnomilation vs Milk Run. Rules and standings.</span></a>
+        <a class="wl" href="halls.html"><span class="no">III</span><b>Hall of Fame</b><span>Heroes, villains, and next door, the Hall of Shame.</span></a>
+        <a class="wl" href="past.html"><span class="no">IV</span><b>Taste of the Past</b><span>Beta chaos and Classic Hardcore legends.</span></a>
+        <a class="wl" href="clips.html"><span class="no">V</span><b>How to clip</b><span>Save the moment with one key.</span></a>
+      </div>
     </div>
   </section>
 
@@ -296,7 +353,7 @@ footer .wrap{padding-block:28px;color:var(--muted);font-size:13px;display:flex;f
         <div class="ch h"><span class="who">Horde only</span><h3>Gnomilation</h3><p class="tg" id="ch-gnome"></p><p>Player gnomes, world PvP, fair fights only.</p></div>
         <div class="ch a"><span class="who">Alliance only</span><h3>Milk Run</h3><p class="tg" id="ch-milk"></p><p>Player tauren, world PvP, fair fights only.</p></div>
       </div>
-      <p class="note">Full rules and proof in #weekly-challenge on Discord. Kill-trading lands you in the Hall of Shame.</p>
+      <p class="note"><a href="challenge.html" style="color:var(--paper)">Full rules, standings and the clock</a>. Talk trash in #challenges on Discord. Kill-trading lands you in the Hall of Shame.</p>
     </div>
   </section>
 

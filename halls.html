@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hall of Fame · BigDForever</title>
+<meta name="description" content="The WoW Forever Hall of Fame and Hall of Shame. Heroes, villains, fakes and Tiny D moments, voted by both factions.">
+<meta property="og:title" content="Hall of Fame and Shame · BigDForever">
+<meta property="og:image" content="emblem.jpg">
+<link rel="icon" href="emblem.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@800;900&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: two halls facing each other. A tab switch flips between the gilded Hall of Fame and the scorched Hall of Shame; each hall has named "wings" (categories) holding portrait cards. Empty wings show a pedestal waiting for its first inductee. */
+:root{
+  --ink:#13110f; --panel:#1c1915; --panel2:#24201a; --line:#342e26; --paper:#ece4d6; --muted:#a69c8b; --gold:#d9a441;
+  --navy-hi:#6f9be0; --crimson-hi:#e2574a; --shame:#e2574a;
+  --display:"Grenze Gotisch","Times New Roman",serif; --cond:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --hall:var(--gold); --hall-deep:#2a2112; --hall-line:#5a4520;
+  color-scheme:dark;
+}
+body[data-hall="shame"]{--hall:var(--shame);--hall-deep:#2a1412;--hall-line:#5a2420}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--body);font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px;transition:background .3s}
+body[data-hall="shame"]{background:#110d0c}
+a{color:var(--hall)}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+.top{display:flex;align-items:center;gap:12px;padding-block:14px;border-bottom:1px solid var(--line);max-width:1040px;margin:0 auto}
+.top a.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--paper);font-family:var(--display);font-weight:800;font-size:24px}
+.top img{width:34px;height:34px;border-radius:50%}
+.top .brand span{color:var(--gold)}
+.top .back{margin-left:auto;white-space:nowrap;font-family:var(--cond);font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--hall)}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(46px,9vw,88px);line-height:.9;margin:8px 0 14px;text-wrap:balance}
+h2{font-family:var(--display);font-weight:800;font-size:clamp(28px,4.5vw,40px);line-height:1;margin:0 0 4px}
+p{margin:0;max-width:66ch}
+.lede{font-size:19px}
+.muted{color:var(--muted)}
+.switch{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:8px;overflow:hidden;max-width:560px}
+.switch button{font:inherit;font-family:var(--cond);font-weight:700;font-size:22px;letter-spacing:.05em;text-transform:uppercase;padding:14px 10px;border:0;background:var(--panel);color:var(--muted);cursor:pointer}
+.switch button[aria-selected="true"]{background:var(--hall-deep);color:var(--hall);box-shadow:inset 0 -3px 0 var(--hall)}
+.wing{display:flex;flex-direction:column;gap:14px}
+.wing-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.wing-head p{font-size:15px;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.card .rank{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.card .name{font-family:var(--cond);font-weight:700;font-size:26px;line-height:1;text-transform:uppercase}
+.card .fac{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.fac.alliance{color:var(--navy-hi)} .fac.horde{color:var(--crimson-hi)}
+.card .feat{font-size:15px}
+.card a{font-family:var(--cond);font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;margin-top:auto}
+.strikes{display:flex;gap:4px}
+.strikes i{width:14px;height:14px;border-radius:2px;border:1px solid var(--shame)}
+.strikes i.on{background:var(--shame)}
+.pedestal{border:1px dashed var(--hall-line);background:var(--hall-deep);border-radius:8px;padding:22px 18px;display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-height:150px;justify-content:center}
+.pedestal b{font-family:var(--cond);font-size:22px;text-transform:uppercase;letter-spacing:.04em;color:var(--hall)}
+.pedestal span{font-size:15px;color:var(--muted)}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.how div{border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:4px}
+.how b{font-family:var(--cond);font-size:20px;text-transform:uppercase;letter-spacing:.03em}
+.how p{font-size:15px;color:var(--muted)}
+.btn{display:inline-flex;font-family:var(--cond);font-weight:700;font-size:19px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;padding:12px 22px;border-radius:4px;background:var(--gold);color:var(--ink)}
+.btn.discord{background:#5865f2;color:#fff}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+[hidden]{display:none!important}
+/*fix-top*/main.wrap{margin-top:28px}
+@media (max-width:420px){.top .back{font-size:14px}.top a.brand{font-size:21px}}
+</style>
+</head>
+<body data-hall="fame">
+<header class="top"><a class="brand" href="./"><img src="emblem.jpg" alt="">Big<span>D</span>Forever</a><a class="back" href="./">Back to the war</a></header>
+<main class="wrap">
+  <section>
+    <div class="eyebrow" id="eyebrow">Voted by both factions</div>
+    <h1 id="title">The Hall of Fame.</h1>
+    <p class="lede" id="lede">Heroes get carved in gold. Villains get a statue too, because the other faction voted for it. Fakes, rats and Tiny D moments go next door.</p>
+  </section>
+
+  <div class="switch" role="tablist" aria-label="Choose a hall">
+    <button role="tab" id="tab-fame" aria-selected="true" aria-controls="hall">Hall of Fame</button>
+    <button role="tab" id="tab-shame" aria-selected="false" aria-controls="hall">Hall of Shame</button>
+  </div>
+
+  <div id="hall" role="tabpanel" class="wrap" style="gap:36px"></div>
+
+  <section>
+    <h2>How you get in</h2>
+    <div class="how" style="margin-top:14px">
+      <div><b>Post a brag</b><p>Clip or screenshot, with proof. It lands in this week's pile.</p></div>
+      <div><b>Both factions vote</b><p>Pride, Respect, Cringe, Salt or Zzz. Respect from the enemy counts double in our hearts.</p></div>
+      <div><b>Top of the week gets carved</b><p>Every Sunday the best brags, and the worst, are inducted here and named in the War Report.</p></div>
+      <div><b>Three strikes</b><p>Get caught faking proof or kill-trading three times and you live in the Hall of Shame. Strikes fade after a season.</p></div>
+    </div>
+    <div class="cta">
+      <a class="btn" href="https://tally.so/r/5XbVeZ" target="_blank" rel="noopener">Submit a brag</a>
+      <a class="btn discord" href="https://discord.gg/Q4wMTybW6b" target="_blank" rel="noopener">Vote on Discord</a>
+    </div>
+  </section>
+
+  <footer>BigDForever is a fan site. Not affiliated with or endorsed by Blizzard Entertainment. Character names only, never real names. Want something of yours removed? Ask in #takedowns-and-appeals on Discord.</footer>
+</main>
+<script>
+// EDIT THIS BLOCK. Add inductees to a wing's "list". Each: {name, faction:"alliance"|"horde", feat, url, week}
+// Shame entries can carry strikes (1-3).
+const HALLS = {
+  fame: {
+    eyebrow: "Voted by both factions",
+    title: "The Hall of Fame.",
+    lede: "Heroes get carved in gold. Villains get a statue too, because the other faction voted for it. Fakes, rats and Tiny D moments go next door.",
+    wings: [
+      {name:"Heroes", desc:"Most Pride from their own side.", empty:"First hero gets carved after launch week.", list:[]},
+      {name:"Villains", desc:"Most Salt from the enemy. A compliment, really.", empty:"Nobody has made the other faction cry yet.", list:[]},
+      {name:"Week 1 Challenge", desc:"First three per faction to 10 kills in Gnomilation or Milk Run.", empty:"Three spots per faction. Hunting season opens 4 Nov.", list:[]},
+      {name:"Golden Durability", desc:"Survived what should have killed them.", empty:"Waiting for the first impossible escape.", list:[]},
+      {name:"Return to Sender", desc:"Got ganked, came back, returned the favour.", empty:"Revenge is a dish best served in Hillsbrad.", list:[]}
+    ]
+  },
+  shame: {
+    eyebrow: "Voted by both factions",
+    title: "The Hall of Shame.",
+    lede: "Some get in by failing gloriously. Some get in by cheating. Only one of those is forgiven.",
+    wings: [
+      {name:"Tiny D", desc:"Self-owns, cliff dives and pulling the whole camp. Laughed at, loved.", empty:"Someone will fall off Thousand Needles on day one. Clip it.", list:[]},
+      {name:"Rat of the Week", desc:"Friendly Fire: the player who did their own faction dirty.", empty:"No rats yet. Give it a day.", list:[]},
+      {name:"Fakes", desc:"Caught with edited proof or traded kills. Strikes shown.", empty:"Clean so far. Keep it that way.", list:[], strikes:true},
+      {name:"Most Zzz", desc:"The brag both factions found boring.", empty:"No snoozers yet.", list:[]}
+    ]
+  }
+};
+const esc = s => String(s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hallEl = document.getElementById('hall');
+function show(which){
+  const h = HALLS[which];
+  document.body.dataset.hall = which;
+  document.title = (which === 'fame' ? 'Hall of Fame' : 'Hall of Shame') + ' · BigDForever';
+  document.getElementById('eyebrow').textContent = h.eyebrow;
+  document.getElementById('title').textContent = h.title;
+  document.getElementById('lede').textContent = h.lede;
+  document.getElementById('tab-fame').setAttribute('aria-selected', which === 'fame');
+  document.getElementById('tab-shame').setAttribute('aria-selected', which === 'shame');
+  hallEl.innerHTML = h.wings.map(w => `
+    <section class="wing">
+      <div class="wing-head"><h2>${esc(w.name)}</h2><p>${esc(w.desc)}</p></div>
+      <div class="cards">${w.list.length ? w.list.map((c,i) => `
+        <article class="card">
+          <span class="rank">${c.week ? 'Week ' + esc(c.week) : '#' + (i+1)}</span>
+          <span class="name">${esc(c.name)}</span>
+          <span class="fac ${c.faction === 'horde' ? 'horde' : 'alliance'}">${c.faction === 'horde' ? 'Horde' : 'Alliance'}</span>
+          <p class="feat">${esc(c.feat)}</p>
+          ${w.strikes ? `<span class="strikes" aria-label="${c.strikes||1} of 3 strikes">${[1,2,3].map(n => `<i class="${n <= (c.strikes||1) ? 'on' : ''}"></i>`).join('')}</span>` : ''}
+          ${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noopener">See the proof</a>` : ''}
+        </article>`).join('') : `<div class="pedestal"><b>Empty pedestal</b><span>${esc(w.empty)}</span></div>`}
+      </div>
+    </section>`).join('');
+  try { localStorage.setItem('bigd-hall', which); } catch(e){}
+}
+document.getElementById('tab-fame').onclick = () => show('fame');
+document.getElementById('tab-shame').onclick = () => show('shame');
+let start = location.hash === '#shame' ? 'shame' : 'fame';
+show(start);
+</script>
+</body>
+</html>
