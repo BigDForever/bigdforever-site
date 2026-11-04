@@ -237,6 +237,10 @@ footer .wrap{padding-block:28px;color:var(--muted);font-size:13px;display:flex;f
         <div class="tile"><h3>Tiny D moments</h3><p>You played yourself. The Tiny D Award is waiting.</p></div>
         <div class="tile"><h3>Postcards</h3><p>Loot, scenery, mounts, outfits. Make Love Not War.</p></div>
       </div>
+      <div class="cta">
+        <a class="btn" id="chaos-submit" href="#" target="_blank" rel="noopener">Post it on the form</a>
+        <a class="btn ghost" id="chaos-discord" href="#" target="_blank" rel="noopener">Drop it in Discord #brags</a>
+      </div>
     </div>
   </section>
 
@@ -347,6 +351,7 @@ const BIGD = {
 const $ = id => document.getElementById(id);
 ["nav-discord","cta-discord"].forEach(id => $(id).href = BIGD.discord);
 $("cta-submit").href = BIGD.form;
+$("chaos-submit").href = BIGD.form; $("chaos-discord").href = BIGD.discord;
 
 // links
 const L = [["Join the Discord", BIGD.discord, true], ["Submit a brag", BIGD.form], ["TikTok", BIGD.tiktok], ["YouTube", BIGD.youtube]];
