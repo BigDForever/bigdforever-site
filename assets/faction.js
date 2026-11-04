@@ -95,9 +95,12 @@
     } else {
       swap = '<a class="fx-swap" href="./?pick"><img src="assets/art/icon-192.png" alt="" class="fx-round"><span><small>Not chosen yet</small><b>Pick your side</b></span></a>';
     }
+    var cog = '<svg class="fx-cog" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M19.4 13a7.6 7.6 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.4 7.4 0 0 0-1.7-1l-.4-2.6h-4l-.4 2.6a7.4 7.4 0 0 0-1.7 1l-2.5-1-2 3.5L4.6 11a7.6 7.6 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.4 7.4 0 0 0 1.7 1l.4 2.6h4l.4-2.6a7.4 7.4 0 0 0 1.7-1l2.5 1 2-3.5zM12 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>';
+    var settings = '<div class="fx-set"><div class="fx-set-h">' + cog + "<span>Settings</span></div>" + swap +
+      (s ? '<a class="fx-replay" href="./?pick">Watch the pick-your-side screen again</a>' : "") + "</div>";
     menu.innerHTML = '<div class="fx-menu-in"><div class="fx-links">' + list + "</div>" +
       '<div class="fx-cta"><a class="fx-btn" href="' + FORM + '" target="_blank" rel="noopener">Submit a brag</a>' +
-      '<a class="fx-btn fx-dc" href="https://discord.gg/Q4wMTybW6b" target="_blank" rel="noopener">Discord</a></div>' + swap + "</div>";
+      '<a class="fx-btn fx-dc" href="https://discord.gg/Q4wMTybW6b" target="_blank" rel="noopener">Discord</a></div>' + settings + "</div>";
     head.appendChild(menu);
 
     function open(v) {
