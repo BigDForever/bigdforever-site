@@ -155,7 +155,7 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);paddin
       <p class="hint" id="hint" hidden>Zone names are hidden at this size. Pick Kalimdor or Eastern Kingdoms above to zoom in, or just tap a zone.</p>
       <div class="map">
         <svg id="war" viewBox="0 0 1000 840" role="group" aria-label="Sketch map of Azeroth. Each zone is a button."></svg>
-        <div class="empty-note" id="emptyNote" hidden><b>No blood spilled yet.</b><span>The war starts 4 Nov 23:00 UTC.</span></div>
+        <div class="empty-note" id="emptyNote" hidden><b>No blood spilled yet.</b><span id="emptySub">The war starts at midnight, Belgrade time.</span></div>
       </div>
       <div class="legend" aria-label="Legend">
         <span><i class="sw a"></i>Alliance-held</span>
@@ -455,6 +455,7 @@ function render(){
   // totals, empty note, top 5
   const tot=ALL.reduce((s,z)=>({a:s.a+DATA[z.n].a,h:s.h+DATA[z.n].h}),{a:0,h:0});
   document.getElementById("emptyNote").hidden=(tot.a+tot.h)>0;
+  (function(){const L=Date.parse("2026-11-04T23:00:00Z"),el=document.getElementById("emptySub");if(!el)return;el.textContent=Date.now()<L?"The war starts "+new Date(L).toLocaleString([],{weekday:"short",hour:"2-digit",minute:"2-digit"})+", your time.":"Servers are live. First kill paints the zone.";})();
   window.TOT=tot;
   const top=ALL.map(z=>({n:z.n,...DATA[z.n],t:DATA[z.n].a+DATA[z.n].h})).filter(z=>z.t>0).sort((x,y)=>y.t-x.t||x.n.localeCompare(y.n)).slice(0,5);
   const ol=document.getElementById("top5");
