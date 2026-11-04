@@ -125,3 +125,6 @@ html.fx-gating body > *:not(.fx-gate){visibility:hidden}
   .fx-horde .fx-name,.fx-horde .fx-tag{grid-column:1}
   .fx-horde .fx-name{grid-row:1}.fx-horde .fx-tag{grid-row:2}
 }
+/* the crest is wider and bulkier than the Horde banner at the same height: shrink it so both read the same size */
+.fx-alliance .fx-art{height:calc(min(46vh,340px) * .85)}
+@media (max-width:700px){.fx-alliance .fx-art{height:calc(min(24vh,170px) * .85)}}
