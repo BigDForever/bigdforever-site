@@ -395,7 +395,10 @@ const BIGD = {
   // Automatic mode: paste the "Publish to web" CSV links of the Google Sheet's Score and Featured tabs.
   // Score tab rows:    alliance,<number> / horde,<number> / updated,<text>
   // Featured tab rows: title,character,faction,category,url,image (first row = these headers)
-  sheets: { score: "", featured: "" },
+  sheets: {
+    score:    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSML71-50n_CFnIRmaFP1wiJG7Lw41zfRsSMJcQ_gvIa04f5SYwQy-s5gga52sbK9KZ6sFjzqL2mNAw/pub?single=true&output=csv&gid=1623430928",   // Score tab (alliance / horde / updated)
+    featured: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSML71-50n_CFnIRmaFP1wiJG7Lw41zfRsSMJcQ_gvIa04f5SYwQy-s5gga52sbK9KZ6sFjzqL2mNAw/pub?single=true&output=csv&gid=890798058"     // Featured tab (title,character,faction,category,url,image)
+  },
   // Manual fallback, used when the sheet links are empty or can't be loaded
   score: { alliance: 0, horde: 0, updated: "" },   // e.g. updated: "Thu 5 Nov, 18:00"
   challenge: { week: 1, target: 10, ends: "Tuesday 10 November, 23:59 UTC" },
