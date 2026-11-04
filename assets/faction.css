@@ -1,0 +1,122 @@
+/* BigDForever faction layer. Pages keep their own styles; this re-tints them once a side is picked
+   (Alliance: navy night with gold; Horde: blood-black with crimson) and styles the entry gate, header and menu. */
+
+/* ---------- faction palettes (override each page's :root tokens) ---------- */
+html[data-side="alliance"]{
+  --ink:#0b1220; --panel:#111b2e; --panel2:#17233b; --line:#27385c; --muted:#9ca8c0;
+  --gold:#d9a441; --tint:#7aa6ea; --tint-deep:#14233f;
+  --side:#7aa6ea; --side-2:#d9a441; --side-deep:#14233f; --side-glow:rgba(122,166,234,.55);
+}
+html[data-side="horde"]{
+  --ink:#120a09; --panel:#1c110f; --panel2:#261614; --line:#42251f; --muted:#b59c95;
+  --gold:#e2574a; --tint:#e2574a; --tint-deep:#3a1512;
+  --side:#e2574a; --side-2:#13110f; --side-deep:#3a1512; --side-glow:rgba(226,87,74,.55);
+}
+/* the faction "line mark" under the header and a faint war-paint wash at the top of every page */
+html[data-side] body{
+  background-image:radial-gradient(120% 60% at 50% -10%,color-mix(in srgb,var(--side) 16%,transparent),transparent 60%);
+  background-repeat:no-repeat;
+}
+
+/* ---------- header ---------- */
+header.fx-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:color-mix(in srgb,var(--ink) 92%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+header.fx-head::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:4px;pointer-events:none;background:var(--line)}
+html[data-side="alliance"] header.fx-head::after{background:linear-gradient(var(--side) 0 2px,transparent 2px 3px,var(--side-2) 3px 4px)}
+html[data-side="horde"] header.fx-head::after{height:6px;bottom:-6px;background:var(--side);
+  -webkit-mask:linear-gradient(#000 0 3px,transparent 3px),conic-gradient(from 135deg at 50% 0,#000 0 90deg,transparent 0) 0 3px/14px 3px repeat-x;
+  mask:linear-gradient(#000 0 3px,transparent 3px),conic-gradient(from 135deg at 50% 0,#000 0 90deg,transparent 0) 0 3px/14px 3px repeat-x}
+header.fx-head > .wrap, header.fx-head:not(:has(> .wrap)){display:flex;align-items:center;gap:12px}
+.fx-badge{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--paper);min-width:0;margin-right:auto}
+header.fx-head .fx-badge img{height:42px;width:auto;border-radius:0;filter:drop-shadow(0 0 10px var(--side-glow,transparent))}
+header.fx-head .fx-badge img.fx-round{width:36px;height:36px;border-radius:50%}
+.fx-badge-t{display:flex;flex-direction:column;line-height:1}
+.fx-badge-t b{font-family:var(--display);font-weight:800;font-size:26px;color:var(--side,var(--gold))}
+.fx-badge-t small{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.fx-badge:focus-visible,.fx-burger:focus-visible{outline:3px solid var(--paper);outline-offset:3px;border-radius:4px}
+.fx-burger{margin-left:auto;width:46px;height:42px;display:flex;flex-direction:column;justify-content:center;gap:6px;padding:0 10px;border:1px solid var(--line);border-radius:5px;background:var(--panel);cursor:pointer}
+.fx-burger span{display:block;height:3px;border-radius:2px;background:var(--paper);transition:transform .2s,opacity .2s}
+.fx-open .fx-burger span:nth-child(1){transform:translateY(9px) rotate(45deg)}
+.fx-open .fx-burger span:nth-child(2){opacity:0}
+.fx-open .fx-burger span:nth-child(3){transform:translateY(-9px) rotate(-45deg)}
+
+/* ---------- menu ---------- */
+.fx-menu{position:absolute;right:max(16px,env(safe-area-inset-right,0px));top:calc(100% + 10px);width:min(340px,calc(100vw - 32px));z-index:41}
+.fx-menu[hidden]{display:none}
+.fx-menu-in{display:flex;flex-direction:column;gap:14px;padding:16px;border:1px solid var(--line);border-top:3px solid var(--side,var(--gold));border-radius:6px;background:var(--panel);box-shadow:0 24px 60px -12px #000}
+.fx-links{display:flex;flex-direction:column}
+.fx-links a{font-family:var(--cond);font-weight:700;font-size:20px;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;color:var(--paper);padding:9px 6px;border-bottom:1px solid var(--line)}
+.fx-links a:hover,.fx-links a:focus-visible{color:var(--side,var(--gold));outline:none}
+.fx-links a[aria-current="page"]{color:var(--side,var(--gold))}
+.fx-links a[aria-current="page"]::before{content:"\25B8  "}
+.fx-cta{display:flex;gap:10px}
+.fx-btn{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--cond);font-weight:700;font-size:17px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;padding:10px 12px;border-radius:4px;background:var(--gold);color:var(--ink)}
+html[data-side="horde"] .fx-btn{color:#fff}
+.fx-btn.fx-dc{background:#5865f2;color:#fff}
+.fx-swap{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:var(--paper);text-decoration:none;cursor:pointer;padding:10px 12px;border:1px dashed var(--line);border-radius:6px;background:transparent;opacity:.42;filter:grayscale(.85);transition:opacity .2s,filter .2s}
+.fx-swap:hover,.fx-swap:focus-visible{opacity:1;filter:none;outline:none}
+header.fx-head .fx-swap img{height:44px;width:auto;border-radius:0}
+header.fx-head .fx-swap img.fx-round{width:40px;height:40px;border-radius:50%}
+.fx-swap span{display:flex;flex-direction:column;line-height:1.2}
+.fx-swap small{font-size:12px;color:var(--muted)}
+.fx-swap b{font-family:var(--cond);font-size:19px;letter-spacing:.04em;text-transform:uppercase}
+
+/* ---------- entry gate ---------- */
+html.fx-gating{overflow:hidden}
+html.fx-gating body > *:not(.fx-gate){visibility:hidden}
+.fx-gate{position:fixed;inset:0;z-index:100;background:#070608;color:#ece4d6;display:flex;flex-direction:column;
+  padding:max(18px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  transition:opacity .5s ease}
+.fx-gate.fx-out{opacity:0;pointer-events:none}
+.fx-gate-top{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.fx-word{font-family:"Grenze Gotisch",serif;font-weight:800;font-size:20px;letter-spacing:.02em;color:#a69c8b}
+.fx-word span{color:#d9a441}
+.fx-gate h1{margin:0;font-family:"Grenze Gotisch",serif;font-weight:900;font-size:clamp(34px,6vw,64px);line-height:1}
+.fx-halves{flex:1;display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;min-height:0}
+.fx-vs{align-self:center;font-family:"Grenze Gotisch",serif;font-weight:800;font-size:26px;color:#4d463d;padding:0 4px;transition:opacity .3s}
+.fx-half{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:0;
+  font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:12px;transition:opacity .35s,filter .35s}
+.fx-half img{position:relative;height:min(46vh,340px);width:auto;max-width:80%;transition:transform .35s,filter .35s;filter:drop-shadow(0 12px 30px #000)}
+.fx-name{position:relative;font-family:"Grenze Gotisch",serif;font-weight:900;font-size:clamp(40px,6vw,72px);line-height:.9;transition:color .35s,text-shadow .35s}
+.fx-tag{position:relative;font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:17px;letter-spacing:.08em;text-transform:uppercase;color:#a69c8b}
+.fx-alliance .fx-name{color:#8fb5ee}
+.fx-horde .fx-name{color:#ea6a5d}
+.fx-glow{position:absolute;inset:0;opacity:0;transition:opacity .35s;pointer-events:none}
+.fx-alliance .fx-glow{background:radial-gradient(closest-side at 50% 45%,rgba(42,79,143,.55),transparent 75%)}
+.fx-horde .fx-glow{background:radial-gradient(closest-side at 50% 45%,rgba(179,38,30,.5),transparent 75%)}
+/* hover / focus: the chosen side glows, the other fades */
+.fx-half:hover .fx-glow,.fx-half:focus-visible .fx-glow{opacity:1}
+.fx-half:hover img,.fx-half:focus-visible img{transform:scale(1.06)}
+.fx-alliance:hover img,.fx-alliance:focus-visible img{filter:drop-shadow(0 0 28px rgba(122,166,234,.75)) brightness(1.12)}
+.fx-horde:hover img,.fx-horde:focus-visible img{filter:drop-shadow(0 0 28px rgba(226,87,74,.8)) brightness(1.12)}
+.fx-alliance:hover .fx-name,.fx-alliance:focus-visible .fx-name{text-shadow:0 0 24px rgba(122,166,234,.7)}
+.fx-horde:hover .fx-name,.fx-horde:focus-visible .fx-name{text-shadow:0 0 24px rgba(226,87,74,.75)}
+.fx-halves:has(.fx-half:hover) .fx-half:not(:hover),
+.fx-halves:has(.fx-half:focus-visible) .fx-half:not(:focus-visible){opacity:.28;filter:grayscale(.85) brightness(.7)}
+.fx-halves:has(.fx-half:hover) .fx-vs{opacity:.3}
+.fx-half:focus{outline:none}
+.fx-half:focus-visible{outline:2px solid #ece4d6;outline-offset:-8px;border-radius:8px}
+/* after the click: the chosen side takes the screen, then the gate fades into the site */
+.fx-chosen .fx-vs{opacity:0}
+.fx-chose-alliance .fx-horde,.fx-chose-horde .fx-alliance{opacity:0;filter:grayscale(1)}
+.fx-chose-alliance .fx-alliance img,.fx-chose-horde .fx-horde img{transform:scale(1.12)}
+.fx-chose-alliance .fx-alliance .fx-glow,.fx-chose-horde .fx-horde .fx-glow{opacity:1}
+.fx-gate-foot{margin:0;text-align:center;font-size:12px;color:#5f574c;font-family:"Barlow",sans-serif}
+
+@media (max-width:700px){
+  .fx-halves{grid-template-columns:1fr;grid-template-rows:1fr auto 1fr}
+  .fx-vs{justify-self:center;font-size:20px;padding:0}
+  .fx-half{flex-direction:row;gap:16px}
+  .fx-half img{height:min(24vh,170px);max-width:42%}
+  .fx-half .fx-txt{display:flex;flex-direction:column}
+  .fx-name{font-size:44px}
+  .fx-tag{font-size:14px}
+  .fx-badge-t b{font-size:22px}
+  header.fx-head .fx-badge img{height:36px}
+}
+@media (max-width:700px){
+  .fx-half{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;align-content:center;justify-items:start;column-gap:16px;row-gap:4px;text-align:left}
+  .fx-half img{grid-row:1 / span 2;max-width:none}
+  .fx-half .fx-name{align-self:end}
+  .fx-half .fx-tag{align-self:start}
+}
+@media (prefers-reduced-motion:reduce){.fx-gate,.fx-half,.fx-half img,.fx-name,.fx-glow,.fx-vs,.fx-swap,.fx-burger span{transition:none!important}}

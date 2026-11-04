@@ -206,6 +206,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 .ch::after{content:"WANTED";position:absolute;top:16px;right:14px;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.18em;color:var(--muted);border:1.5px solid var(--line);padding:2px 6px;transform:rotate(4deg)}
 </style>
 
+<link rel="stylesheet" href="assets/faction.css">
+<script src="assets/faction.js"></script>
 </head>
 <body>
 <header class="top band">
@@ -241,16 +243,6 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 
   <div class="ticker" aria-hidden="true"><div class="track"><span>BigD or Go Home</span><span>For the Horde</span><span>For the Alliance</span><span>Pics or it didn't happen</span><span>Enemy salt counts double</span><span>No kill-trading</span><span>Tarren Mill remembers</span><span>BigD or Go Home</span><span>For the Horde</span><span>For the Alliance</span><span>Pics or it didn't happen</span><span>Enemy salt counts double</span><span>No kill-trading</span><span>Tarren Mill remembers</span></div></div>
 
-  <section class="pick band" aria-labelledby="pick-h">
-    <div class="wrap">
-      <h2 id="pick-h">Pick your side.</h2>
-      <div class="sides" role="group" aria-label="Faction">
-        <button type="button" class="side a" id="side-alliance" data-side="alliance" aria-pressed="false"><span class="t">Alliance</span><span class="s">Order, honour, polished boots</span></button>
-        <button type="button" class="side h" id="side-horde" data-side="horde" aria-pressed="false"><span class="t">Horde</span><span class="s">Zug zug. Lok'tar.</span></button>
-      </div>
-      <p class="cry" id="cry"></p>
-    </div>
-  </section>
 
   <section class="sec band" id="score" aria-labelledby="score-h">
     <div class="wrap">
@@ -501,15 +493,6 @@ function tick() {
 }
 tick();
 
-// pick side
-const CRY = { alliance: "For the Alliance. Polish your boots, the war report is watching.", horde: "Lok'tar. The war camp is open, and the gnomes are nervous." };
-function setSide(s) {
-  document.documentElement.dataset.side = s;
-  ["alliance", "horde"].forEach(x => $("side-" + x).setAttribute("aria-pressed", x === s));
-  $("cry").textContent = CRY[s] || "";
-}
-document.querySelectorAll(".side").forEach(b => b.addEventListener("click", () => { setSide(b.dataset.side); try { localStorage.setItem("bigd-side", b.dataset.side); } catch (e) {} }));
-try { const s = localStorage.getItem("bigd-side"); if (s === "alliance" || s === "horde") setSide(s); } catch (e) {}
 </script>
 
 </body>
