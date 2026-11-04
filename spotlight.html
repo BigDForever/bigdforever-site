@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Streamer Spotlight · BigDForever</title>
+<meta name="description" content="Streamers who joined the BigDForever war. Their best WoW Forever moments, played on their own Twitch channels.">
+<meta property="og:title" content="Streamer Spotlight · BigDForever">
+<meta property="og:image" content="https://bigdforever.com/assets/art/share.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:type" content="website"><meta property="og:site_name" content="BigDForever"><meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/art/icon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="assets/art/icon-192.png"><link rel="apple-touch-icon" href="assets/art/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@800;900&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a "wanted poster" per streamer. Big name, one featured clip playing on their channel, then a wall of clip cards that load the player only when tapped. */
+:root{
+  --ink:#13110f; --panel:#1c1915; --panel2:#24201a; --line:#342e26; --paper:#ece4d6; --muted:#a69c8b; --gold:#d9a441;
+  --crimson-hi:#e0352a; --twitch:#9146ff;
+  --display:"Grenze Gotisch","Times New Roman",serif; --cond:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--body);font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+a{color:var(--gold)}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:44px}
+.top{display:flex;align-items:center;gap:12px;padding-block:14px;border-bottom:1px solid var(--line);max-width:1040px;margin:0 auto}
+.top a.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--paper);font-family:var(--display);font-weight:800;font-size:24px}
+.top img{width:34px;height:34px;border-radius:50%}
+.top .brand span{color:var(--gold)}
+.top .back{margin-left:auto;white-space:nowrap;font-family:var(--cond);font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+h1{font-family:var(--display);font-weight:900;font-size:clamp(46px,9vw,88px);line-height:.9;margin:8px 0 14px;text-wrap:balance}
+h2{font-family:var(--display);font-weight:800;font-size:clamp(30px,5vw,44px);line-height:1;margin:0 0 6px}
+p{margin:0;max-width:66ch}
+.lede{font-size:19px}
+.muted{color:var(--muted)}
+.poster{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:22px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:24px;align-items:start;position:relative}
+.poster::before{content:"";position:absolute;inset:7px;border:1px solid #2b251e;border-radius:7px;pointer-events:none}
+.stamp{display:inline-block;font-family:var(--cond);font-weight:700;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);border:2px solid var(--gold);border-radius:3px;padding:2px 10px;transform:rotate(-3deg)}
+.who h2{font-size:clamp(40px,7vw,64px);margin:10px 0 8px;overflow-wrap:anywhere}
+.stats{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--mono);font-size:13px;color:var(--muted);margin:10px 0 16px}
+.stats b{color:var(--paper);font-weight:500}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--cond);font-weight:700;font-size:19px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;padding:11px 20px;border-radius:4px;background:var(--gold);color:var(--ink)}
+.btn.tw{background:var(--twitch);color:#fff}
+.btn.discord{background:#5865f2;color:#fff}
+.btn.ghost{background:var(--panel2);color:var(--paper)}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+.player{position:relative;aspect-ratio:16/9;background:#000;border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.player iframe,.player img{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
+.player button{all:unset;cursor:pointer;position:absolute;inset:0;display:grid;place-items:center}
+.player button::after{content:"";width:64px;height:64px;border-radius:50%;background:rgba(19,17,15,.78) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5v14l11-7z' fill='%23ece4d6'/%3E%3C/svg%3E") center/30px no-repeat;border:2px solid var(--gold)}
+.player button:focus-visible::after{outline:3px solid var(--paper);outline-offset:3px}
+.cap{font-family:var(--cond);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.02em;margin-top:10px;line-height:1.15}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;margin-top:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 12px 14px;display:flex;flex-direction:column;gap:8px}
+.card h3{font-family:var(--cond);font-size:21px;line-height:1.1;text-transform:uppercase;letter-spacing:.02em;margin:4px 0 0}
+.tag{align-self:flex-start;font-family:var(--cond);font-weight:700;font-size:14px;letter-spacing:.05em;text-transform:uppercase;border:1px solid #5a4520;background:#2a2112;color:var(--gold);border-radius:3px;padding:1px 8px}
+.tag.shame{border-color:#5a2420;background:#2a1412;color:var(--crimson-hi)}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.meta a{color:var(--muted)}
+.rules{border:1px solid var(--line);border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;background:var(--panel)}
+.rules b{font-family:var(--cond);font-size:20px;letter-spacing:.04em;text-transform:uppercase}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+main.wrap{margin-top:28px}
+@media (max-width:760px){.poster{grid-template-columns:1fr;padding:18px}}
+@media (max-width:420px){.top .back{font-size:14px}.top a.brand{font-size:21px}}
+</style>
+<link rel="stylesheet" href="assets/faction.css?v=20261104w">
+<script src="assets/faction.js?v=20261104w"></script>
+</head>
+<body>
+<header class="top"><a class="brand" href="./"><img src="emblem.jpg" alt="">Big<span>D</span>Forever</a><a class="back" href="./">Back to the war</a></header>
+<main class="wrap">
+  <section>
+    <div class="eyebrow">Streamer Spotlight · they joined the war</div>
+    <h1>Streamer Spotlight.</h1>
+    <p class="lede">The streamers riding with BigD this season. Their best moments, played on their own channels so the views go straight to them. Go say hi. Bring snacks.</p>
+  </section>
+
+  <div id="list" style="display:flex;flex-direction:column;gap:44px"></div>
+
+  <section class="rules">
+    <b>Streamer? Want a spot on the wall?</b>
+    <p>Free, no contract, no catch. We clip your Forever moments, credit you every time, link back to your stream, and pull anything you want gone. Email <a href="mailto:bigdforever.gg@gmail.com">bigdforever.gg@gmail.com</a> or find us on Discord.</p>
+    <div class="cta" style="margin-top:6px">
+      <a class="btn discord" href="https://discord.gg/Q4wMTybW6b" target="_blank" rel="noopener">Join the Discord</a>
+      <a class="btn ghost" href="past.html">Taste of the Past</a>
+    </div>
+  </section>
+
+  <footer>BigDForever is a fan site. Not affiliated with or endorsed by Blizzard Entertainment or Twitch. Clips belong to their creators and play from Twitch; nothing is re-hosted. Clip titles are the ones Twitch viewers gave them. Numbers from 4 November 2026.</footer>
+</main>
+<script>
+// EDIT THIS BLOCK. One entry per streamer who said yes. Clip "s" = the Twitch clip slug (the end of the clip link), "th" = thumbnail id.
+// Only add a streamer after they said yes. If they ask to be removed, delete their entry.
+const SPOT = [
+  {
+    login: "hozitojones", name: "Hozitojones", no: 1, since: "4 Nov 2026",
+    stamp: "First to join",
+    blurb: "The first streamer to raise his hand. A Forever beta tournament regular: duels, deep crits, and at least one nap on tournament day. Lost for words? Not often.",
+    followers: 47578, plays: "World of Warcraft",
+    featured: {s:"RoughTangibleStarlingCclamChamp-dldvek3HVVis6IEw", t:"Lost for words while beating down a lock", th:"45a8c62e-1a96-49e1-8794-594755bffb4f"},
+    clips: [
+      {s:"TardyModernPieArgieB8-e86oM014EKnauQNe", t:"HARD win vs Feral Druid (Duel 3)", v:3038, len:60, d:"17 Oct", th:"143fb68a-dd9f-40d6-aa2a-296f32351c2b", tag:"Bear-ly Survived"},
+      {s:"PlacidFunSangPeoplesChamp-WiBTuWrIU5G9GgIE", t:"Falls asleep and almost gets DQ'd", v:4601, len:39, d:"17 Oct", th:"74f58e92-bba5-4212-b6a1-eceaaae57448", tag:"Tiny D", shame:true},
+      {s:"OddSpookyGalagoTheRinger-fMks29mzT8ZmQPGE", t:"Viagra strat to win the tournament", v:1475, len:25, d:"17 Oct", th:"4be47de9-2e88-4ad2-9c2c-34e5006262c8", tag:"Go BigD or Go Home"},
+      {s:"DignifiedWrongSpindleKippa-S6TDtxY6Jhn2kezf", t:"Sharks munching gnomes", v:1674, len:25, d:"8 Oct", th:"a6d41996-971c-4ca0-acb9-779047825514", tag:"Gnomilation"},
+      {s:"MagnificentRepleteRadishSeemsGood-IHMDsLlTUNVAHXVY", t:"Spider trinket flag carrier", v:1510, len:25, d:"8 Oct", th:"41aaab1b-1a59-457b-a9b5-96b498202a15", tag:"Run, Forrest, Run"},
+      {s:"CooperativeAdorableBeaverANELE-DpzN_0HVbj0NI3Je", t:"WoW Forever roomp", v:20, len:36, d:"2 Nov", th:"404d2d1a-784b-49e1-8bca-60e0e8114d81", tag:"Fresh"}
+    ]
+  }
+];
+const TH = id => `https://static-cdn.jtvnw.net/twitch-video-assets/twitch-vap-video-assets-prod-us-west-2/${id}/landscape/thumb/thumb-0000000000-1920x1080.jpg`;
+const PARENTS = ["bigdforever.com","www.bigdforever.com",location.hostname].filter((h,i,a)=>h && a.indexOf(h)===i).map(h=>"parent="+encodeURIComponent(h)).join("&");
+const embed = s => `https://clips.twitch.tv/embed?clip=${encodeURIComponent(s)}&${PARENTS}&autoplay=true`;
+const clipUrl = (login,s) => `https://www.twitch.tv/${login}/clip/${s}`;
+const fmt = n => n >= 1000 ? (n/1000).toFixed(1).replace(/\.0$/,'') + 'K' : String(n);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const player = (c, label) => `<div class="player"><img src="${TH(c.th)}" alt="" loading="lazy"><button type="button" data-clip="${esc(c.s)}" aria-label="Play: ${esc(label)}"></button></div>`;
+document.getElementById("list").innerHTML = SPOT.map(p => `
+  <section aria-labelledby="sp-${p.login}">
+    <article class="poster">
+      <div class="who">
+        <span class="stamp">${esc(p.stamp)}</span>
+        <h2 id="sp-${p.login}">${esc(p.name)}</h2>
+        <div class="stats"><span>No. <b>${String(p.no).padStart(2,'0')}</b></span><span><b>${fmt(p.followers)}</b> followers</span><span>Joined <b>${esc(p.since)}</b></span></div>
+        <p>${esc(p.blurb)}</p>
+        <div class="cta" style="margin-top:16px">
+          <a class="btn tw" href="https://www.twitch.tv/${p.login}" target="_blank" rel="noopener">Watch live on Twitch</a>
+        </div>
+      </div>
+      <div>
+        ${player(p.featured, p.featured.t)}
+        <div class="cap">${esc(p.featured.t)}</div>
+      </div>
+    </article>
+    <div class="grid">${p.clips.map(c => `
+      <article class="card">
+        ${player(c, c.t)}
+        <h3>${esc(c.t)}</h3>
+        <span class="tag${c.shame ? ' shame' : ''}">${esc(c.tag)}</span>
+        <div class="meta"><span>${esc(c.d)}</span><span>${c.len}s</span><span>${fmt(c.v)} views</span><a href="${clipUrl(p.login,c.s)}" target="_blank" rel="noopener">Open on Twitch</a></div>
+      </article>`).join('')}
+    </div>
+  </section>`).join('');
+document.addEventListener("click", e => {
+  const b = e.target.closest("button[data-clip]"); if (!b) return;
+  const f = document.createElement("iframe");
+  f.src = embed(b.dataset.clip); f.allowFullscreen = true; f.title = b.getAttribute("aria-label");
+  b.parentElement.replaceChildren(f);
+});
+</script>
+</body>
+</html>

@@ -18,6 +18,7 @@
     ["challenge.html", "Weekly Challenge"],
     ["halls.html", "Hall of Fame & Shame"],
     ["past.html", "Taste of the Past"],
+    ["spotlight.html", "Streamer Spotlight"],
     ["clips.html", "How to clip"],
     ["card.html", "Brag card maker"]
   ];
