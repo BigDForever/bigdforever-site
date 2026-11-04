@@ -130,3 +130,36 @@ html.fx-gating body > *:not(.fx-gate){visibility:hidden}
 /* the crest is wider and bulkier than the Horde banner at the same height: shrink it so both read the same size */
 .fx-alliance .fx-art{height:calc(min(46vh,340px) * .85)}
 @media (max-width:700px){.fx-alliance .fx-art{height:calc(min(24vh,170px) * .85)}}
+
+/* ---------- faction scenery (Dejan's art): a scene at the top of every page, fading into the page colour ---------- */
+html[data-side="alliance"] body{
+  background-image:
+    linear-gradient(to bottom,rgba(11,24,52,.62) 0,rgba(11,24,52,.78) 340px,var(--ink) 640px),
+    url("art/alliance-bg-desktop.jpg");
+  background-repeat:no-repeat;background-position:center top;background-size:100% auto,min(1800px,100%) auto}
+html[data-side="horde"] body{
+  background-image:
+    linear-gradient(to bottom,rgba(10,6,5,.58) 0,rgba(10,6,5,.76) 340px,var(--ink) 640px),
+    url("art/horde-bg-desktop.jpg");
+  background-repeat:no-repeat;background-position:center top;background-size:100% auto,min(1800px,100%) auto}
+@media (max-width:760px){
+  html[data-side="alliance"] body{background-image:linear-gradient(to bottom,rgba(11,24,52,.6) 0,rgba(11,24,52,.8) 380px,var(--ink) 720px),url("art/alliance-bg-phone.jpg");background-size:100% auto,100% auto}
+  html[data-side="horde"] body{background-image:linear-gradient(to bottom,rgba(10,6,5,.55) 0,rgba(10,6,5,.78) 380px,var(--ink) 720px),url("art/horde-bg-phone.jpg");background-size:100% auto,100% auto}
+}
+/* the home hero's old split tint isn't needed on top of the scene */
+html[data-side] .hero::before{opacity:0}
+html[data-side] .hero{border-bottom-color:transparent}
+
+/* ---------- section headings: gold filigree for the Alliance, a red brush stroke for the Horde ---------- */
+html[data-side] .head h2{padding-bottom:30px}
+html[data-side="alliance"] .head h2::after{width:min(320px,85%);height:48px;bottom:-12px;clip-path:none;
+  background:url("art/alliance-divider.png") left center/contain no-repeat}
+html[data-side="horde"] .head h2::after{width:min(240px,70%);height:30px;bottom:0;clip-path:none;
+  background:url("art/horde-brush-stroke.png") left center/100% 100% no-repeat}
+/* page titles on the inner pages get the same mark */
+html[data-side] main > div:first-child h1::after,html[data-side] .intro h1::after{content:"";display:block;margin-top:14px}
+html[data-side="alliance"] main > div:first-child h1::after,html[data-side="alliance"] .intro h1::after{width:min(360px,85%);height:54px;background:url("art/alliance-divider.png") left center/contain no-repeat}
+html[data-side="horde"] main > div:first-child h1::after,html[data-side="horde"] .intro h1::after{width:min(260px,70%);height:32px;background:url("art/horde-brush-stroke.png") left center/100% 100% no-repeat}
+
+/* ---------- Horde red buttons get the bronze edge ---------- */
+html[data-side="horde"] .btn:not(.ghost),html[data-side="horde"] .fx-btn:not(.fx-dc){box-shadow:inset 0 0 0 2px #c08a3e}
