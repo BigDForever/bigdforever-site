@@ -4,6 +4,7 @@
 (function () {
   var KEY = "bigd-side";
   var FORM = "https://tally.so/r/5XbVeZ";
+  var FEEDBACK = "https://tally.so/r/yXMa9W";
   var LINES = 8; // number of funny hoard lines set up in the Tally form
   var SIDES = {
     alliance: { name: "Alliance", form: "Alliance", img: "assets/art/alliance-crest.png", badge: "assets/art/alliance-badge.png", word: "assets/art/alliance-lettering.png", tag: "Order, honour, polished boots", cry: "For the Alliance" },
@@ -15,7 +16,8 @@
     ["challenge.html", "Weekly Challenge"],
     ["halls.html", "Hall of Fame & Shame"],
     ["past.html", "Taste of the Past"],
-    ["clips.html", "How to clip"]
+    ["clips.html", "How to clip"],
+    ["card.html", "Brag card maker"]
   ];
   var root = document.documentElement;
 
@@ -85,7 +87,7 @@
     var list = PAGES.map(function (p) {
       var cur = (p[0] === here) || (p[0] === "./" && (here === "./" || here === "index.html"));
       return '<a href="' + p[0] + '"' + (cur ? ' aria-current="page"' : "") + ">" + p[1] + "</a>";
-    }).join("");
+    }).join("") + '<a href="' + FEEDBACK + '" target="_blank" rel="noopener" class="fx-ext">Feedback: tell us straight</a>';
     var other = s === "alliance" ? "horde" : s === "horde" ? "alliance" : "";
     var swap = "";
     if (other) {

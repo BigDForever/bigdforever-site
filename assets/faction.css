@@ -47,6 +47,8 @@ header.fx-head .fx-badge img.fx-round{width:36px;height:36px;border-radius:50%}
 .fx-links a{font-family:var(--cond);font-weight:700;font-size:20px;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;color:var(--paper);padding:9px 6px;border-bottom:1px solid var(--line)}
 .fx-links a:hover,.fx-links a:focus-visible{color:var(--side,var(--gold));outline:none}
 .fx-links a[aria-current="page"]{color:var(--side,var(--gold))}
+.fx-links a.fx-ext{color:var(--gold);font-size:17px;border-bottom:0}
+.fx-links a.fx-ext::after{content:" \2197";font-size:.85em}
 .fx-links a[aria-current="page"]::before{content:"\25B8  "}
 .fx-cta{display:flex;gap:10px}
 .fx-btn{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--cond);font-weight:700;font-size:17px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;padding:10px 12px;border-radius:4px;background:var(--gold);color:var(--ink)}
