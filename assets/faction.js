@@ -88,7 +88,7 @@
     var list = PAGES.map(function (p) {
       var cur = (p[0] === here) || (p[0] === "./" && (here === "./" || here === "index.html"));
       return '<a href="' + p[0] + '"' + (cur ? ' aria-current="page"' : "") + ">" + p[1] + "</a>";
-    }).join("") + '<a href="' + FEEDBACK + '" target="_blank" rel="noopener" class="fx-ext">Feedback: tell us straight</a>' + '<a href="' + KOFI + '" target="_blank" rel="noopener" class="fx-ext">War chest: fuel the site</a>';
+    }).join("") + '<a href="' + FEEDBACK + '" target="_blank" rel="noopener" class="fx-ext">Feedback: tell us straight</a>';
     var other = s === "alliance" ? "horde" : s === "horde" ? "alliance" : "";
     var swap = "";
     if (other) {
@@ -101,8 +101,9 @@
       (s ? '<a class="fx-replay" href="./?pick">Watch the pick-your-side screen again</a>' : "") + "</div>";
     menu.innerHTML = '<div class="fx-menu-in"><div class="fx-links">' + list + "</div>" +
       '<div class="fx-cta"><a class="fx-btn" href="' + FORM + '" target="_blank" rel="noopener">Submit a brag</a>' +
-      '<a class="fx-btn fx-dc" href="https://discord.gg/Q4wMTybW6b" target="_blank" rel="noopener">Discord</a></div>' + settings + "</div>";
-    head.appendChild(menu);
+      '<a class="fx-btn fx-dc" href="https://discord.gg/Q4wMTybW6b" target="_blank" rel="noopener">Discord</a>' +
+      '<a class="fx-btn fx-kofi" href="' + KOFI + '" target="_blank" rel="noopener"><span>War chest</span><small>Fuel the site on Ko-fi</small></a></div>' + settings + "</div>";
+    box.appendChild(menu);
 
     function open(v) {
       menu.hidden = !v;
