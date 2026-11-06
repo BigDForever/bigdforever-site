@@ -209,8 +209,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 .ch::after{content:"WANTED";position:absolute;top:16px;right:14px;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.18em;color:var(--muted);border:1.5px solid var(--line);padding:2px 6px;transform:rotate(4deg)}
 </style>
 
-<link rel="stylesheet" href="assets/faction.css?v=20261104x">
-<script src="assets/faction.js?v=20261104x"></script>
+<link rel="stylesheet" href="assets/faction.css?v=20261106a">
+<script src="assets/faction.js?v=20261106a"></script>
 </head>
 <body>
 <header class="top band">
@@ -372,11 +372,11 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
     </div>
   </section>
 
-  <section class="join band" aria-labelledby="join-h">
+  <section class="join band" id="socials" aria-labelledby="join-h" style="scroll-margin-top:90px">
     <div class="wrap">
       <div class="head">
         <h2 id="join-h">BigD or Go Home.</h2>
-        <p class="lede">The war lives on Discord. Brags, votes, trash talk and the weekly challenge.</p>
+        <p class="lede">Find us everywhere. Discord for brags, votes, trash talk and the weekly challenge. YouTube and TikTok for the highlights.</p>
       </div>
       <div class="links" id="links"></div>
     </div>
@@ -391,7 +391,7 @@ const BIGD = {
   discord: "https://discord.gg/Q4wMTybW6b",
   form: "https://tally.so/r/5XbVeZ",
   tiktok: "https://www.tiktok.com/@bigdforever",
-  youtube: "",                       // add the channel link when the handle is final
+  youtube: "https://www.youtube.com/@bigdforever_gg",
   kofi: "https://ko-fi.com/bigdforever",   // War chest (tips)
   launch: "2026-11-04T23:00:00Z",    // WoW Forever servers open
   scoreTitle: "Launch Night Body Count",
@@ -417,7 +417,8 @@ $("cta-submit").href = BIGD.form;
 $("chaos-submit").href = BIGD.form; $("chaos-discord").href = BIGD.discord;
 
 // links
-const L = [["Join the Discord", BIGD.discord, true], ["Submit a brag", BIGD.form], ["TikTok", BIGD.tiktok], ["YouTube", BIGD.youtube], ["War chest (Ko-fi)", BIGD.kofi]];
+// Socials (menu "Socials" jumps here). Every new social goes in this list.
+const L = [["Join the Discord", BIGD.discord, true], ["YouTube", BIGD.youtube], ["TikTok", BIGD.tiktok], ["Submit a brag", BIGD.form], ["War chest (Ko-fi)", BIGD.kofi]];
 L.filter(x => x[1]).forEach(([t, u, main]) => { const a = document.createElement("a"); a.className = "btn" + (main ? "" : " ghost"); a.href = u; a.target = "_blank"; a.rel = "noopener"; a.textContent = t; $("links").append(a); });
 
 // score

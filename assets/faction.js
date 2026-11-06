@@ -7,6 +7,7 @@
   var FEEDBACK = "https://tally.so/r/yXMa9W";
   var KOFI = "https://ko-fi.com/bigdforever";
   var TALENTS = "https://talentsmith.app/";
+  var SOCIALS = "./#socials"; // menu "Socials" button: Discord, YouTube, TikTok + every new social (index.html #socials)
   var LINES = 8; // number of funny hoard lines set up in the Tally form
   var SIDES = {
     alliance: { name: "Alliance", form: "Alliance", img: "assets/art/alliance-crest.png", badge: "assets/art/alliance-badge.png", word: "assets/art/alliance-lettering.png", tag: "Order, honour, polished boots", cry: "For the Alliance" },
@@ -109,7 +110,7 @@
       (s ? '<a class="fx-replay" href="./?pick">See the pick-your-side screen again</a>' : "") + "</div>";
     menu.innerHTML = '<div class="fx-menu-in"><div class="fx-links">' + list + "</div>" +
       '<div class="fx-cta"><a class="fx-btn" href="' + FORM + '" target="_blank" rel="noopener">Submit a brag</a>' +
-      '<a class="fx-btn fx-dc" href="https://discord.gg/Q4wMTybW6b" target="_blank" rel="noopener">Discord</a>' +
+      '<a class="fx-btn fx-soc" href="' + SOCIALS + '">Socials</a>' +
       '<a class="fx-btn fx-kofi" href="' + KOFI + '" target="_blank" rel="noopener"><span>War chest</span><small>Fuel the site on Ko-fi</small></a></div>' + settings + "</div>";
     box.appendChild(menu);
 
@@ -121,6 +122,8 @@
     burger.addEventListener("click", function () { open(menu.hidden); });
     closeMenu = function (focusBurger) { if (!menu.hidden) { open(false); if (focusBurger) burger.focus(); } };
     headEl = head;
+    var soc = menu.querySelector("a.fx-soc");
+    if (soc) soc.addEventListener("click", function () { open(false); });
     var sw = menu.querySelector("button.fx-swap");
     if (sw) sw.addEventListener("click", function () { var to = sw.getAttribute("data-to"); save(to); apply(to); open(false); buildHeader(); });
   }
