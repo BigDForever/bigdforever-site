@@ -123,7 +123,7 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);paddin
 
   <div class="prize">
     <b>What you win</b>
-    <p>The first 3 hunters per faction to reach the target go into the <a href="halls.html">Hall of Fame</a> and get named in the first War Report. The faction with more challenge kills wins week 1 and gets bragging rights until next Tuesday.</p>
+    <p>The first 3 hunters per faction to reach the target go into the <a href="halls.html">Hall of Fame</a> and get named in the first War Report. The faction with more challenge kills wins week 1 and gets bragging rights until the next weekly reset.</p>
   </div>
 
   <section>
@@ -155,8 +155,8 @@ const CH = {
   title: "Hunting season is open.",
   target: 10,
   starts: "2026-11-04T23:00:00Z",
-  ends: "2026-11-10T23:59:00Z",
-  endsText: "Tuesday 10 November, 23:59 UTC",
+  ends: "2026-11-11T04:00:00Z",   // EU weekly reset (Wed 04:00 UTC = 05:00 Belgrade). Every week ends at EU reset.
+  endsText: "at EU weekly reset: Wednesday 11 November, 04:00 UTC (05:00 CET)",
   horde:    { hunters: [] },  // Gnomilation
   alliance: { hunters: [] }   // Milk Run
 };
