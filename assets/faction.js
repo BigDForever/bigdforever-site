@@ -111,7 +111,7 @@
     menu.innerHTML = '<div class="fx-menu-in"><div class="fx-links">' + list + "</div>" +
       '<div class="fx-cta"><a class="fx-btn" href="' + FORM + '" target="_blank" rel="noopener">Submit a brag</a>' +
       '<a class="fx-btn fx-soc" href="' + SOCIALS + '">Socials</a>' +
-      '<a class="fx-btn fx-kofi" href="' + KOFI + '" target="_blank" rel="noopener"><span>War chest</span><small>Fuel the site on Ko-fi</small></a></div>' + settings + "</div>";
+      '<a class="fx-btn fx-kofi" href="' + KOFI + '" target="_blank" rel="noopener"><span>War chest (Ko-fi donation)</span><small>Fuel the site</small></a></div>' + settings + "</div>";
     box.appendChild(menu);
 
     function open(v) {

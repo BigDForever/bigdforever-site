@@ -209,8 +209,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 .ch::after{content:"WANTED";position:absolute;top:16px;right:14px;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.18em;color:var(--muted);border:1.5px solid var(--line);padding:2px 6px;transform:rotate(4deg)}
 </style>
 
-<link rel="stylesheet" href="assets/faction.css?v=20261106a">
-<script src="assets/faction.js?v=20261106a"></script>
+<link rel="stylesheet" href="assets/faction.css?v=20261106b">
+<script src="assets/faction.js?v=20261106b"></script>
 </head>
 <body>
 <header class="top band">
@@ -418,7 +418,7 @@ $("chaos-submit").href = BIGD.form; $("chaos-discord").href = BIGD.discord;
 
 // links
 // Socials (menu "Socials" jumps here). Every new social goes in this list.
-const L = [["Join the Discord", BIGD.discord, true], ["YouTube", BIGD.youtube], ["TikTok", BIGD.tiktok], ["Submit a brag", BIGD.form], ["War chest (Ko-fi)", BIGD.kofi]];
+const L = [["Join the Discord", BIGD.discord, true], ["YouTube", BIGD.youtube], ["TikTok", BIGD.tiktok], ["Submit a brag", BIGD.form], ["War chest (Ko-fi donation)", BIGD.kofi]];
 L.filter(x => x[1]).forEach(([t, u, main]) => { const a = document.createElement("a"); a.className = "btn" + (main ? "" : " ghost"); a.href = u; a.target = "_blank"; a.rel = "noopener"; a.textContent = t; $("links").append(a); });
 
 // score

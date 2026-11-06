@@ -60,8 +60,8 @@ html[data-side="horde"] .fx-cta .fx-btn.fx-kofi{color:var(--gold)}
 .fx-btn{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--cond);font-weight:700;font-size:17px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;padding:10px 12px;border-radius:4px;background:var(--gold);color:var(--ink)}
 html[data-side="horde"] .fx-btn{color:#fff}
 .fx-btn.fx-dc{background:#5865f2;color:#fff}
-.fx-btn.fx-soc{background:transparent;border:1.5px solid currentColor;color:inherit}
-.fx-btn.fx-soc:hover{background:color-mix(in srgb,var(--gold) 15%,transparent)}
+.fx-btn.fx-soc,html[data-side] .fx-btn.fx-soc{background:#f28c1e;color:#1a0f05}
+.fx-btn.fx-soc:hover{background:#ff9f3a}
 .fx-swap{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:inherit;color:var(--paper);text-decoration:none;cursor:pointer;padding:10px 12px;border:1px dashed var(--line);border-radius:6px;background:transparent;opacity:.42;filter:grayscale(.85);transition:opacity .2s,filter .2s}
 .fx-swap:hover,.fx-swap:focus-visible{opacity:1;filter:none;outline:none}
 header.fx-head .fx-swap img{height:44px;width:auto;border-radius:0}
