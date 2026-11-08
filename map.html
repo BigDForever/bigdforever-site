@@ -455,7 +455,7 @@ function render(){
   // totals, empty note, top 5
   const tot=ALL.reduce((s,z)=>({a:s.a+DATA[z.n].a,h:s.h+DATA[z.n].h}),{a:0,h:0});
   document.getElementById("emptyNote").hidden=(tot.a+tot.h)>0;
-  (function(){const L=Date.parse("2026-11-04T23:00:00Z"),el=document.getElementById("emptySub");if(!el)return;el.textContent=Date.now()<L?"The war starts "+new Date(L).toLocaleString([],{weekday:"short",hour:"2-digit",minute:"2-digit"})+", your time.":"Servers are live. First kill paints the zone.";})();
+  (function(){const L=Date.parse("2026-11-04T23:00:00Z"),el=document.getElementById("emptySub");if(!el)return;el.textContent=Date.now()<L?"The war starts "+new Date(L).toLocaleString([],{weekday:"short",hour:"2-digit",minute:"2-digit"})+", your time.":"Each kill you post paints its zone.";})();
   window.TOT=tot;
   const top=ALL.map(z=>({n:z.n,...DATA[z.n],t:DATA[z.n].a+DATA[z.n].h})).filter(z=>z.t>0).sort((x,y)=>y.t-x.t||x.n.localeCompare(y.n)).slice(0,5);
   const ol=document.getElementById("top5");
@@ -477,7 +477,7 @@ function showDefault(){
   panel.innerHTML=`<div class="eyebrow">Field report</div><h2>Pick a zone</h2>
   <p class="note">Tap or click any zone on the map (or use Tab and Enter) to see who owns it and how bloody it's been.</p>
   <div class="score"><div class="sa"><span class="lab">Alliance</span><b>${t.a}</b></div><div class="sh"><span class="lab">Horde</span><b>${t.h}</b></div></div>
-  ${bar(t.a,t.h)}<p class="note">${t.a+t.h?"Kills logged across all of Azeroth.":"Kills logged so far: none. Be the first."}</p>
+  ${bar(t.a,t.h)}<p class="note">${t.a+t.h?"Kills logged across all of Azeroth.":"The map fills in as kills come in."}</p>
   <a class="btn" href="${TALLY}" target="_blank" rel="noopener">Post a brag</a>`;
 }
 function openZone(name,quiet){

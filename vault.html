@@ -205,7 +205,7 @@ function render(reset){
   if (reset) shown = PAGE;
   VIEW = filtered();
   const active = F.q || F.who || F.faction || F.tag || F.kind;
-  $("count").innerHTML = ALL.length ? `<b>${VIEW.length}</b> of ${ALL.length} clips${F.who ? ` · by <b>${esc(F.who)}</b>` : ""}${F.tag ? ` · tagged <b>${esc(F.tag)}</b>` : ""}` : "The vault is empty for now. First Blood is still up for grabs.";
+  $("count").innerHTML = ALL.length ? `<b>${VIEW.length}</b> of ${ALL.length} clips${F.who ? ` · by <b>${esc(F.who)}</b>` : ""}${F.tag ? ` · tagged <b>${esc(F.tag)}</b>` : ""}` : "The vault is warming up. New clips land here every day.";
   $("clear").hidden = !active;
   $("grid").innerHTML = VIEW.length ? VIEW.slice(0, shown).map(card).join("") : (ALL.length ? `<div class="empty" style="grid-column:1/-1">Nothing matches. Try another tag, or <button class="clear" type="button" onclick="clearAll()">clear the filters</button>.</div>` : "");
   $("more").hidden = VIEW.length <= shown;
