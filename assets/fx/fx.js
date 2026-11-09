@@ -16,7 +16,7 @@
   const clear = () => { built.forEach(f => f()); built.length = 0; };
 
   function btn() {
-    document.querySelectorAll(".btn.cta-main, #chaos-submit").forEach(b => {
+    document.querySelectorAll("#cta-submit, #chaos-submit").forEach(b => {
       b.classList.add("bfx-btn");
       const add = el => { b.append(el); built.push(() => el.remove()); };
       if (side() === "a") {
