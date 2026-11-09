@@ -59,9 +59,12 @@
   function buildHeader() {
     var head = document.querySelector("header.top");
     if (!head) return;
-    var box = head.querySelector(".wrap") || head;
+    var box = head.querySelector(".wrap, .fx-row");
+    if (!box) { head.innerHTML = ""; box = el("div", "fx-row"); head.appendChild(box); }   // pages whose header has no .wrap
     var old = head.querySelector(".fx-menu");
     if (old) old.remove();
+    var oldStrip = head.querySelector(".fx-strip");
+    if (oldStrip) oldStrip.remove();
     box.innerHTML = "";
     head.classList.add("fx-head");
     head.classList.remove("fx-open");
@@ -87,6 +90,41 @@
     tal.title = "Talentsmith: WoW Forever talent calculator";
     box.appendChild(tal);
     box.appendChild(burger);
+
+    /* PC header (Dejan 8 Nov): "Switch – Ally/Horde" box + a "Menu" tab that runs to the right edge of the screen;
+       the menu items sit on a full-width strip under it. Open by default, remembered per browser. Phones keep the burger. */
+    var other0 = s === "alliance" ? "horde" : s === "horde" ? "alliance" : "";
+    if (other0) {
+      var dsw = el("button", "fx-dswitch fx-to-" + other0, "Switch &ndash; " + (other0 === "alliance" ? "Ally" : "Horde"));
+      dsw.type = "button"; dsw.setAttribute("aria-label", "Switch to " + SIDES[other0].name);
+      dsw.addEventListener("click", function () { save(other0); apply(other0); buildHeader(); });
+      box.appendChild(dsw);
+    } else {
+      var dpk = el("a", "fx-dswitch", "Pick a side"); dpk.href = "./?pick"; box.appendChild(dpk);
+    }
+    var mtab = el("button", "fx-mtab", '<span class="fx-mtab-b">Menu <i aria-hidden="true"></i></span>');
+    mtab.type = "button"; mtab.setAttribute("aria-controls", "fx-strip");
+    box.appendChild(mtab);
+    var here0 = location.pathname.split("/").pop() || "./";
+    var strip = el("nav", "fx-strip");
+    strip.id = "fx-strip"; strip.setAttribute("aria-label", "Main");
+    strip.innerHTML = '<div class="fx-strip-in">' + PAGES.map(function (p) {
+      var cur = (p[0] === here0) || (p[0] === "./" && (here0 === "./" || here0 === "index.html"));
+      return '<a href="' + p[0] + '"' + (cur ? ' aria-current="page"' : "") + ">" + p[1] + "</a>";
+    }).join("") + '<a href="' + TALENTS + '" target="_blank" rel="noopener">Talents</a>' +
+      '<a href="' + FORM + '" target="_blank" rel="noopener" class="fx-sb">Submit a brag</a>' +
+      '<a href="' + SOCIALS + '">Socials</a>' +
+      '<a href="' + KOFI + '" target="_blank" rel="noopener">War chest</a>' +
+      '<a href="' + FEEDBACK + '" target="_blank" rel="noopener">Feedback</a></div>';
+    head.appendChild(strip);
+    function stripOpen(v) {
+      strip.hidden = !v; head.classList.toggle("fx-strip-open", v);
+      mtab.setAttribute("aria-expanded", v ? "true" : "false");
+      try { localStorage.setItem("bigd-menu", v ? "open" : "closed"); } catch (e) {}
+    }
+    var st0 = "open"; try { st0 = localStorage.getItem("bigd-menu") || "open"; } catch (e) {}
+    stripOpen(st0 !== "closed");
+    mtab.addEventListener("click", function () { stripOpen(strip.hidden); });
 
     var menu = el("nav", "fx-menu");
     menu.id = "fx-menu";

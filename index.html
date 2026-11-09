@@ -207,10 +207,50 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 @media (max-width:440px){.war-links{grid-template-columns:1fr}.wl.wide2{grid-column:auto}.wl.big{grid-column:auto}}
 .tile,.ch{position:relative}
 .ch::after{content:"WANTED";position:absolute;top:16px;right:14px;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.18em;color:var(--muted);border:1.5px solid var(--line);padding:2px 6px;transform:rotate(4deg)}
+
+/* ===== PC layout (Dejan 8 Nov "Website home on PC"): newest brag in the hero, brags + bounty with a right rail,
+   how-it-works beside the vote table. Phones keep the long single column. ===== */
+.hero-pick{display:none}
+@media (min-width:1100px){
+  main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);max-width:1440px;margin:0 auto;
+    grid-template-areas:"hero hero" "ticker ticker" "brags rules" "challenge socials" "score score" "war war" "chaos chaos" "how how"}
+  main > .hero{grid-area:hero} main > #ticker{grid-area:ticker} main > #brags{grid-area:brags} main > #rules{grid-area:rules}
+  main > #challenge{grid-area:challenge} main > #socials{grid-area:socials} main > #score{grid-area:score}
+  main > #war{grid-area:war} main > #chaos{grid-area:chaos} main > #how{grid-area:how}
+  main .wrap{max-width:1200px}
+  #brags .wrap,#challenge .wrap{margin:0 0 0 auto;max-width:900px;padding-right:12px}
+  #rules,#socials{background:color-mix(in srgb,var(--panel) 70%,transparent);border-left:1px solid var(--line)}
+  #rules .wrap,#socials .wrap{max-width:none;margin:0;padding:40px 28px;border-top:0}
+  #socials{border-top:1px solid var(--line)}
+  #rules .rules{grid-template-columns:1fr 1fr}
+  #rules h2,#socials h2{font-size:38px}
+  #socials .wrap{display:flex;flex-direction:column;align-items:stretch;gap:18px}
+  #socials .links{min-width:0}
+  .hero.has-pick .emblem{display:none}
+  .hero.has-pick .wrap{grid-template-columns:5fr 7fr;max-width:1320px}
+  .hero.has-pick .hero-pick{display:flex}
+  .hero-pick{flex-direction:column;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);text-decoration:none;color:var(--paper);box-shadow:0 30px 80px -20px #000;transition:border-color .2s,transform .2s}
+  .hero-pick:hover{border-color:var(--tint);transform:translateY(-2px)}
+  .hp-img{position:relative;aspect-ratio:16/9;background:var(--panel2) center/cover no-repeat}
+  .hp-tag{position:absolute;left:18px;top:16px;padding:5px 11px;background:var(--crimson);border:2px solid #c08a3e;border-radius:4px;font-family:var(--cond);font-weight:700;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:#fff}
+  html[data-side="alliance"] .hp-tag{background:#1b3a73;border-color:#c9a24a}
+  .hp-play{position:absolute;left:50%;top:50%;width:78px;height:78px;margin:-39px 0 0 -39px;border-radius:50%;background:rgba(10,6,5,.72);border:2px solid #efe3c8}
+  .hp-play::after{content:"";position:absolute;left:31px;top:23px;border-left:24px solid #efe3c8;border-top:15px solid transparent;border-bottom:15px solid transparent}
+  .hp-bd{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 14px;padding:16px 20px}
+  .hp-t{font-family:var(--cond);font-weight:700;font-size:26px;line-height:1.1}
+  .hp-by{color:var(--muted);font-size:15px}
+  #how .wrap{display:grid;grid-template-columns:1fr 1fr;align-items:start;column-gap:48px}
+  #how .head{grid-column:1/-1}
+  #how .steps{grid-template-columns:1fr;gap:14px}
+  #chaos .grid{grid-template-columns:repeat(3,1fr)}
+  #chaos .chaos-cta{grid-template-columns:repeat(2,minmax(0,320px))}
+  .war-links{grid-template-columns:1.3fr 1fr 1fr 1fr}
+  .wl.wide2{grid-column:span 1}
+}
 </style>
 
-<link rel="stylesheet" href="assets/faction.css?v=20261106b">
-<script src="assets/faction.js?v=20261106b"></script>
+<link rel="stylesheet" href="assets/faction.css?v=20261109a">
+<script src="assets/faction.js?v=20261109a"></script>
 </head>
 <body>
 <header class="top band">
@@ -241,10 +281,11 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
         <div class="countdown" id="countdown" aria-live="polite"></div>
       </div>
       <img class="emblem" src="emblem.jpg" alt="BigDForever emblem: a golden D made of a sword and a battle-axe">
+      <a class="hero-pick" id="hero-pick" target="_blank" rel="noopener" hidden><span class="hp-img"><span class="hp-tag">Fresh from the Vault</span><span class="hp-play" aria-hidden="true"></span></span><span class="hp-bd"><b class="hp-t"></b><span class="hp-by"></span></span></a>
     </div>
   </section>
 
-  <div class="ticker" aria-hidden="true"><div class="track"><span>BigD or Go Home</span><span>For the Horde</span><span>For the Alliance</span><span>Pics or it didn't happen</span><span>Enemy salt counts double</span><span>No kill-trading</span><span>Tarren Mill remembers</span><span>BigD or Go Home</span><span>For the Horde</span><span>For the Alliance</span><span>Pics or it didn't happen</span><span>Enemy salt counts double</span><span>No kill-trading</span><span>Tarren Mill remembers</span></div></div>
+  <div class="ticker" id="ticker" aria-hidden="true"><div class="track"><span>BigD or Go Home</span><span>For the Horde</span><span>For the Alliance</span><span>Pics or it didn't happen</span><span>Enemy salt counts double</span><span>No kill-trading</span><span>Tarren Mill remembers</span><span>BigD or Go Home</span><span>For the Horde</span><span>For the Alliance</span><span>Pics or it didn't happen</span><span>Enemy salt counts double</span><span>No kill-trading</span><span>Tarren Mill remembers</span></div></div>
 
 
   <section class="sec band" id="war" aria-labelledby="war-h">
@@ -265,7 +306,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
     </div>
   </section>
 
-  <section class="sec band chaos" aria-labelledby="chaos-h">
+  <section class="sec band chaos" id="chaos" aria-labelledby="chaos-h">
     <div class="wrap">
       <div class="head">
         <div class="eyebrow">Launch week · anything goes</div>
@@ -354,7 +395,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
     </div>
   </section>
 
-  <section class="sec band" aria-labelledby="sec-h">
+  <section class="sec band" id="rules" aria-labelledby="sec-h">
     <div class="wrap">
       <div class="head">
         <div class="eyebrow">Where your brag goes</div>
@@ -462,6 +503,17 @@ function renderFeed(list) {
     bd.append(m, h, c); a.append(im, bd); g.append(a);
   });
   feed.append(g);
+  heroPick(list[0]);
+}
+// PC: the newest featured brag becomes the big "Fresh from the Vault" card in the hero
+function heroPick(p) {
+  const a = $("hero-pick"), hero = document.querySelector(".hero");
+  if (!p) { a.hidden = true; hero.classList.remove("has-pick"); return; }
+  const fac = String(p.faction || "").toLowerCase().includes("alliance") ? "Alliance" : "Horde";
+  a.href = p.url.trim(); a.hidden = false; hero.classList.add("has-pick");
+  a.querySelector(".hp-img").style.backgroundImage = isLink(p.image) ? "url('" + p.image.trim().replace(/'/g, "%27") + "')" : "url('assets/art/share.jpg')";
+  a.querySelector(".hp-t").textContent = p.title;
+  a.querySelector(".hp-by").textContent = (p.character ? "by " + p.character + " · " : "") + fac;
 }
 renderFeed(BIGD.featured);
 
