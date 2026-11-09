@@ -154,6 +154,7 @@ function thumb(c){
   if (c.thumb) return /^https?:/.test(c.thumb) ? c.thumb : `https://static-cdn.jtvnw.net/twitch-video-assets/twitch-vap-video-assets-prod-us-west-2/${c.thumb}/landscape/thumb/thumb-0000000000-1920x1080.jpg`;
   if (c.md.type==="youtube") return `https://i.ytimg.com/vi/${c.md.id}/hqdefault.jpg`;
   if (c.image) return c.image;
+  if (c.link && /^https?:\/\//i.test(c.link)) return "/thumb?u=" + encodeURIComponent(c.link); // Medal etc.: preview via functions/thumb.js
   return "";
 }
 

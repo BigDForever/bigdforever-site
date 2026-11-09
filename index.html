@@ -454,7 +454,7 @@ function renderFeed(list) {
   list.forEach(p => {
     const fac = String(p.faction || "").toLowerCase().includes("alliance") ? "alliance" : "horde";
     const a = document.createElement("a"); a.className = "card " + (fac === "alliance" ? "a" : "h"); a.href = p.url.trim(); a.target = "_blank"; a.rel = "noopener";
-    const im = document.createElement("div"); im.className = "img"; if (isLink(p.image)) im.style.backgroundImage = "url('" + p.image.trim().replace(/'/g, "%27") + "')";
+    const im = document.createElement("div"); im.className = "img"; const pic = isLink(p.image) ? p.image.trim() : "/thumb?u=" + encodeURIComponent(p.url.trim()); im.style.backgroundImage = "url('" + pic.replace(/'/g, "%27") + "')";
     const bd = document.createElement("div"); bd.className = "bd";
     const m = document.createElement("span"); m.className = "meta"; m.textContent = fac + " · " + (p.category || "Brag");
     const h = document.createElement("h3"); h.textContent = p.title;
