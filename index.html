@@ -51,6 +51,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .btn.ghost{background:transparent;color:var(--paper);border-color:var(--line)}
 .btn.ghost:hover{border-color:var(--paper)}
 .btn.sm{font-size:15px;padding:7px 14px}
+.btn.cta-main{font-size:22px;padding:15px 30px;box-shadow:0 0 0 4px rgba(236,228,214,.12),0 6px 22px rgba(0,0,0,.55)}
+.btn.cta-main:hover{filter:brightness(1.12)}
+.btn.ghost.cta-dc{border-color:rgba(236,228,214,.45)}
 .btn:focus-visible,.side:focus-visible,.nav a:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
 @media (max-width:720px){.nav .hide-m{display:none}}
 
@@ -235,8 +238,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
         <h1><span class="bd">BigD</span><br>or <em>Go Home.</em></h1>
         <p>Post your kills, your loot and your most glorious fails. The best get read on air by our news anchors and land in the weekly video. Pick a side, have fun.</p>
         <div class="cta">
-          <a class="btn" id="cta-discord" href="#">Join the war on Discord</a>
-          <a class="btn ghost" id="cta-submit" href="#">Submit a brag</a>
+          <a class="btn cta-main" id="cta-submit" href="#">Submit a brag</a>
+          <a class="btn ghost cta-dc" id="cta-discord" href="#">Join the war on Discord</a>
         </div>
         <div class="countdown" id="countdown" aria-live="polite"></div>
       </div>
