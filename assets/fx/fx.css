@@ -1,12 +1,13 @@
 /* BigD effects kit (demo). Pieces cut from button-fx-kit.png. Options are switched on by fx.js:
    html[data-fx~="btn|heading|corners|hover|ambient|emblem|ticker|divider"]. Alliance = gold light, Horde = fire. */
 .fx-p{position:absolute;pointer-events:none;background:center/contain no-repeat;will-change:transform,opacity}
-@media (prefers-reduced-motion:reduce){.fx-p{animation:none!important}}
+@media (prefers-reduced-motion:reduce){.fx-p{animation:none!important}.fx-hv .fx-hvclip .fx-shine,.fx-claws{transition:none!important}}
+.fx-off .fx-p,.fx-idle .fx-p{animation-play-state:paused!important}
 
 /* ---------- 1 · main button ---------- */
 .fx-btn{position:relative;isolation:auto}
 .fx-btn .fx-clip{position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none}
-.fx-shine{top:-30%;height:160%;width:70%;left:-80%;background-image:url(shine.png);mix-blend-mode:screen;opacity:.95;animation:fx-sweep 3.6s ease-in-out infinite}
+.fx-shine{top:-30%;height:160%;width:70%;left:-80%;background-image:url(shine.png);mix-blend-mode:screen;opacity:.6;animation:fx-sweep 5.5s ease-in-out infinite}
 @keyframes fx-sweep{0%,55%{left:-80%}85%,100%{left:120%}}
 .fx-star{width:44px;height:50px;background-image:url(star-m.png);animation:fx-twinkle 2.4s ease-in-out infinite}
 .fx-star.l{width:74px;height:90px;background-image:url(star-l.png)}
@@ -27,9 +28,9 @@ html[data-side="horde"] .fx-h .fx-flame{inset:-.25em 0 0}
 
 /* ---------- 3 · frame corners on cards and boxes ---------- */
 .fx-c{position:relative}
-.fx-k{position:absolute;width:30px;height:38px;pointer-events:none;background:center/contain no-repeat;z-index:2}
+.fx-k{position:absolute;width:22px;height:28px;opacity:.9;pointer-events:none;background:center/contain no-repeat;z-index:2}
 html[data-side="alliance"] .fx-k{background-image:url(corner-gold.png)}
-html[data-side="horde"] .fx-k{background-image:url(corner-bronze.png);width:28px;height:38px}
+html[data-side="horde"] .fx-k{background-image:url(corner-bronze.png);width:21px;height:28px}
 .fx-k.tr{top:-6px;right:-6px} .fx-k.tl{top:-6px;left:-6px;transform:scaleX(-1)}
 .fx-k.br{bottom:-6px;right:-6px;transform:scaleY(-1)} .fx-k.bl{bottom:-6px;left:-6px;transform:scale(-1,-1)}
 .fx-c{overflow:visible!important}
@@ -39,22 +40,21 @@ html[data-side="horde"] .fx-k{background-image:url(corner-bronze.png);width:28px
 .fx-hv .fx-hvclip{position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none;z-index:3}
 .fx-hv .fx-hvclip .fx-shine{animation:none;left:-90%;width:60%;transition:left .8s ease-out}
 html[data-side="alliance"] .fx-hv:hover .fx-hvclip .fx-shine,html[data-side="alliance"] .fx-hv.fx-hot .fx-hvclip .fx-shine{left:110%}
-html[data-side="alliance"] .fx-hv.fx-hot .fx-hvclip .fx-shine{left:35%;transition:none}
 .fx-claws{position:absolute;right:6%;top:6%;width:46%;height:88%;opacity:0;clip-path:inset(0 0 100% 0);transition:opacity .1s,clip-path .28s cubic-bezier(.2,.8,.2,1)}
 .fx-claws i{position:absolute;top:0;bottom:0;width:36%;background:center/contain no-repeat}
 .fx-claws i:nth-child(1){left:0;background-image:url(claw-0.png)}
 .fx-claws i:nth-child(2){left:30%;background-image:url(claw-1.png)}
 .fx-claws i:nth-child(3){left:60%;background-image:url(claw-2.png)}
-html[data-side="horde"] .fx-hv:hover .fx-claws,html[data-side="horde"] .fx-hv.fx-hot .fx-claws{opacity:.9;clip-path:inset(0 0 0 0)}
+html[data-side="horde"] .fx-hv:hover .fx-claws,html[data-side="horde"] .fx-hv.fx-hot .fx-claws{opacity:.75;clip-path:inset(0 0 0 0)}
 html[data-side="alliance"] .fx-claws{display:none}
 
 /* ---------- 5 · hero ambience ---------- */
 .fx-amb{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.fx-mote{width:40px;height:40px;mix-blend-mode:screen;-webkit-mask-image:radial-gradient(closest-side,#000 55%,transparent);mask-image:radial-gradient(closest-side,#000 55%,transparent);animation:fx-float 9s ease-in-out infinite}
-@keyframes fx-float{0%{transform:translate(0,30px) scale(.6);opacity:0}20%{opacity:.85}80%{opacity:.6}100%{transform:translate(var(--dx,20px),-160px) scale(1);opacity:0}}
+.fx-mote{width:40px;height:40px;mix-blend-mode:screen;opacity:.55;-webkit-mask-image:radial-gradient(closest-side,#000 55%,transparent);mask-image:radial-gradient(closest-side,#000 55%,transparent);animation:fx-float 9s ease-in-out infinite}
+@keyframes fx-float{0%{transform:translate(0,30px) scale(.6);opacity:0}20%{opacity:.6}80%{opacity:.4}100%{transform:translate(var(--dx,20px),-160px) scale(1);opacity:0}}
 .fx-amb .fx-ember{width:22px;height:22px;animation-duration:5s}
-.fx-smoke{width:90px;height:170px;opacity:.5;animation:fx-smoke 8s ease-in-out infinite;filter:brightness(1.8)}
-@keyframes fx-smoke{0%{transform:translateY(40px) scale(.8);opacity:0}30%{opacity:.5}100%{transform:translateY(-140px) scale(1.3);opacity:0}}
+.fx-smoke{width:90px;height:170px;opacity:.3;animation:fx-smoke 8s ease-in-out infinite;filter:brightness(1.8)}
+@keyframes fx-smoke{0%{transform:translateY(40px) scale(.8);opacity:0}30%{opacity:.3}100%{transform:translateY(-140px) scale(1.3);opacity:0}}
 
 /* ---------- 6 · emblem ---------- */
 .fx-em{position:relative;justify-self:center;width:100%;max-width:360px;display:grid}
