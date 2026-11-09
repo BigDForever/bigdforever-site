@@ -87,11 +87,12 @@
     clear();
     const F = { btn, heading, corners, hover, ambient, emblem };
     Object.keys(F).forEach(k => on(k) && F[k]());
+    document.querySelectorAll("#feed .card").forEach(c => c.setAttribute("data-bfx", ""));   // seen: stops the feed watcher re-running
   };
   const go = () => { build(); new MutationObserver(m => { if (m.some(x => x.attributeName === "data-side")) build(); }).observe(html, { attributes: true }); };
   // the brag feed renders later from the sheet: re-run corners/hover once it lands
   const feed = document.getElementById("feed");
-  if (feed) new MutationObserver(() => { if (feed.querySelector(".card:not(.bfx-c)")) build(); }).observe(feed, { childList: true, subtree: true });
+  if (feed) new MutationObserver(() => { if (feed.querySelector(".card:not([data-bfx])")) build(); }).observe(feed, { childList: true, subtree: true });
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", go); else go();
   // pause everything in a background tab, and each effect host while it is off-screen
   document.addEventListener("visibilitychange", () => html.classList.toggle("bfx-off", document.hidden));
