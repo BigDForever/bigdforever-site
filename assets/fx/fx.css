@@ -1,0 +1,73 @@
+/* BigD effects kit (demo). Pieces cut from button-fx-kit.png. Options are switched on by fx.js:
+   html[data-fx~="btn|heading|corners|hover|ambient|emblem|ticker|divider"]. Alliance = gold light, Horde = fire. */
+.fx-p{position:absolute;pointer-events:none;background:center/contain no-repeat;will-change:transform,opacity}
+@media (prefers-reduced-motion:reduce){.fx-p{animation:none!important}}
+
+/* ---------- 1 · main button ---------- */
+.fx-btn{position:relative;isolation:auto}
+.fx-btn .fx-clip{position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none}
+.fx-shine{top:-30%;height:160%;width:70%;left:-80%;background-image:url(shine.png);mix-blend-mode:screen;opacity:.95;animation:fx-sweep 3.6s ease-in-out infinite}
+@keyframes fx-sweep{0%,55%{left:-80%}85%,100%{left:120%}}
+.fx-star{width:44px;height:50px;background-image:url(star-m.png);animation:fx-twinkle 2.4s ease-in-out infinite}
+.fx-star.l{width:74px;height:90px;background-image:url(star-l.png)}
+.fx-star.s{width:30px;height:34px;background-image:url(star-s.png)}
+@keyframes fx-twinkle{0%,100%{transform:scale(.25) rotate(0);opacity:0}35%{transform:scale(1) rotate(20deg);opacity:1}60%{transform:scale(.7) rotate(35deg);opacity:.8}}
+.fx-flame{width:34px;height:56px;background-image:url(flame-m.png);transform-origin:50% 100%;animation:fx-flicker 1.1s ease-in-out infinite}
+.fx-flame.s{background-image:url(flame-s.png)} .fx-flame.l{background-image:url(flame-l.png)}
+@keyframes fx-flicker{0%,100%{transform:scale(1,1) skewX(0)}25%{transform:scale(.94,1.08) skewX(-3deg)}50%{transform:scale(1.04,.94) skewX(2deg)}75%{transform:scale(.97,1.05) skewX(-1deg)}}
+.fx-ember{width:16px;height:16px;mix-blend-mode:screen;animation:fx-rise 2.6s linear infinite}
+@keyframes fx-rise{0%{transform:translate(0,0) scale(1);opacity:0}10%{opacity:1}100%{transform:translate(var(--dx,10px),var(--dy,-90px)) scale(.4);opacity:0}}
+.fx-btn .fx-under{z-index:-1}
+
+/* ---------- 2 · section headings ---------- */
+.fx-h{display:inline-block;position:relative;width:.9em;height:1em;margin-right:.18em;vertical-align:-.08em}
+.fx-h .fx-p{inset:0;width:auto;height:auto}
+html[data-side="alliance"] .fx-h .fx-star{inset:-.15em -.1em;animation-duration:3s}
+html[data-side="horde"] .fx-h .fx-flame{inset:-.25em 0 0}
+
+/* ---------- 3 · frame corners on cards and boxes ---------- */
+.fx-c{position:relative}
+.fx-k{position:absolute;width:30px;height:38px;pointer-events:none;background:center/contain no-repeat;z-index:2}
+html[data-side="alliance"] .fx-k{background-image:url(corner-gold.png)}
+html[data-side="horde"] .fx-k{background-image:url(corner-bronze.png);width:28px;height:38px}
+.fx-k.tr{top:-6px;right:-6px} .fx-k.tl{top:-6px;left:-6px;transform:scaleX(-1)}
+.fx-k.br{bottom:-6px;right:-6px;transform:scaleY(-1)} .fx-k.bl{bottom:-6px;left:-6px;transform:scale(-1,-1)}
+.fx-c{overflow:visible!important}
+
+/* ---------- 4 · hover on cards ---------- */
+.fx-hv{position:relative}
+.fx-hv .fx-hvclip{position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none;z-index:3}
+.fx-hv .fx-hvclip .fx-shine{animation:none;left:-90%;width:60%;transition:left .8s ease-out}
+html[data-side="alliance"] .fx-hv:hover .fx-hvclip .fx-shine,html[data-side="alliance"] .fx-hv.fx-hot .fx-hvclip .fx-shine{left:110%}
+html[data-side="alliance"] .fx-hv.fx-hot .fx-hvclip .fx-shine{left:35%;transition:none}
+.fx-claws{position:absolute;right:6%;top:6%;width:46%;height:88%;opacity:0;clip-path:inset(0 0 100% 0);transition:opacity .1s,clip-path .28s cubic-bezier(.2,.8,.2,1)}
+.fx-claws i{position:absolute;top:0;bottom:0;width:36%;background:center/contain no-repeat}
+.fx-claws i:nth-child(1){left:0;background-image:url(claw-0.png)}
+.fx-claws i:nth-child(2){left:30%;background-image:url(claw-1.png)}
+.fx-claws i:nth-child(3){left:60%;background-image:url(claw-2.png)}
+html[data-side="horde"] .fx-hv:hover .fx-claws,html[data-side="horde"] .fx-hv.fx-hot .fx-claws{opacity:.9;clip-path:inset(0 0 0 0)}
+html[data-side="alliance"] .fx-claws{display:none}
+
+/* ---------- 5 · hero ambience ---------- */
+.fx-amb{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.fx-mote{width:40px;height:40px;mix-blend-mode:screen;-webkit-mask-image:radial-gradient(closest-side,#000 55%,transparent);mask-image:radial-gradient(closest-side,#000 55%,transparent);animation:fx-float 9s ease-in-out infinite}
+@keyframes fx-float{0%{transform:translate(0,30px) scale(.6);opacity:0}20%{opacity:.85}80%{opacity:.6}100%{transform:translate(var(--dx,20px),-160px) scale(1);opacity:0}}
+.fx-amb .fx-ember{width:22px;height:22px;animation-duration:5s}
+.fx-smoke{width:90px;height:170px;opacity:.5;animation:fx-smoke 8s ease-in-out infinite;filter:brightness(1.8)}
+@keyframes fx-smoke{0%{transform:translateY(40px) scale(.8);opacity:0}30%{opacity:.5}100%{transform:translateY(-140px) scale(1.3);opacity:0}}
+
+/* ---------- 6 · emblem ---------- */
+.fx-em{position:relative;justify-self:center;width:100%;max-width:360px;display:grid}
+.fx-em .emblem{position:relative;z-index:1}
+.fx-em .fx-p{z-index:2}
+.fx-em .fx-under{z-index:0}
+
+/* ---------- 7 · ticker separators ---------- */
+html[data-fx~="ticker"] .ticker span::after{content:"";display:inline-block;width:22px;height:22px;vertical-align:-5px;background:center/contain no-repeat;top:0}
+html[data-fx~="ticker"][data-side="alliance"] .ticker span::after{background-image:url(star-m.png);filter:drop-shadow(0 0 1px #0a0605)}
+html[data-fx~="ticker"][data-side="horde"] .ticker span::after{background-image:url(flame-s.png);width:16px;height:26px;vertical-align:-6px}
+
+/* ---------- 8 · section dividers ---------- */
+.fx-div{position:relative;height:0}
+.fx-div .fx-p{left:50%;top:0;transform:translate(-50%,-50%)}
+.fx-div .fx-shine2{width:420px;height:60px;background-image:url(shine.png);background-size:100% 220%;opacity:.8;mix-blend-mode:screen}
