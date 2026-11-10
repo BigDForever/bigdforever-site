@@ -46,7 +46,7 @@ html.v11-footer footer, html.v11-footer footer *{font-size:12px}
     grid-template-areas:"map map bounty hall" "map map past hall" "spot spot clips vault"}
   html.v11-warroom-b .war-links{grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(3,minmax(165px,auto));
     grid-template-areas:"map map map hall hall bounty" "map map map hall hall past" "vault vault spot spot spot clips"}
-  html.v11-warroom .wl{grid-column:auto!important;grid-row:auto!important;min-height:0!important}
+  html.v11-warroom .wl{min-height:0!important}
   html.v11-warroom .wl:nth-child(1){grid-area:map} html.v11-warroom .wl:nth-child(2){grid-area:bounty}
   html.v11-warroom .wl:nth-child(3){grid-area:hall} html.v11-warroom .wl:nth-child(4){grid-area:past}
   html.v11-warroom .wl:nth-child(5){grid-area:clips} html.v11-warroom .wl:nth-child(6){grid-area:spot}

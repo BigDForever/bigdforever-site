@@ -51,7 +51,7 @@
     // [warroom] pictures in every war-room tile (stand-ins until the ChatGPT war map arrives)
     if (V.warroom) {
       var pics = ["map", "bounty", "hall", "past", "clips", "spot", "vault"];
-      $$(".war-links .wl").forEach(function (a, i) { if (pics[i]) a.style.setProperty("--pic", "url('assets/v11/room/" + pics[i] + ".jpg')"); });
+      $$(".war-links .wl").forEach(function (a, i) { if (pics[i]) a.style.setProperty("--pic", "url('" + new URL("assets/v11/room/" + pics[i] + ".jpg", location.href).href + "')"); });
     }
 
     // [chaos] no queues in Forever: the second tile becomes Disconnects
