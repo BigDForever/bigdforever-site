@@ -12,4 +12,17 @@
     h.classList.add("v11-" + kv[0]); if (kv[1]) h.classList.add("v11-" + kv[0] + "-" + kv[1]);
   });
   window.V11 = map;
+
+  // [crest] the gritty Alliance shield replaces the old crest and badge everywhere (gate, header, Brag Maker canvas)
+  if (map.crest) {
+    var SWAP = { "assets/art/alliance-crest.png": "assets/v11/crest/alliance-crest-gritty.webp", "assets/art/alliance-badge.png": "assets/v11/crest/alliance-badge-gritty.webp" };
+    var fix = function (u) { u = String(u); for (var k in SWAP) if (u.indexOf(k) !== -1) return u.replace(k, SWAP[k]); return u; };
+    var d = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, "src");
+    if (d && d.set) Object.defineProperty(HTMLImageElement.prototype, "src", { configurable: true, enumerable: d.enumerable, get: d.get, set: function (v) { d.set.call(this, fix(v)); } });
+    var sa = Element.prototype.setAttribute;
+    Element.prototype.setAttribute = function (n, v) { return sa.call(this, n, (n === "src" && this.tagName === "IMG") ? fix(v) : v); };
+    new MutationObserver(function (ms) { ms.forEach(function (m) { m.addedNodes && m.addedNodes.forEach(function (n) {
+      if (n.nodeType !== 1) return; (n.tagName === "IMG" ? [n] : Array.prototype.slice.call(n.querySelectorAll("img"))).forEach(function (i) { var a = i.getAttribute("src") || "", b = fix(a); if (a !== b) i.src = b; });
+    }); }); }).observe(document.documentElement, { childList: true, subtree: true });
+  }
 })();
