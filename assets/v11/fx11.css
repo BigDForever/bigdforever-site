@@ -1,5 +1,5 @@
 /* v1.1 effect proposals (fx11). Every rule is behind html.v11-<key>; nothing here runs unless the key is on.
-   Keys: bigd:a|b|c|d · heroparticles:a|b · socials:a|b|c · submitfx · tilehover. Preview: index.html?v11=bigd:a */
+   Keys: bigd:a|b|c|d · heroparticles:a|b · socials:a|b|c · submitfx · tilehover · gate. Preview: index.html?v11=bigd:a */
 
 /* ===================== 1. BigD title: molten gold from the logo's sword ===================== */
 /* colours sampled from emblem.jpg (sword blade): #9d4a00 #c66600 #d97c15 #efad21 #ffca4e #f2dd8e #fdf6bf */
@@ -151,6 +151,11 @@ html.v11-tilehover :is(.war-links .wl,.chaos .tile,#feed .card):hover{border-col
 html.v11-tilehover #feed .card.a:hover{box-shadow:inset 0 3px 0 var(--navy-hi),0 0 0 1px var(--fx-tile),0 12px 34px -16px var(--fx-tile-glow)}
 html.v11-tilehover #feed .card.h:hover{box-shadow:inset 0 3px 0 var(--crimson-hi),0 0 0 1px var(--fx-tile),0 12px 34px -16px var(--fx-tile-glow)}
 .fx-tile-cv{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:15;display:block}
+
+/* ===================== 6. Pick-your-side gate particles (behind the art and text) ===================== */
+.fx-gate-cv{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0}
+html.v11-gate .fx-gate{overflow:hidden}
+html.v11-gate .fx-gate > :not(.fx-gate-cv){position:relative;z-index:1}
 
 @media (prefers-reduced-motion:reduce){
   html[class*="v11-bigd"] .fx-bd,html.v11-bigd-d .fx-l,html.v11-heroparticles-b .hero::after{animation:none!important}

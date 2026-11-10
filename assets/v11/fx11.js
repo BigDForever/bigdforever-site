@@ -1,11 +1,11 @@
 /* v1.1 effect proposals (fx11). Each block runs only when its key is on (?v11=key or key:option, see v11-flags.js).
-   Keys: bigd:a|b|c|d · heroparticles:a|b · socials:a|b|c · submitfx · tilehover.
+   Keys: bigd:a|b|c|d · heroparticles:a|b · socials:a|b|c · submitfx · tilehover · gate.
    Rules: plain JS, one requestAnimationFrame loop per canvas, paused off-screen / in background tabs,
    static calm state with prefers-reduced-motion, DPR-aware canvases, capped particle counts. */
 (function () {
   "use strict";
   var V = window.V11 || {}, H = document.documentElement;
-  if (!V.bigd && !V.heroparticles && !V.socials && !V.submitfx && !V.tilehover) return;
+  if (!V.bigd && !V.heroparticles && !V.socials && !V.submitfx && !V.tilehover && !V.gate) return;
 
   var RM = window.matchMedia ? matchMedia("(prefers-reduced-motion: reduce)") : { matches: false };
   var rnd = function (a, b) { return a + Math.random() * (b - a); };
@@ -47,7 +47,7 @@
       W = w; Hh = h;
     }
     function frame(ts) {
-      raf = 0; if (!vis || document.hidden || RM.matches) { last = 0; return; }
+      raf = 0; if (!cv.isConnected || !vis || document.hidden || RM.matches) { last = 0; return; }
       var dt = last ? ts - last : 16; last = ts; var k = Math.min(3, dt / 16.67);
       step(g, W, Hh, d, k, (ts - t0) / 1000, false);
       raf = requestAnimationFrame(frame);
@@ -196,18 +196,18 @@
     };
     return w;
   }
-  function heroParticles() {
-    var hero = document.querySelector(".hero"); if (!hero) return;
-    var cv = document.createElement("canvas"); cv.className = "fx-hero-cv"; cv.setAttribute("aria-hidden", "true");
-    hero.insertBefore(cv, hero.firstChild);
-    var wind = Wind(), P = [], lastSide = "";
-    function make(W, Hh, d, edge, w) {
-      var al = side() === "alliance", p = { l: 0, dl: rnd(.0012, .0026), ph: rnd(0, 6.28), vx: 0, vy: 0 };
+  /* a field of wind-blown particles inside a rect R {x,y,w,h} (canvas px); al = Alliance motes, else Horde embers/ash.
+     Used by the hero (whole canvas) and the gate (one field per half). fadeEdge = soft fade near the rect edge. */
+  function Field(al, fadeEdge) {
+    var P = [];
+    function make(R, d, edge, w) {
+      var p = { l: 0, dl: rnd(.0012, .0026), ph: rnd(0, 6.28), vx: 0, vy: 0 };
       if (edge && w) { /* enter from the upwind side */
-        if (Math.abs(w.x) > Math.abs(w.y)) { p.x = w.x > 0 ? -20 * d : W + 20 * d; p.y = rnd(0, Hh); }
-        else { p.y = w.y > 0 ? -20 * d : Hh + 20 * d; p.x = rnd(0, W); }
+        if (Math.abs(w.x) > Math.abs(w.y)) { p.x = w.x > 0 ? R.x - 20 * d : R.x + R.w + 20 * d; p.y = R.y + rnd(0, R.h); }
+        else { p.y = w.y > 0 ? R.y - 20 * d : R.y + R.h + 20 * d; p.x = R.x + rnd(0, R.w); }
         p.l = rnd(.05, .2);
-      } else { p.x = rnd(0, W); p.y = rnd(0, Hh); }
+        if (fadeEdge) { p.x = R.x + rnd(0, R.w); p.y = R.y + rnd(0, R.h); p.l = 0; }
+      } else { p.x = R.x + rnd(0, R.w); p.y = R.y + rnd(0, R.h); }
       if (al) {
         p.k = Math.random() < .12 ? "bokeh" : "mote"; p.s = (p.k === "bokeh" ? rnd(9, 16) : rnd(.8, 1.7)) * d;
         p.c = pick(["255,240,200", "255,226,150", "255,248,228", "246,214,130"]); p.m = rnd(.5, 1); p.lift = rnd(.005, .03) * d;
@@ -218,13 +218,11 @@
       }
       return p;
     }
-    loop(cv, hero, function (g, W, Hh, d, k, t, still) {
-      var sd = side(); if (sd !== lastSide) { P = []; lastSide = sd; }
-      var al = sd === "alliance", max = Math.min(small() ? 45 : 110, Math.round(W * Hh / (d * d) / (al ? 11000 : 8500)));
-      var w = wind.at(t), base = 1.15 * d, kx = 2 * Math.PI / (720 * d), om = 2 * Math.PI / 6.5;
-      if (!P.length) for (var i = 0; i < max; i++) { var q = make(W, Hh, d, false); q.l = rnd(0, .8); P.push(q); }
-      while (P.length < max) P.push(make(W, Hh, d, true, w));
-      g.clearRect(0, 0, W, Hh);
+    return { reset: function () { P = []; }, step: function (g, R, d, k, t, still, w, max, gain) {
+      var base = 1.15 * d, kx = 2 * Math.PI / (720 * d), om = 2 * Math.PI / 6.5, fe = (fadeEdge || 0) * d;
+      if (!P.length) for (var i = 0; i < max; i++) { var q = make(R, d, false); q.l = rnd(0, .8); P.push(q); }
+      while (P.length < max) P.push(make(R, d, true, w));
+      if (P.length > max + 4) P.length = max;
       g.globalCompositeOperation = "lighter";
       P = P.filter(function (p) {
         p.l += p.dl * k; if (p.l >= 1) return false;
@@ -238,24 +236,26 @@
           p.ph += .05 * k; p.x += (p.vx + Math.sin(p.ph) * .12 * d) * k; p.y += (p.vy + Math.cos(p.ph * .8) * .1 * d) * k;
           if (p.rot !== undefined) p.rot += p.vr * k;
         }
-        var m = 40 * d; if (p.x < -m || p.x > W + m || p.y < -m || p.y > Hh + m) return false;
-        var fade = Math.min(1, p.l * 8, (1 - p.l) * 5);
+        var m = fe ? 0 : 40 * d; if (p.x < R.x - m || p.x > R.x + R.w + m || p.y < R.y - m || p.y > R.y + R.h + m) return false;
+        var fade = Math.min(1, p.l * 8, (1 - p.l) * 5) * gain;
+        if (fe) fade *= Math.min(1, (p.x - R.x) / fe, (R.x + R.w - p.x) / fe, (p.y - R.y) / fe, (R.y + R.h - p.y) / fe);
+        if (fade <= 0) return true;
         if (al) {
           var tw = .7 + .3 * Math.sin(p.ph * 2.3 + p.s);
-          if (p.k === "bokeh") { g.globalAlpha = fade * .07 * tw; g.drawImage(glow(p.c), p.x - p.s * 2, p.y - p.s * 2, p.s * 4, p.s * 4); }
+          if (p.k === "bokeh") { g.globalAlpha = Math.min(1, fade * .07 * tw); g.drawImage(glow(p.c), p.x - p.s * 2, p.y - p.s * 2, p.s * 4, p.s * 4); }
           else {
-            g.globalAlpha = fade * .32 * tw; var r = p.s * 6; g.drawImage(glow(p.c), p.x - r, p.y - r, r * 2, r * 2);
-            g.globalAlpha = fade * .85 * tw; g.fillStyle = "rgb(" + p.c + ")"; g.beginPath(); g.arc(p.x, p.y, p.s * .7, 0, 6.283); g.fill();
+            g.globalAlpha = Math.min(1, fade * .32 * tw); var r = p.s * 6; g.drawImage(glow(p.c), p.x - r, p.y - r, r * 2, r * 2);
+            g.globalAlpha = Math.min(1, fade * .85 * tw); g.fillStyle = "rgb(" + p.c + ")"; g.beginPath(); g.arc(p.x, p.y, p.s * .7, 0, 6.283); g.fill();
           }
         } else if (p.k === "ash") {
           g.globalCompositeOperation = "source-over"; g.save(); g.translate(p.x, p.y); g.rotate(p.rot);
-          g.globalAlpha = fade * .35; g.fillStyle = "rgb(120,104,96)"; g.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); g.restore();
+          g.globalAlpha = Math.min(1, fade * .35); g.fillStyle = "rgb(120,104,96)"; g.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); g.restore();
           g.globalCompositeOperation = "lighter";
         } else {
           var c = ramp(HEAT, p.heat + p.l * .55).join(), fl = .7 + .3 * Math.sin(p.ph * 4.3 + p.s * 3);
           var a = fade * fl;
-          g.globalAlpha = a * .34; var rr = p.s * 6; g.drawImage(glow(c), p.x - rr, p.y - rr, rr * 2, rr * 2);
-          g.globalAlpha = a * .9;
+          g.globalAlpha = Math.min(1, a * .34); var rr = p.s * 6; g.drawImage(glow(c), p.x - rr, p.y - rr, rr * 2, rr * 2);
+          g.globalAlpha = Math.min(1, a * .9);
           if (p.k === "spark") { /* short streak along its motion: shows the wind */
             g.strokeStyle = "rgb(" + c + ")"; g.lineWidth = p.s * .9; g.lineCap = "round";
             g.beginPath(); g.moveTo(p.x, p.y); g.lineTo(p.x - p.vx * 5, p.y - p.vy * 5); g.stroke();
@@ -264,6 +264,18 @@
         return true;
       });
       g.globalAlpha = 1; g.globalCompositeOperation = "source-over";
+    } };
+  }
+  function heroParticles() {
+    var hero = document.querySelector(".hero"); if (!hero) return;
+    var cv = document.createElement("canvas"); cv.className = "fx-hero-cv"; cv.setAttribute("aria-hidden", "true");
+    hero.insertBefore(cv, hero.firstChild);
+    var wind = Wind(), F = null, lastSide = "";
+    loop(cv, hero, function (g, W, Hh, d, k, t, still) {
+      var sd = side(); if (sd !== lastSide) { F = Field(sd === "alliance"); lastSide = sd; }
+      var max = Math.min(small() ? 45 : 110, Math.round(W * Hh / (d * d) / (sd === "alliance" ? 11000 : 8500)));
+      g.clearRect(0, 0, W, Hh);
+      F.step(g, { x: 0, y: 0, w: W, h: Hh }, d, k, t, still, wind.at(t), max, 1);
     });
   }
   if (V.heroparticles) heroParticles();
@@ -276,6 +288,46 @@
       hero.style.setProperty("--fx-ry", ((e.top + e.height / 2 - h.top + .4 * h.height) / (1.8 * h.height) * 100).toFixed(2) + "%");
     }
     c(); addEventListener("resize", c); addEventListener("load", c); if (document.fonts && document.fonts.ready) document.fonts.ready.then(c);
+  })();
+
+
+  /* ===================== 6. Pick-your-side gate: the screen breathes (motes over Alliance, embers/ash over Horde) ===================== */
+  function gateParticles(gate) {
+    if (gate.querySelector(".fx-gate-cv")) return;
+    var A = gate.querySelector(".fx-half.fx-alliance"), Hd = gate.querySelector(".fx-half.fx-horde"); if (!A || !Hd) return;
+    var cv = document.createElement("canvas"); cv.className = "fx-gate-cv"; cv.setAttribute("aria-hidden", "true");
+    gate.insertBefore(cv, gate.firstChild);
+    var wind = Wind(), FA = Field(true, 70), FH = Field(false, 70), hov = "", gA = 1, gH = 1;
+    [A, Hd].forEach(function (b) {
+      var s = b === A ? "alliance" : "horde";
+      b.addEventListener("pointerenter", function (e) { if (e.pointerType !== "touch") hov = s; });
+      b.addEventListener("pointerleave", function () { if (hov === s) hov = ""; });
+      b.addEventListener("focus", function () { if (b.matches(":focus-visible")) hov = s; });
+      b.addEventListener("blur", function () { if (hov === s) hov = ""; });
+    });
+    loop(cv, gate, function (g, W, Hh, d, k, t, still) {
+      var c = cv.getBoundingClientRect(), a = A.getBoundingClientRect(), h = Hd.getBoundingClientRect(), RA, RH;
+      if (a.right <= h.left + 2) { /* side by side: split at the gap between the halves */
+        var sx = Math.round(((a.right + h.left) / 2 - c.left) * d); RA = { x: 0, y: 0, w: sx, h: Hh }; RH = { x: sx, y: 0, w: W - sx, h: Hh };
+      } else { /* stacked (phones) */
+        var sy = Math.round(((a.bottom + h.top) / 2 - c.top) * d); RA = { x: 0, y: 0, w: W, h: sy }; RH = { x: 0, y: sy, w: W, h: Hh - sy };
+      }
+      /* a bit stronger near the hovered half, calmer on the other; after the pick only the chosen side keeps going */
+      var ch = gate.classList.contains("fx-chose-alliance") ? "alliance" : gate.classList.contains("fx-chose-horde") ? "horde" : "";
+      var on = ch || hov, tA = on ? (on === "alliance" ? (ch ? 1.9 : 1.6) : (ch ? 0 : .45)) : 1.15, tH = on ? (on === "horde" ? (ch ? 1.9 : 1.6) : (ch ? 0 : .45)) : 1.15;
+      var e = still ? 1 : Math.min(1, .05 * k); gA += (tA - gA) * e; gH += (tH - gH) * e;
+      var per = function (R) { return Math.min(small() ? 26 : 60, Math.round(R.w * R.h / (d * d) / 9000)); };
+      var w = wind.at(t);
+      g.clearRect(0, 0, W, Hh);
+      FA.step(g, RA, d, k, t, still, w, Math.round(per(RA) * (gA > 1.2 ? 1.25 : 1)), gA);
+      FH.step(g, RH, d, k, t, still, w, Math.round(per(RH) * (gH > 1.2 ? 1.25 : 1)), gH);
+    });
+  }
+  if (V.gate) (function () {
+    var g = document.querySelector(".fx-gate"); if (g) return gateParticles(g);
+    var mo = new MutationObserver(function () { var x = document.querySelector(".fx-gate"); if (x) { mo.disconnect(); gateParticles(x); } });
+    mo.observe(document.body || document.documentElement, { childList: true });
+    setTimeout(function () { mo.disconnect(); }, 8000);
   })();
 
   /* ===================== 3/4. brand icons ===================== */
