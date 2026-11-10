@@ -270,12 +270,17 @@
     var hero = document.querySelector(".hero"); if (!hero) return;
     var cv = document.createElement("canvas"); cv.className = "fx-hero-cv"; cv.setAttribute("aria-hidden", "true");
     hero.insertBefore(cv, hero.firstChild);
-    var wind = Wind(), F = null, lastSide = "";
+    var wind = Wind(), F = null, FT = null, lastSide = "", h1 = hero.querySelector("h1");
     loop(cv, hero, function (g, W, Hh, d, k, t, still) {
-      var sd = side(); if (sd !== lastSide) { F = Field(sd === "alliance"); lastSide = sd; }
+      var sd = side(); if (sd !== lastSide) { F = Field(sd === "alliance"); FT = Field(sd === "alliance", 60); lastSide = sd; }
       var max = Math.min(small() ? 45 : 110, Math.round(W * Hh / (d * d) / (sd === "alliance" ? 11000 : 8500)));
       g.clearRect(0, 0, W, Hh);
-      F.step(g, { x: 0, y: 0, w: W, h: Hh }, d, k, t, still, wind.at(t), max, 1);
+      // Dejan 10 Nov (card 39): 70 % of the particles gather round the "BigD or Go Home" title, 30 % drift over the rest (the clips stay clean)
+      var T = null;
+      if (h1) { var hr = hero.getBoundingClientRect(), r = h1.getBoundingClientRect(), cw = cv.width / Math.max(1, hr.width);
+        T = { x: Math.max(0, (r.left - hr.left - 70) * cw), y: Math.max(0, (r.top - hr.top - 60) * cw), w: (r.width + 140) * cw, h: (r.height + 120) * cw }; }
+      if (T) { FT.step(g, T, d, k, t, still, wind.at(t), Math.round(max * .7), 1); F.step(g, { x: 0, y: 0, w: W, h: Hh }, d, k, t, still, wind.at(t), Math.round(max * .3), 1); }
+      else F.step(g, { x: 0, y: 0, w: W, h: Hh }, d, k, t, still, wind.at(t), max, 1);
     });
   }
   if (V.heroparticles) heroParticles();

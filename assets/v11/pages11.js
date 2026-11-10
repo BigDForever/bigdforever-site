@@ -362,6 +362,8 @@
       var w = D.createTreeWalker(D.body, NodeFilter.SHOW_TEXT), n, hits = [];
       while ((n = w.nextNode())) if (/#challenges/.test(n.nodeValue) && /trash/i.test(n.nodeValue)) hits.push(n);
       hits.forEach(function (t) { t.nodeValue = t.nodeValue.replace(/#challenges/g, "#trash-talk"); });
+      // the Talk trash button lands straight in #trash-talk (invite made from that channel, never expires, 10 Nov)
+      $$("a").forEach(function (a) { if (/trash/i.test(a.textContent) && /discord/.test(a.href)) a.href = "https://discord.gg/SvyFRYfpy"; });
     }
     if (V.vault && $(".bar") && D.getElementById("grid")) vault(V.vault === "b" ? "b" : "a");
     if (V.howto && $(".pick") && $(".tool")) howto();

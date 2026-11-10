@@ -185,3 +185,6 @@ html.v11-gate .fx-gate > :not(.fx-gate-cv){position:relative;z-index:1}
 }
 /* particles over the clips video (card 16 round 2): above the dark shade, under the words */
 html.hv-on .fx-hero-cv{z-index:2} html.hv-on.v11-heroparticles .hero .wrap{z-index:3}
+
+/* card 39: particles gather at the title, so the left-side mask is lighter there */
+html.v11-heroparticles .fx-hero-cv{-webkit-mask:none;mask:none}
