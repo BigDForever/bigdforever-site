@@ -10,7 +10,7 @@
   color:var(--tint,var(--gold));background:color-mix(in srgb,var(--side,var(--gold)) 14%,transparent);border:1px solid color-mix(in srgb,var(--side,var(--gold)) 40%,transparent)}
 .p11-chip-ico .p11-ico{width:22px;height:22px}
 html.p11-tab-hidden [class*="p11"],.p11-offscreen,.p11-offscreen *{animation-play-state:paused!important}
-@media (prefers-reduced-motion:reduce){[class*="p11"]{animation:none!important;transition:none!important}}
+@media (prefers-reduced-motion:reduce){[class*="p11"],html.v11-warmap .panel .btn::after{animation:none!important;transition:none!important}html.v11-warmap .panel .btn::after{opacity:.55}}
 
 /* =====================================================================
    1. HALLS  (?v11=halls)
@@ -338,6 +338,7 @@ html.v11-spotlight .card:hover{border-color:color-mix(in srgb,var(--side,var(--g
   html.v11-spotlight .p11-spot > .grid > .card:first-child .player{grid-row:1/span 3}
   html.v11-spotlight .p11-spot > .grid > .card:first-child h3{font-size:28px;margin-top:6px}
   html.v11-spotlight .p11-spot > .grid > .card:first-child .meta{align-self:end}
+  html.v11-spotlight .p11-spot > .grid > .card:first-child .tag{justify-self:start}
   html.v11-spotlight .p11-spot > .p11-aside{grid-column:2;grid-row:2/span 2;position:sticky;top:96px}
 }
 @media (max-width:999px){html.v11-spotlight .p11-aside{margin-top:28px}}
