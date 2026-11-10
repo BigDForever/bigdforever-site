@@ -72,4 +72,4 @@ html.v11-chaos #chaos-submit:hover, html.v11-chaos #chaos-submit:focus-visible{b
 
 /* ---------- [nolines] no divider lines between sections (spacing separates them) ---------- */
 html.v11-nolines .sec + .sec .wrap{border-top:0!important}
-html.v11-header header.top + .wrap:not(main), html.v11-header header.top + section{margin-top:28px}
+html.v11-header header.top + main, html.v11-header header.top + .wrap, html.v11-header header.top + section{margin-top:28px}
