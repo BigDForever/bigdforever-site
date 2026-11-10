@@ -1,0 +1,74 @@
+/* ===== BigDForever v1.1 layout proposals (each one off unless its key is on, see v11-flags.js) ===== */
+
+/* ---------- [wide:a|b] PC pages use the screen width ---------- */
+html{--v11w:1100px}
+html.v11-wide-a{--v11w:1440px}
+html.v11-wide-b{--v11w:min(1760px, 92vw)}
+@media (min-width:1000px){
+  html.v11-wide .wrap, html.v11-wide main.wrap{max-width:var(--v11w)}
+  html.v11-wide .hero .copy p{max-width:56ch}
+  html.v11-wide-b .hero h1{font-size:clamp(56px,8vw,150px)}
+  html.v11-wide .war-links{gap:18px}
+  html.v11-wide .grid, html.v11-wide .chaos-cta{gap:18px}
+  html.v11-wide .lede{max-width:72ch}
+}
+
+/* ---------- [header] same header everywhere: logo left, Talents + Menu right, edge-to-edge faction line ---------- */
+html.v11-header body{overflow-x:clip}
+html.v11-header header.top, html.v11-header header.fx-head{max-width:none!important;margin:0!important;border-bottom:0!important;
+  padding-inline:max(16px, calc((100vw - var(--v11w)) / 2))!important;padding-block:10px!important}
+html.v11-header header.fx-head > .wrap{max-width:none!important;padding:0!important;margin:0!important;width:100%}
+html.v11-header .fx-burger{margin-right:0!important}
+html.v11-header .fx-talents{margin-left:auto}
+html.v11-header header.fx-head::after{left:calc(50% - 50vw)!important;right:calc(50% - 50vw)!important}
+html.v11-header[data-side="horde"] header.fx-head::after{height:4px!important;bottom:-4px!important;-webkit-mask:none!important;mask:none!important;
+  background:linear-gradient(var(--side) 0 3px,var(--side-2) 3px 4px)!important}
+html.v11-header[data-side="alliance"] header.fx-head::after{height:4px!important;bottom:-4px!important;
+  background:linear-gradient(var(--side-2) 0 2px,transparent 2px 3px,var(--side) 3px 4px)!important}
+.v11-tslogo{width:22px;height:22px;margin-right:8px;object-fit:contain;flex:none}
+
+/* ---------- [ticker] the news never runs dry ---------- */
+html.v11-ticker .ticker .track{animation-duration:var(--v11tick,60s)}
+
+/* ---------- [discord] the Discord logo inside every Discord button ---------- */
+.v11-dlogo{width:1.25em;height:1.25em;flex:none;vertical-align:-.25em;margin-right:.5em;fill:currentColor}
+html.v11-discord .btn:has(.v11-dlogo), html.v11-discord .fx-btn:has(.v11-dlogo){display:inline-flex;align-items:center;justify-content:center}
+
+/* ---------- [footer] one quiet line ---------- */
+html.v11-footer footer .wrap{display:block!important;text-align:center;font-size:12px!important;padding-block:18px!important;line-height:1.5}
+html.v11-footer footer .wrap > span + span::before{content:" · "}
+html.v11-footer footer, html.v11-footer footer *{font-size:12px}
+
+/* ---------- [warroom:a|b] war room as a picture puzzle ---------- */
+@media (min-width:861px){
+  html.v11-warroom .war-links{display:grid;gap:16px}
+  html.v11-warroom-a .war-links{grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(3,minmax(170px,auto));
+    grid-template-areas:"map map bounty hall" "map map past hall" "spot spot clips vault"}
+  html.v11-warroom-b .war-links{grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(3,minmax(165px,auto));
+    grid-template-areas:"map map map hall hall bounty" "map map map hall hall past" "vault vault spot spot spot clips"}
+  html.v11-warroom .wl{grid-column:auto!important;grid-row:auto!important;min-height:0!important}
+  html.v11-warroom .wl:nth-child(1){grid-area:map} html.v11-warroom .wl:nth-child(2){grid-area:bounty}
+  html.v11-warroom .wl:nth-child(3){grid-area:hall} html.v11-warroom .wl:nth-child(4){grid-area:past}
+  html.v11-warroom .wl:nth-child(5){grid-area:clips} html.v11-warroom .wl:nth-child(6){grid-area:spot}
+  html.v11-warroom .wl:nth-child(7){grid-area:vault}
+}
+html.v11-warroom .wl{justify-content:flex-end;background:var(--panel) var(--pic) center/cover no-repeat;isolation:isolate}
+html.v11-warroom .wl::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(0deg,color-mix(in srgb,var(--ink) 94%,transparent) 0,color-mix(in srgb,var(--ink) 70%,transparent) 42%,color-mix(in srgb,var(--ink) 18%,transparent) 100%);transition:opacity .3s}
+html.v11-warroom .wl:hover::before{opacity:.82}
+html.v11-warroom .wl:hover{transform:translateY(-3px);border-color:var(--tint);box-shadow:0 16px 40px -18px #000}
+html.v11-warroom .wl b{font-size:25px;text-shadow:0 2px 8px #000}
+html.v11-warroom .wl:nth-child(1) b{font-size:38px}
+html.v11-warroom .wl span:last-child{color:color-mix(in srgb,var(--paper) 82%,transparent);text-shadow:0 1px 6px #000}
+html.v11-warroom .wl .no{text-shadow:0 2px 8px #000}
+@media (max-width:860px){html.v11-warroom .wl{min-height:150px}}
+
+/* ---------- [chaos] Launch Week Chaos fixes ---------- */
+html.v11-chaos[data-side="alliance"] .chaos{background:var(--panel)}
+html.v11-chaos .tile{transition:border-color .2s,transform .2s}
+html.v11-chaos .tile:hover{border-color:var(--tint);transform:translateY(-2px)}
+html.v11-chaos #chaos-submit{transition:border-color .2s,box-shadow .2s,background .2s}
+html.v11-chaos #chaos-submit:hover, html.v11-chaos #chaos-submit:focus-visible{border-color:var(--tint);box-shadow:0 0 0 2px var(--tint);background:color-mix(in srgb,var(--tint) 18%,var(--panel2,var(--panel)))}
+
+/* ---------- [nolines] no divider lines between sections (spacing separates them) ---------- */
+html.v11-nolines .sec + .sec .wrap{border-top:0!important}
