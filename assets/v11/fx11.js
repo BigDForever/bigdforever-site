@@ -165,7 +165,7 @@
 
   if (V.bigd) {
     var BD = bigdTargets();
-    if (V.bigd === "b") BD.forEach(bigdParticles);
+    if (V.bigd === "b" || V.bigd === "e") BD.forEach(bigdParticles);
     if (V.bigd === "d") BD.forEach(bigdForge);
   }
 

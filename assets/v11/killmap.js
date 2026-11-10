@@ -6,7 +6,8 @@
   if (!V.killmap) return;
   var svg = document.getElementById("war");
   if (!svg || typeof GEO === "undefined") return;
-  var OPT = V.killmap === "b" ? "b" : "a";
+  var OPT = V.killmap === "b" ? "b" : V.killmap === "c" ? "c" : "a";
+  var ZS = OPT === "c" ? (window.KM_ZONES || null) : null;
   var NS = "http://www.w3.org/2000/svg", W = 1672, H = 941;
   var IMG = new URL("assets/v11/art/war-map-azeroth.jpg", location.href).href;
 
@@ -37,7 +38,12 @@
     ".km-pin.hot .glow{animation:kmPulse 2.4s ease-in-out infinite}",
     ".km-flag path.cloth{stroke:#140f0a;stroke-width:1.5}",
     ".km-flag .pole{stroke:#140f0a;stroke-width:4}.km-flag .pole2{stroke:#e9d9b4;stroke-width:1.6}",
-    "@media (prefers-reduced-motion:reduce){.km-pin.hot .glow{animation:none}}"
+    "@media (prefers-reduced-motion:reduce){.km-pin.hot .glow{animation:none}}",
+    ".km-area{cursor:pointer;stroke:#1b120a;stroke-width:2.2;stroke-linejoin:round;fill-opacity:.34;transition:fill-opacity .15s}",
+    ".km-area.none{fill:#3a2c1c;fill-opacity:.12}",
+    ".km-area.ally{fill:#3f7be8}.km-area.horde{fill:#d0362a}.km-area.cont{fill:url(#kmCont)}",
+    ".km-area:hover,.km-area.sel{fill-opacity:.55;stroke:#f6e7c4;stroke-width:3}",
+    ".km-areas{filter:drop-shadow(0 0 1px rgba(246,231,196,.35))}"
   ].join("\n");
   document.head.appendChild(css);
 
@@ -69,17 +75,26 @@
     var top = ranked.slice(0, 5).filter(function (z) { var k = info[z.n]; return k.a + k.h > 0; }).map(function (z) { return z.n; });
     var hot = (typeof WAR !== "undefined" && WAR.hot) || 25;
 
+    // [killmap:c] every zone drawn as its own area with an inked border, tinted by who holds it
+    var areas = ZS ? mk("g", { "class": "km-areas" }, root) : null;
     var pins = mk("g", {}, root);
     zones.forEach(function (z) {
-      var k = info[z.n], t = k.a + k.h;
-      var xy = FIX[z.n] || place(z.x != null ? z.x : z.cx, z.y != null ? z.y : z.cy, z.c);
+      var k = info[z.n], t = k.a + k.h, zs = ZS && ZS[z.n];
+      var xy = zs ? [zs.x, zs.y] : FIX[z.n] || place(z.x != null ? z.x : z.cx, z.y != null ? z.y : z.cy, z.c);
+      if (zs) {
+        var sd = !t ? "none" : k.a === k.h ? "cont" : (k.a > k.h ? "ally" : "horde");
+        var pa = mk("path", { d: zs.d, "class": "km-area " + sd, "data-km": z.n }, areas);
+        pa.addEventListener("click", function () { if (k.el) k.el.dispatchEvent(new MouseEvent("click", { bubbles: true })); mark(z.n); });
+        pa.addEventListener("mouseenter", function () { mark(z.n, true); });
+        pa.addEventListener("mouseleave", function () { mark(null, true); });
+      }
       var side = !t ? "none" : k.a === k.h ? "cont" : (k.a > k.h ? "ally" : "horde");
       var col = side === "ally" ? "#4f86e6" : side === "horde" ? "#d0362a" : side === "cont" ? "url(#kmCont)" : "#4a3d2b";
       var glowCol = side === "ally" ? "#7fb0ff" : side === "horde" ? "#ff5a3c" : "#e8c66a";
-      var r = t ? 9 + 13 * Math.sqrt(t / max) : 6;
+      var r = t ? (ZS ? 6 + 9 * Math.sqrt(t / max) : 9 + 13 * Math.sqrt(t / max)) : (ZS ? 4 : 6);
       var g = mk("g", { "class": "km-pin " + side + (t >= hot ? " hot" : "") + (top.indexOf(z.n) !== -1 ? " top" : ""), transform: "translate(" + xy[0].toFixed(1) + " " + xy[1].toFixed(1) + ")",
         tabindex: 0, role: "button", "aria-label": z.n + (t ? ": Alliance " + k.a + ", Horde " + k.h : ": no blood yet"), "data-km": z.n }, pins);
-      if (OPT === "a" || !t) {
+      if (OPT !== "b" || !t) {
         mk("circle", { "class": "glow", r: (r * 1.9).toFixed(1), fill: glowCol }, g);
         mk("circle", { "class": "dot", r: r.toFixed(1), fill: col }, g);
       } else {
@@ -98,7 +113,13 @@
       g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
     });
   }
-  function mark(n) { svg.querySelectorAll(".km-pin").forEach(function (p) { p.classList.toggle("sel", p.dataset.km === n); }); }
+  var selected = null;
+  function mark(n, hover) {
+    if (!hover) selected = n;
+    var on = hover ? (n || selected) : n;
+    svg.querySelectorAll(".km-pin").forEach(function (p) { p.classList.toggle("sel", p.dataset.km === on); });
+    svg.querySelectorAll(".km-area").forEach(function (p) { p.classList.toggle("sel", p.dataset.km === on); });
+  }
 
   // redraw whenever the page re-renders its data (CSV arrives, demo data, etc.)
   if (typeof window.render === "function") { var orig = window.render; window.render = function () { var r = orig.apply(this, arguments); try { draw(); } catch (e) {} return r; }; }

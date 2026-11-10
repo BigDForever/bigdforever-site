@@ -1,5 +1,5 @@
 /* v1.1 effect proposals (fx11). Every rule is behind html.v11-<key>; nothing here runs unless the key is on.
-   Keys: bigd:a|b|c|d · heroparticles:a|b · socials:a|b|c|d · submitfx · tilehover · gate. Preview: index.html?v11=bigd:a */
+   Keys: bigd:a|b|c|d|e · heroparticles:a|b · socials:a|b|c|d · submitfx · tilehover · gate. Preview: index.html?v11=bigd:a */
 
 /* ===================== 1. BigD title: molten gold from the logo's sword ===================== */
 /* colours sampled from emblem.jpg (sword blade): #9d4a00 #c66600 #d97c15 #efad21 #ffca4e #f2dd8e #fdf6bf */
@@ -34,6 +34,15 @@ html.v11-bigd-a .fx-bd{
   animation:fx-molten 16s linear infinite;
 }
 @keyframes fx-molten{to{background-position:0 0,-433% 50%,0 -183%}}
+/* e (Dejan 10 Nov 17:31): A's molten metal + B's embers / glints behind; A's brightest highlight 10 % less bright */
+html.v11-bigd-e .fx-bd{
+  background-image:var(--fx-noise),
+    radial-gradient(closest-side,rgba(230,220,180,.45),rgba(230,193,99,.15) 55%,transparent),
+    linear-gradient(180deg,#e6bf55 0%,#f6b52c 10%,#e08a1a 22%,#c96a06 32%,#e59420 44%,#e6bb56 56%,#e6d89e 62%,#f2b026 72%,#d47a10 86%,#e6bf55 100%);
+  background-size:180px 180px,130% 140%,100% 220%;background-repeat:repeat,repeat-x,repeat;
+  background-position:0 0,0 50%,0 0;
+  animation:fx-molten 16s linear infinite;
+}
 
 /* b: textured gold + a canvas behind the word (embers / light glints) */
 .fx-bd-host{position:relative;isolation:isolate}
