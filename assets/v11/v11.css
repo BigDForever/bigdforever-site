@@ -56,6 +56,10 @@ html.v11-warroom .wl{justify-content:flex-end;background:var(--panel) var(--pic)
 html.v11-warroom .wl::before{content:"";position:absolute;inset:0;z-index:-1;
   background:linear-gradient(0deg,color-mix(in srgb,var(--ink) 94%,transparent) 0,color-mix(in srgb,var(--ink) 70%,transparent) 42%,color-mix(in srgb,var(--ink) 18%,transparent) 100%);transition:opacity .3s}
 html.v11-warroom .wl:hover::before{opacity:.82}
+/* props tiles: the cut-out sits top-right, the words stay bottom-left on the plain panel */
+html.v11-warroom .wl.v11-prop{background:var(--pic) right 64px top 14px/auto min(54%,190px) no-repeat,radial-gradient(120% 90% at 85% 25%,color-mix(in srgb,var(--tint) 16%,var(--panel)) 0,var(--panel) 70%)}
+html.v11-warroom .wl.v11-prop::before{background:linear-gradient(0deg,color-mix(in srgb,var(--ink) 88%,transparent) 0,color-mix(in srgb,var(--ink) 30%,transparent) 45%,transparent 75%)}
+html.v11-warroom .wl.v11-prop:hover{background-size:auto min(58%,204px),auto}
 html.v11-warroom .wl:hover{transform:translateY(-3px);border-color:var(--tint);box-shadow:0 16px 40px -18px #000}
 html.v11-warroom .wl b{font-size:25px;text-shadow:0 2px 8px #000}
 html.v11-warroom .wl:nth-child(1) b{font-size:38px}
@@ -75,5 +79,5 @@ html.v11-nolines .sec + .sec .wrap{border-top:0!important}
 html.v11-header header.top + main, html.v11-header header.top + .wrap, html.v11-header header.top + section{margin-top:28px}
 
 /* ---------- [menu] Change your mind + war chest ---------- */
-.v11-coin{width:1.15em;height:1.15em;vertical-align:-.2em;margin-right:.45em}
+.v11-coin{width:1.3em;height:1.3em;vertical-align:-.3em;margin-right:.45em;object-fit:contain;filter:drop-shadow(0 1px 2px #000)}
 html.v11-menu .fx-kofi span{display:inline-flex;align-items:center}

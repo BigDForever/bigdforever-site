@@ -56,7 +56,7 @@
         $$(".fx-kofi").forEach(function (k) {
           if (k.dataset.v11) return; k.dataset.v11 = "1";
           var t = k.querySelector("span"), sm = k.querySelector("small");
-          if (t) t.innerHTML = '<svg class="v11-coin" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="7" rx="8" ry="3.2" fill="currentColor"/><path d="M4 7v4c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2V7c0 1.8-3.6 3.2-8 3.2S4 8.8 4 7Zm0 6v4c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2v-4c0 1.8-3.6 3.2-8 3.2S4 14.8 4 13Z" fill="currentColor" opacity=".75"/></svg>War chest';
+          if (t) t.innerHTML = '<img class="v11-coin" src="' + new URL("assets/v11/fx/goblin-coin-64.webp", location.href).href + '" alt="" width="20" height="20">War chest';
           if (sm) sm.textContent = "Buy the goblins some grease (Ko-fi)";
         });
       };
@@ -65,8 +65,14 @@
 
     // [warroom] pictures in every war-room tile (stand-ins until the ChatGPT war map arrives)
     if (V.warroom) {
+      // tile 1 = the ChatGPT war map (cover); the others = Dejan's ChatGPT props (cut-outs, 10 Nov)
       var pics = ["map", "bounty", "hall", "past", "clips", "spot", "vault"];
-      $$(".war-links .wl").forEach(function (a, i) { if (pics[i]) a.style.setProperty("--pic", "url('" + new URL("assets/v11/room/" + pics[i] + ".jpg", location.href).href + "')"); });
+      $$(".war-links .wl").forEach(function (a, i) {
+        if (!pics[i]) return;
+        var f = i === 0 ? "assets/v11/room/map.jpg" : "assets/v11/room/props/" + pics[i] + ".webp";
+        a.style.setProperty("--pic", "url('" + new URL(f, location.href).href + "')");
+        if (i) a.classList.add("v11-prop");
+      });
     }
 
     // [chaos] no queues in Forever: the second tile becomes Disconnects
