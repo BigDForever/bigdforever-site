@@ -26,7 +26,7 @@
   ];
   var root = document.documentElement;
 
-  function get() { try { var s = localStorage.getItem(KEY); return SIDES[s] ? s : ""; } catch (e) { return ""; } }
+  function get() { var q = (location.search.match(/[?&]side=(\w+)/) || [])[1]; if (SIDES[q]) return q; try { var s = localStorage.getItem(KEY); return SIDES[s] ? s : ""; } catch (e) { return ""; } }
   function save(s) { try { localStorage.setItem(KEY, s); } catch (e) {} }
   function apply(s) {
     if (s) root.setAttribute("data-side", s); else root.removeAttribute("data-side");
