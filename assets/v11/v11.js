@@ -26,7 +26,7 @@
     if (V.discord) {
       var tag = function () {
         $$("a, button").forEach(function (a) {
-          if (a.querySelector(".v11-dlogo") || a.closest(".ticker")) return;
+          if (a.querySelector(".v11-dlogo, svg") || a.closest(".ticker")) return;
           var t = (a.textContent || "").toLowerCase(), h = (a.getAttribute("href") || "").toLowerCase();
           var isBtn = /\b(btn|fx-btn|fx-links|discord)\b/.test(a.className + " " + (a.parentNode && a.parentNode.className || "")) || a.id === "cta-discord" || a.id === "nav-discord" || a.id === "chaos-discord";
           if ((/discord/.test(t) || /discord/.test(h)) && (isBtn || a.closest(".fx-menu,.links,.chaos-cta,.cta,nav"))) a.insertAdjacentHTML("afterbegin", DISCORD);
