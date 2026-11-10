@@ -73,6 +73,32 @@ html[data-side="alliance"] .hero h1{text-shadow:3px 3px 0 #1b3a73,-2px -1px 0 rg
 .countdown b{font-weight:500;color:var(--paper);font-size:22px;font-variant-numeric:tabular-nums}
 @media (max-width:760px){.hero .wrap{grid-template-columns:1fr;padding-block:36px}.emblem{max-width:220px;grid-row:1}}
 
+/* ===== hero video (proposal 9: A = clips playing behind the title, B = "Now on air" screen with the newest Short) ===== */
+.hero-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none}
+html:not([data-hero-video="a"]) .hero-vid{display:none}
+.hero-shade{display:none;position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(13,11,10,.95) 0,rgba(13,11,10,.88) 40%,rgba(13,11,10,.55) 66%,rgba(13,11,10,.42) 100%),linear-gradient(0deg,rgba(13,11,10,.9) 0,transparent 28%)}
+html[data-hero-video="a"] .hero-shade{display:block}
+html[data-hero-video="a"] .hero-vid{filter:blur(1.5px) saturate(1.1)}
+@media (max-width:760px){html[data-hero-video="a"] .hero-shade{background:rgba(13,11,10,.8)}}
+html[data-hero-video="a"] .hero::after{display:none}
+html[data-hero-video] .hero .wrap{z-index:2}
+.onair{display:none;margin:0;justify-self:center;width:min(290px,100%);flex-direction:column;gap:10px}
+html[data-hero-video="b"] .onair{display:flex}
+html[data-hero-video="b"] .emblem{display:none}
+.onair .scr{position:relative;aspect-ratio:9/16;border-radius:12px;overflow:hidden;background:#000;
+  box-shadow:0 0 0 5px var(--ink),0 0 0 7px color-mix(in srgb,var(--gold) 70%,transparent),0 0 0 12px var(--ink),0 0 0 13px var(--line),0 30px 80px -20px #000}
+.onair video{width:100%;height:100%;object-fit:cover;display:block}
+.onair .live{position:absolute;top:10px;left:10px;font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#fff;background:color-mix(in srgb,var(--crimson) 85%,transparent);padding:6px 8px 5px;border-radius:3px}
+.onair .live::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#fff;margin-right:6px;vertical-align:1px;animation:onair 1.4s ease-in-out infinite}
+@keyframes onair{50%{opacity:.25}}
+.onair .snd{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);font:600 14px/1 var(--body);color:#fff;background:rgba(0,0,0,.62);border:1px solid rgba(255,255,255,.35);border-radius:99px;padding:10px 16px;cursor:pointer;white-space:nowrap}
+.onair .snd:hover,.onair .snd:focus-visible{background:rgba(0,0,0,.82);outline:2px solid var(--gold);outline-offset:2px}
+.onair figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:14px;color:var(--muted)}
+.onair figcaption b{color:var(--paper);font-weight:600}
+.onair figcaption a{color:var(--gold);white-space:nowrap}
+@media (max-width:760px){.onair{width:min(230px,70vw);grid-row:auto}}
+@media (prefers-reduced-motion:reduce){.onair .live::before{animation:none}}
+
 /* pick side */
 .pick{background:var(--panel);border-bottom:1px solid var(--line)}
 .pick .wrap{padding-block:28px;display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px}
@@ -229,6 +255,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 
 <main id="top">
   <section class="hero band">
+    <video class="hero-vid" muted loop playsinline preload="none" poster="assets/video/hero-montage.jpg" aria-hidden="true" tabindex="-1"><source src="assets/video/hero-montage.mp4" type="video/mp4"></video>
+    <div class="hero-shade"></div>
     <div class="wrap">
       <div class="copy">
         <div class="eyebrow">WoW Forever · the faction war brag board</div>
@@ -241,6 +269,14 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
         <div class="countdown" id="countdown" aria-live="polite"></div>
       </div>
       <img class="emblem" src="emblem.jpg" alt="BigDForever emblem: a golden D made of a sword and a battle-axe">
+      <figure class="onair" aria-label="Now on air: our newest Short">
+        <div class="scr">
+          <video muted playsinline preload="none" poster="assets/video/latest-short.jpg" data-start="5.6"><source src="assets/video/latest-short.mp4" type="video/mp4"></video>
+          <span class="live">Now on air</span>
+          <button class="snd" type="button">&#128264; Tap for sound</button>
+        </div>
+        <figcaption><b>Weekend Mutant Ninja Looters</b><a href="https://youtube.com/shorts/9ZKHQTBAlmo" target="_blank" rel="noopener">YouTube &#8599;</a></figcaption>
+      </figure>
     </div>
   </section>
 
@@ -508,5 +544,35 @@ tick();
 
 </script>
 
+
+<script>
+/* Hero video (proposal 9). Ship one: set HERO_VIDEO to "a" (clips behind the title) or "b" (Now on air screen). Preview with ?video=a / ?video=b / ?video=off. */
+(function () {
+  var HERO_VIDEO = "";
+  var q = new URLSearchParams(location.search).get("video");
+  var mode = q === null ? HERO_VIDEO : (q === "off" ? "" : q);
+  if (mode !== "a" && mode !== "b") return;
+  var html = document.documentElement; html.setAttribute("data-hero-video", mode);
+  var v = mode === "a" ? document.querySelector(".hero-vid") : document.querySelector(".onair video");
+  if (!v) return;
+  var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var seen = true, want = !still;
+  function sync() { if (want && seen && !document.hidden) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause(); }
+  v.preload = "auto"; if (!still) v.load();
+  document.addEventListener("visibilitychange", sync);
+  if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { seen = es[0].isIntersecting; sync(); }).observe(v);
+  sync();
+  if (mode === "b") {
+    var start = +v.dataset.start || 0;           // the silent loop shows the in-game part; sound plays from the start
+    function toStart() { if (v.muted && v.currentTime < start) v.currentTime = start; }
+    v.addEventListener("loadedmetadata", toStart); if (v.readyState >= 1) toStart();
+    v.addEventListener("ended", function () { v.currentTime = v.muted ? start : 0; sync(); });
+    var b = document.querySelector(".onair .snd");
+    b.addEventListener("click", function () {
+      if (v.muted) { v.muted = false; v.currentTime = 0; want = true; v.controls = true; b.hidden = true; sync(); }
+    });
+  }
+})();
+</script>
 </body>
 </html>
