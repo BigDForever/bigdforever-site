@@ -1,0 +1,355 @@
+/* v1.1 page proposals (inner pages). Everything is scoped under html.v11-<key> and is OFF by default.
+   Keys: halls · warmap:a|b · challenge · vault:a|b · howto · past · spotlight · maker. Colours come from the faction tokens. */
+
+/* ---------- shared ---------- */
+.p11-ico{width:1.1em;height:1.1em;flex:none;vertical-align:-.16em}
+.p11-ico.p11-sm{width:.9em;height:.9em}
+.p11-has-ico{display:inline-flex;align-items:center;gap:.45em}
+.p11-hide{display:none!important}
+.p11-chip-ico{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:8px;flex:none;
+  color:var(--tint,var(--gold));background:color-mix(in srgb,var(--side,var(--gold)) 14%,transparent);border:1px solid color-mix(in srgb,var(--side,var(--gold)) 40%,transparent)}
+.p11-chip-ico .p11-ico{width:22px;height:22px}
+html.p11-tab-hidden [class*="p11"],.p11-offscreen,.p11-offscreen *{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){[class*="p11"]{animation:none!important;transition:none!important}}
+
+/* =====================================================================
+   1. HALLS  (?v11=halls)
+   ===================================================================== */
+@media (min-width:1280px){
+  html.v11-halls body > header.top,html.v11-halls main.wrap{max-width:1200px}
+}
+html.v11-halls main.wrap > section:first-child{text-align:center;display:flex;flex-direction:column;align-items:center}
+html.v11-halls main.wrap > section:first-child .lede{margin-inline:auto}
+html.v11-halls .switch{margin-inline:auto;width:100%}
+html.v11-halls #hall{width:100%;max-width:none;gap:56px!important}
+html.v11-halls .wing{align-items:stretch}
+html.v11-halls .wing-head{flex-direction:column;align-items:center;text-align:center;gap:2px;border-bottom:0;padding-bottom:0}
+html.v11-halls .wing-head h2{position:relative;padding-inline:26px}
+html.v11-halls .wing-head h2::before,html.v11-halls .wing-head h2::after{content:"";position:absolute;top:55%;width:min(18vw,120px);height:1px;background:linear-gradient(90deg,transparent,var(--hall-line,var(--line)))}
+html.v11-halls .wing-head h2::before{right:100%}
+html.v11-halls .wing-head h2::after{left:100%;transform:scaleX(-1)}
+html.v11-halls .p11-lead .wing-head h2{font-size:clamp(34px,5vw,52px)}
+
+.p11-wingbody{display:flex;flex-direction:column;align-items:center;gap:18px;margin-top:10px}
+.p11-podium{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.14fr) minmax(0,1fr);align-items:end;gap:14px;width:100%;max-width:820px}
+.p11-step{display:flex;flex-direction:column;align-items:stretch;min-width:0}
+/* statue = the card standing on the plinth */
+.p11-statue{position:relative;display:flex;flex-direction:column;gap:4px;min-width:0;padding:10px 10px 12px;margin-bottom:-1px;
+  background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-top:3px solid var(--fa,var(--hall,var(--gold)));border-radius:8px 8px 0 0;
+  text-decoration:none;color:var(--paper);text-align:center;transition:border-color .2s,box-shadow .2s}
+.p11-fa-horde{--fa:#e0352a;--fa-deep:#3a1512}
+.p11-fa-alliance{--fa:#7aa6ea;--fa-deep:#1b3a73}
+.p11-pic{position:relative;aspect-ratio:4/3;border-radius:5px;overflow:hidden;display:grid;place-items:center;
+  background:radial-gradient(closest-side,color-mix(in srgb,var(--fa,var(--side,var(--gold))) 26%,transparent),transparent),var(--fa-deep,var(--ink));border:1px solid var(--line)}
+.p11-pic .p11-shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.p11-pic .p11-badge{width:42%;max-width:96px;height:auto;opacity:.9;filter:drop-shadow(0 4px 10px #000)}
+.p11-pic .p11-shot ~ .p11-badge{position:absolute;right:6px;bottom:6px;width:28px;opacity:1}
+.p11-statue .p11-nm{font-family:var(--cond);font-weight:700;font-size:24px;line-height:1.05;text-transform:uppercase;letter-spacing:.02em;margin-top:6px;overflow-wrap:anywhere}
+.p11-fac{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--fa,var(--muted))}
+.p11-deed{font-size:14px;line-height:1.4;color:var(--muted);margin:2px auto 0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.p11-proof{font-family:var(--cond);font-weight:700;font-size:15px;letter-spacing:.05em;text-transform:uppercase;text-decoration:none;color:var(--hall,var(--gold))}
+.p11-strikes{display:flex;gap:4px;justify-content:center}
+.p11-strikes i{width:12px;height:12px;border-radius:2px;border:1px solid var(--shame,#e0352a)}
+.p11-strikes i.on{background:var(--shame,#e0352a)}
+/* empty spot */
+.p11-vacant{border:1px dashed var(--hall-line,var(--line));border-top:3px dashed var(--hall-line,var(--line));background:color-mix(in srgb,var(--hall-deep,var(--panel)) 70%,transparent)}
+.p11-vacant .p11-pic{background:transparent;border:1px dashed var(--line);color:var(--muted)}
+.p11-vacant .p11-pic .p11-ico{width:38%;height:auto;max-width:72px;opacity:.5}
+.p11-vacant .p11-nm{color:var(--muted)}
+.p11-vacant .p11-fac{color:var(--hall,var(--gold));font-family:var(--cond);font-weight:700;font-size:15px;letter-spacing:.06em;display:inline-flex;align-items:center;justify-content:center;gap:4px}
+.p11-vacant:hover,.p11-vacant:focus-visible{border-color:var(--hall,var(--gold));outline:none}
+.p11-vacant:hover .p11-nm,.p11-vacant:focus-visible .p11-nm{color:var(--paper)}
+.p11-statue:not(.p11-vacant):hover{box-shadow:0 14px 40px -20px var(--fa,#000)}
+/* plinths: 1st is tallest; medal colours on the top edge */
+.p11-plinth{--m:#d9a441;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;text-align:center;
+  border:1px solid var(--line);border-top:4px solid var(--m);border-radius:0 0 4px 4px;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--m) 16%,var(--panel2)),var(--panel) 70%);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
+.p11-plinth b{font-family:var(--display);font-weight:900;font-size:44px;line-height:.9;color:var(--m)}
+.p11-plinth span{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.p11-step-1 .p11-plinth{height:128px;--m:#e3b34f}
+.p11-step-2 .p11-plinth{height:92px;--m:#bfc6cf}
+.p11-step-3 .p11-plinth{height:64px;--m:#c08a3e}
+.p11-step-3 .p11-plinth b,.p11-step-2 .p11-plinth b{font-size:36px}
+.p11-step-1 .p11-statue{border-top-width:4px}
+.p11-step-1 .p11-statue .p11-nm{font-size:28px}
+.p11-empty{font-size:15px;color:var(--muted);text-align:center;max-width:52ch}
+/* shame: the podium is a pit. Rock bottom sits lowest, cracked stone, red edges */
+body[data-hall="shame"] .p11-plinth{--m:#e0352a;background:
+  linear-gradient(115deg,transparent 47%,rgba(0,0,0,.55) 47.5% 48.5%,transparent 49%),
+  linear-gradient(180deg,color-mix(in srgb,#e0352a 10%,var(--panel2)),var(--panel) 70%)}
+body[data-hall="shame"] .p11-step-1 .p11-plinth{height:60px;--m:#e0352a}
+body[data-hall="shame"] .p11-step-2 .p11-plinth{height:92px;--m:#9a6a5c}
+body[data-hall="shame"] .p11-step-3 .p11-plinth{height:124px;--m:#7d6a5d}
+body[data-hall="shame"] .p11-step-1 .p11-plinth b{font-size:30px}
+body[data-hall="shame"] .p11-step-2 .p11-statue:not(.p11-vacant){transform:rotate(-1.2deg);transform-origin:bottom center}
+body[data-hall="shame"] .p11-step-3 .p11-statue:not(.p11-vacant){transform:rotate(1deg);transform-origin:bottom center}
+/* the other wings: two per row on PC, smaller podiums */
+.p11-wings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:56px 36px}
+.p11-wings > .wing:last-child:nth-child(odd){grid-column:1/-1;max-width:640px;width:100%;justify-self:center}
+.p11-sub .p11-podium{gap:10px}
+.p11-sub .p11-statue .p11-nm{font-size:19px}
+.p11-sub .p11-deed{font-size:13px;-webkit-line-clamp:2}
+.p11-sub .p11-plinth b{font-size:30px!important}
+body[data-hall="shame"] .p11-step-1 .p11-plinth b{font-size:28px!important}
+.p11-sub .p11-step-1 .p11-plinth{height:84px}
+.p11-sub .p11-step-2 .p11-plinth{height:60px}
+.p11-sub .p11-step-3 .p11-plinth{height:42px}
+body[data-hall="shame"] .p11-sub .p11-step-1 .p11-plinth{height:50px}
+body[data-hall="shame"] .p11-sub .p11-step-2 .p11-plinth{height:60px}
+body[data-hall="shame"] .p11-sub .p11-step-3 .p11-plinth{height:88px}
+.p11-sub .p11-plinth span{font-size:10px;letter-spacing:.08em}
+/* 4th place and down */
+.p11-rest{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,300px));justify-content:center;gap:10px;width:100%}
+.p11-mini{display:grid;grid-template-columns:auto 72px minmax(0,1fr);align-items:start;gap:10px;padding:10px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--fa);border-radius:6px}
+.p11-mini .p11-no{font-family:var(--display);font-weight:800;font-size:22px;color:var(--muted);line-height:1.2;min-width:1.2em}
+.p11-mini .p11-pic{aspect-ratio:1}
+.p11-mini .p11-pic .p11-badge{width:60%}
+.p11-mini-t{display:flex;flex-direction:column;gap:2px;min-width:0}
+.p11-mini .p11-nm{font-family:var(--cond);font-weight:700;font-size:19px;line-height:1.1;text-transform:uppercase}
+.p11-mini .p11-deed{margin:0;-webkit-line-clamp:2}
+.p11-mini .p11-strikes{justify-content:flex-start}
+/* how you get in */
+html.v11-halls main.wrap > section:has(.how) > h2{text-align:center}
+html.v11-halls .how{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+html.v11-halls .how div{background:color-mix(in srgb,var(--panel) 80%,transparent);transition:border-color .2s}
+html.v11-halls .how div:hover{border-color:var(--hall-line,var(--side))}
+html.v11-halls main.wrap > section:has(.how) .cta{justify-content:center}
+@media (max-width:860px){
+  .p11-wings{grid-template-columns:1fr}
+  .p11-wings > .wing:last-child:nth-child(odd){max-width:none}
+}
+@media (max-width:560px){
+  .p11-podium{gap:6px}
+  .p11-statue{padding:6px 5px 8px}
+  .p11-statue .p11-nm,.p11-step-1 .p11-statue .p11-nm,.p11-sub .p11-statue .p11-nm{font-size:15px}
+  .p11-deed{display:none}
+  .p11-fac{font-size:9px;letter-spacing:.04em}
+  .p11-vacant .p11-fac{font-size:12px}
+  .p11-plinth span{font-size:8.5px!important;letter-spacing:.02em!important}
+  .p11-step-1 .p11-plinth{height:96px}.p11-step-2 .p11-plinth{height:70px}.p11-step-3 .p11-plinth{height:50px}
+  .p11-plinth b{font-size:28px!important}
+  html.v11-halls .wing-head h2::before,html.v11-halls .wing-head h2::after{display:none}
+}
+
+/* =====================================================================
+   2. WAR MAP  (?v11=warmap:a  or  ?v11=warmap:b)
+   ===================================================================== */
+/* title: three words, three looks. WAR carries the faction colour and breathes slowly */
+html.v11-warmap main h1 .p11-w{display:inline-block}
+html.v11-warmap main h1 .p11-w1{color:var(--muted);font-size:.62em;vertical-align:.12em;margin-right:.04em}
+html.v11-warmap main h1 .p11-war{color:var(--tint,var(--side,#e0352a));text-shadow:0 0 18px var(--side-glow,transparent);animation:p11-glow 6s ease-in-out infinite}
+html.v11-warmap main h1 .p11-w3{color:var(--side-2,var(--gold))}
+@keyframes p11-glow{0%,100%{text-shadow:0 0 10px color-mix(in srgb,var(--tint,#e0352a) 25%,transparent)}50%{text-shadow:0 0 26px color-mix(in srgb,var(--tint,#e0352a) 60%,transparent),0 0 2px color-mix(in srgb,var(--tint,#e0352a) 50%,transparent)}}
+/* sea: waves gone, dark textured water with drifting motes (canvas) behind the land */
+html.v11-warmap #war > rect[fill="url(#waves)"]{display:none}
+html.v11-warmap #war > rect[fill="url(#sea)"]{fill:transparent}
+html.v11-warmap .map{isolation:isolate;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(70% 60% at 50% 45%,color-mix(in srgb,var(--side,#b3231b) 9%,var(--ink,#0f0d0c)),color-mix(in srgb,var(--ink,#0f0d0c) 55%,#000) 85%);
+  border-color:color-mix(in srgb,var(--side,var(--line)) 35%,var(--line))}
+html.v11-warmap .map.p11-hasbg{background:
+    radial-gradient(70% 60% at 50% 45%,rgba(7,6,5,.55),rgba(7,6,5,.85) 85%),
+    var(--p11-mapbg) center/cover no-repeat,#070605}
+html.v11-warmap .map > svg{position:relative;z-index:1}
+html.v11-warmap .map > .empty-note{z-index:2}
+.p11-motes{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+/* the sea labels were brown on brown; lift them a touch on the darker water */
+html.v11-warmap #war .cont{fill:color-mix(in srgb,var(--side-2,#c08a3e) 55%,#6d5d44)}
+html.v11-warmap #war .seanote{fill:#8a7a62}
+/* "Post a brag": a slow breathing glow behind the button */
+html.v11-warmap .panel .btn{position:relative;isolation:isolate}
+html.v11-warmap .panel .btn::after{content:"";position:absolute;inset:-3px;border-radius:6px;z-index:-1;pointer-events:none;
+  box-shadow:0 0 18px 2px var(--side-glow,rgba(217,164,65,.5));opacity:0;animation:p11-breathe 3.2s ease-in-out infinite}
+@keyframes p11-breathe{0%,100%{opacity:.15}50%{opacity:1}}
+html.v11-warmap .panel .btn:hover::after{opacity:1;animation:none}
+#panel.p11-offscreen .btn::after{animation-play-state:paused}
+/* option b: deeper Horde red, richer Alliance navy (map key, panel, lede) */
+html.v11-warmap-b{--ally:#4f86e6;--ally-deep:#132c66;--horde:#c8231a;--horde-deep:#7a110c}
+html.v11-warmap-b .sw.a{background:#1f4aa0}
+html.v11-warmap-b .sw.h{background:#7f130d}
+html.v11-warmap-b .sw.c{background:repeating-linear-gradient(45deg,#1f4aa0 0 4px,#7f130d 4px 8px)}
+html.v11-warmap-b #contested rect:first-child,html.v11-warmap-b #contestedH rect:first-child{fill:#1f4aa0}
+html.v11-warmap-b #contested rect:last-child,html.v11-warmap-b #contestedH rect:last-child{fill:#7f130d}
+html.v11-warmap-b[data-side="horde"] main h1 .p11-war{color:#c81f16}
+html.v11-warmap-b[data-side="alliance"] main h1 .p11-war{color:#4f86e6}
+html.v11-warmap-b[data-side="horde"] .map{background-color:#0a0505}
+html.v11-warmap-b[data-side="alliance"] main h1 .p11-w3{color:#c9a24a}
+
+/* =====================================================================
+   3. WEEKLY CHALLENGE  (?v11=challenge)
+   ===================================================================== */
+html.v11-challenge .bounty,html.v11-challenge .prize,html.v11-challenge .next > div,html.v11-challenge .clock{transition:border-color .2s,box-shadow .2s,transform .2s}
+html.v11-challenge .bounty.h:hover{border-color:#e0352a;box-shadow:0 0 0 1px #e0352a,0 18px 44px -22px rgba(224,53,42,.7)}
+html.v11-challenge .bounty.a:hover{border-color:#6f9be0;box-shadow:0 0 0 1px #6f9be0,0 18px 44px -22px rgba(111,155,224,.7)}
+html.v11-challenge .bounty:hover{transform:translateY(-2px)}
+html.v11-challenge .bounty .who{display:inline-flex;align-items:center;gap:6px}
+html.v11-challenge .prize b{display:inline-flex;align-items:center;gap:8px}
+html.v11-challenge .prize b .p11-ico{width:24px;height:24px}
+html.v11-challenge .prize:hover{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+html.v11-challenge .next > div{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:12px;align-items:start;background:color-mix(in srgb,var(--panel) 60%,transparent)}
+html.v11-challenge .next > div > b,html.v11-challenge .next > div > p{grid-column:2}
+html.v11-challenge .next > div > .p11-chip-ico{grid-row:1/span 2}
+html.v11-challenge .next > div:hover{border-style:solid;border-color:var(--side,var(--gold))}
+html.v11-challenge .cta .btn{align-items:center;gap:9px;transition:box-shadow .2s,filter .2s}
+html.v11-challenge .cta .btn .p11-ico{width:20px;height:20px}
+html.v11-challenge .cta .btn:hover,html.v11-challenge .cta .btn:focus-visible{outline:2px solid var(--paper);outline-offset:2px;filter:brightness(1.08)}
+
+/* =====================================================================
+   4. CLIP VAULT  (?v11=vault:a mosaic  ·  ?v11=vault:b framed + ribbons)
+   ===================================================================== */
+.p11-tagnote{display:inline-flex;align-items:center;gap:6px;margin-left:auto;font-family:var(--body);font-size:13px;color:var(--muted)}
+.p11-tagnote .p11-ico{color:#5865f2;width:16px;height:16px}
+.p11-tagnote a{color:var(--paper)}
+html.v11-vault .btn.p11-has-ico{align-items:center}
+html.v11-vault .card{transition:border-color .2s,box-shadow .2s}
+html.v11-vault .card:hover{border-color:color-mix(in srgb,var(--fa,var(--side,var(--gold))) 70%,var(--line))}
+html.v11-vault .card.p11-fa-horde{--fa:#e0352a}
+html.v11-vault .card.p11-fa-alliance{--fa:#7aa6ea}
+.p11-ribbon{position:absolute;right:0;top:10px;z-index:1;pointer-events:none;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+  color:#fff;background:var(--side,var(--gold));padding:2px 10px 2px 14px;clip-path:polygon(8px 0,100% 0,100% 100%,8px 100%,0 50%);box-shadow:0 2px 8px rgba(0,0,0,.4)}
+html[data-side="alliance"] .p11-ribbon{background:var(--gold);color:#0b1834}
+.p11-new .p11-ribbon{background:var(--panel2);color:var(--paper);border:0}
+/* a: mosaic */
+@media (min-width:1400px){html.v11-vault-a body > header.top,html.v11-vault-a main.wrap{max-width:1280px}}
+@media (min-width:900px){
+  html.v11-vault-a .grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:row dense;gap:14px}
+  html.v11-vault-a .card.p11-big{grid-column:span 2;grid-row:span 2}
+  html.v11-vault-a .card.p11-big .player{aspect-ratio:auto;flex:1 1 auto;min-height:300px}
+  html.v11-vault-a .card.p11-big h3{font-size:30px}
+  html.v11-vault-a .card.p11-big{border-color:color-mix(in srgb,var(--fa,var(--side,var(--gold))) 60%,var(--line));background:linear-gradient(180deg,color-mix(in srgb,var(--fa,var(--side,var(--gold))) 10%,var(--panel)),var(--panel))}
+  html.v11-vault .card.p11-wide{grid-column:span 2;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);grid-template-rows:auto auto 1fr;column-gap:16px;align-content:start}
+  html.v11-vault .card.p11-wide .player{grid-row:1/span 3;align-self:start}
+  html.v11-vault .card.p11-wide h3{margin-top:0;font-size:24px}
+  html.v11-vault .card.p11-wide .meta{align-self:end}
+}
+@media (min-width:1180px){html.v11-vault-a .grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+/* b: framed featured cards, bigger titles, every 5th wide */
+html.v11-vault-b .card.p11-feat,html.v11-vault-b .card.p11-new{border:2px solid var(--fa,var(--side,var(--gold)));box-shadow:0 14px 40px -24px var(--fa,var(--side-glow,#000));
+  background:linear-gradient(180deg,color-mix(in srgb,var(--fa,var(--side,var(--gold))) 12%,var(--panel)),var(--panel) 60%)}
+html.v11-vault-b .card.p11-feat h3,html.v11-vault-b .card.p11-new h3{font-size:26px}
+@media (min-width:900px){html.v11-vault-b .grid{grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-flow:row dense}}
+
+/* =====================================================================
+   5. HOW TO CLIP  (?v11=howto)
+   ===================================================================== */
+.p11-plat{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:8px;flex:none;background:#0d0b0a;border:1px solid var(--line);color:var(--paper)}
+.p11-plat .p11-ico{width:24px;height:24px}
+.p11-plat-nvidia .p11-ico{color:#76b900}
+.p11-plat-amd .p11-ico{color:#ed1c24}
+.p11-plat-medal .p11-ico{color:#f5b301}
+.p11-plat-pc .p11-ico{color:#6fb3ee}
+.p11-plat-apple .p11-ico{color:#e8e8e8}
+html.v11-howto .tip p b{font:inherit;font-weight:700;text-transform:none;letter-spacing:0;color:var(--paper)}
+html.v11-howto .pick a.p11-pick{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:12px;align-items:center;transition:border-color .2s,background .2s}
+html.v11-howto .pick a.p11-pick .p11-plat{grid-row:1/span 2}
+html.v11-howto .pick a.p11-pick b,html.v11-howto .pick a.p11-pick span:not(.p11-plat){grid-column:2}
+html.v11-howto .pick a:hover{border-color:var(--side,var(--gold));background:var(--panel2)}
+html.v11-howto .tool h2.p11-tool-h{display:flex;align-items:center;gap:12px}
+html.v11-howto .tool h2 .p11-plat{width:44px;height:44px}
+html.v11-howto .tool{transition:border-color .2s}
+html.v11-howto .tool:target,html.v11-howto .tool:hover{border-color:color-mix(in srgb,var(--side,var(--gold)) 60%,var(--line))}
+html.v11-howto .btn.p11-has-ico{align-items:center}
+html.v11-howto .tip{position:relative;background:color-mix(in srgb,var(--panel) 70%,transparent);transition:border-color .2s}
+html.v11-howto .tip:hover{border-color:var(--side,var(--gold))}
+html.v11-howto .tip .p11-chip-ico{margin-bottom:6px}
+@media (min-width:1000px){
+  html.v11-howto .p11-tips-sec{align-self:center;width:min(1180px,calc(100vw - 48px))}
+  html.v11-howto .p11-tips-sec > h2{text-align:center}
+  html.v11-howto .p11-tips-sec .tips{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:14px}
+}
+
+/* =====================================================================
+   6. TASTE OF THE PAST  (?v11=past)
+   ===================================================================== */
+html.v11-past main h1 .p11-hl{color:var(--tint,var(--side,var(--gold)));text-shadow:0 0 22px var(--side-glow,transparent);font-size:1.08em}
+html.v11-past .plaque{padding-top:12px}
+html.v11-past .plaque > .p11-pic{position:relative;z-index:1;display:block;aspect-ratio:16/9;margin:0 -6px 2px;border-radius:5px;overflow:hidden;border:1px solid var(--line);text-decoration:none;background:var(--ink)}
+.p11-ph{position:absolute;inset:0;display:grid;place-items:center;
+  background:radial-gradient(80% 90% at 50% 40%,color-mix(in srgb,var(--side,#b3231b) 30%,var(--ink)),var(--ink))}
+.p11-ph::before{content:"";position:absolute;inset:0;opacity:.09;background:var(--p11-crest,none) 0 0/34px auto repeat;filter:grayscale(.2)}
+html[data-side="horde"]{--p11-crest:url("../art/horde-badge.png");--p11-emblem:url("../art/horde-emblem.png")}
+html[data-side="alliance"]{--p11-crest:url("../art/alliance-badge.png");--p11-emblem:url("../art/alliance-crest.png")}
+.p11-crest{position:absolute;inset:14% 0 22%;background:var(--p11-emblem,none) center/contain no-repeat;opacity:.28;filter:drop-shadow(0 6px 16px #000)}
+.p11-by{position:absolute;left:10px;bottom:8px;font-family:var(--display);font-weight:800;font-size:26px;line-height:1;color:var(--paper);text-shadow:0 2px 8px #000}
+.p11-pic.p11-shame .p11-ph{background:radial-gradient(80% 90% at 50% 40%,color-mix(in srgb,#5a2420 60%,var(--ink)),var(--ink))}
+html.v11-past .plaque > .p11-pic > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.p11-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(10,6,5,.72);border:2px solid #9146ff;color:#fff;transition:transform .2s,background .2s}
+.p11-play .p11-ico{width:24px;height:24px;margin-left:3px}
+.p11-len{position:absolute;right:8px;top:8px;font-family:var(--mono);font-size:11px;background:rgba(10,6,5,.8);color:var(--paper);border-radius:3px;padding:1px 6px}
+html.v11-past .plaque > .p11-pic:hover .p11-play,html.v11-past .plaque > .p11-pic:focus-visible .p11-play{background:#9146ff;transform:translate(-50%,-50%) scale(1.06)}
+html.v11-past .plaque > .p11-pic:focus-visible{outline:2px solid var(--paper);outline-offset:2px}
+html.v11-past .watch.p11-tw{background:rgba(145,70,255,.14);border:2px solid #9146ff;color:#e6d9ff;padding:7px 14px;transition:background .2s,color .2s}
+html.v11-past .watch.p11-tw .p11-ico{width:18px;height:18px;color:#a970ff}
+html.v11-past .watch.p11-tw:hover,html.v11-past .watch.p11-tw:focus-visible{background:#9146ff;color:#fff;filter:none;outline:none}
+html.v11-past .watch.p11-tw:hover .p11-ico{color:#fff}
+html.v11-past .btn.p11-has-ico{align-items:center}
+html.v11-past .plaque{transition:border-color .2s}
+html.v11-past .plaque:hover{border-color:color-mix(in srgb,#9146ff 55%,var(--line))}
+
+/* =====================================================================
+   7. STREAMER SPOTLIGHT  (?v11=spotlight)
+   ===================================================================== */
+@media (min-width:1280px){html.v11-spotlight body > header.top,html.v11-spotlight main.wrap{max-width:1200px}}
+html.v11-spotlight .poster.p11-poster{overflow:hidden;isolation:isolate;padding:30px;gap:32px;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);align-items:center;
+  border-color:color-mix(in srgb,var(--side,var(--gold)) 45%,var(--line));border-top:4px solid var(--side,var(--gold));
+  background:linear-gradient(100deg,var(--panel) 30%,color-mix(in srgb,var(--panel) 70%,transparent)),var(--panel)}
+html.v11-spotlight .poster.p11-poster::after{content:"";position:absolute;inset:0;z-index:-1;background:var(--p11-th,none) center/cover no-repeat;opacity:.18;filter:blur(18px) saturate(1.2);transform:scale(1.1)}
+html.v11-spotlight .poster.p11-poster .who h2{font-size:clamp(48px,6vw,92px);color:var(--paper);text-shadow:0 4px 24px #000}
+html.v11-spotlight .poster.p11-poster .stats{gap:8px}
+html.v11-spotlight .poster.p11-poster .stats span{border:1px solid var(--line);background:color-mix(in srgb,var(--ink) 70%,transparent);border-radius:4px;padding:3px 10px}
+html.v11-spotlight .poster.p11-poster .cap{font-size:24px}
+html.v11-spotlight .btn.p11-has-ico{align-items:center}
+.p11-aside{display:flex;flex-direction:column;gap:14px;min-width:0}
+.p11-feature{position:relative;display:flex;flex-direction:column;gap:10px;padding:22px 20px;border-radius:10px;overflow:hidden;
+  background:linear-gradient(160deg,rgba(88,101,242,.22),var(--panel) 60%);border:1px solid rgba(88,101,242,.55)}
+.p11-feature .p11-big-ico{position:absolute;right:-16px;bottom:-18px;width:120px;height:120px;color:#5865f2;opacity:.12;pointer-events:none}
+.p11-feature > *{position:relative}
+.p11-feature b{font-family:var(--display);font-weight:800;font-size:30px;line-height:1}
+.p11-feature p{font-size:15px;color:var(--muted)}
+.p11-feature .btn{align-self:flex-start}
+.p11-feature small{font-size:13px;color:var(--muted)}
+.p11-feature small a{color:var(--paper)}
+.p11-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.p11-facts div{display:flex;flex-direction:column;gap:2px;padding:12px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel);text-align:center}
+.p11-facts b{font-family:var(--display);font-weight:900;font-size:30px;line-height:1;color:var(--tint,var(--gold))}
+.p11-facts span{font-size:12px;line-height:1.25;color:var(--muted)}
+.p11-slot{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;padding:20px 16px;border:1px dashed var(--line);border-radius:10px;text-decoration:none;color:var(--muted);transition:border-color .2s,color .2s}
+.p11-slot > .p11-ico{width:44px;height:44px;opacity:.5}
+.p11-slot b{font-family:var(--cond);font-weight:700;font-size:20px;letter-spacing:.04em;text-transform:uppercase;color:var(--paper)}
+.p11-slot span:not(.p11-slot-no){font-size:14px}
+.p11-slot-no{position:absolute;left:12px;top:10px;font-family:var(--mono);font-size:11px;letter-spacing:.1em}
+.p11-slot:hover,.p11-slot:focus-visible{border-color:var(--side,var(--gold));color:var(--paper);outline:none}
+.p11-pastlink{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:var(--panel);text-decoration:none;color:var(--paper);transition:border-color .2s}
+.p11-pastlink > .p11-ico:first-child{width:26px;height:26px;color:var(--tint,var(--gold))}
+.p11-pastlink span{display:flex;flex-direction:column;line-height:1.2;flex:1}
+.p11-pastlink b{font-family:var(--cond);font-size:19px;text-transform:uppercase;letter-spacing:.03em}
+.p11-pastlink small{font-size:13px;color:var(--muted)}
+.p11-pastlink:hover{border-color:var(--side,var(--gold))}
+html.v11-spotlight .card{transition:border-color .2s}
+html.v11-spotlight .card:hover{border-color:color-mix(in srgb,var(--side,var(--gold)) 60%,var(--line))}
+@media (min-width:1000px){
+  html.v11-spotlight .p11-spot{display:grid;grid-template-columns:minmax(0,1fr) 340px;column-gap:28px;align-items:start}
+  html.v11-spotlight .p11-spot > .poster{grid-column:1/-1;margin-bottom:22px}
+  html.v11-spotlight .p11-spot > .grid,html.v11-spotlight .p11-spot > .cta{grid-column:1}
+  html.v11-spotlight .p11-spot > .grid{margin-top:0;grid-template-columns:repeat(2,minmax(0,1fr))}
+  html.v11-spotlight .p11-spot > .grid > .card:first-child{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);grid-template-rows:auto auto 1fr;column-gap:18px;align-content:start}
+  html.v11-spotlight .p11-spot > .grid > .card:first-child .player{grid-row:1/span 3}
+  html.v11-spotlight .p11-spot > .grid > .card:first-child h3{font-size:28px;margin-top:6px}
+  html.v11-spotlight .p11-spot > .grid > .card:first-child .meta{align-self:end}
+  html.v11-spotlight .p11-spot > .p11-aside{grid-column:2;grid-row:2/span 2;position:sticky;top:96px}
+}
+@media (max-width:999px){html.v11-spotlight .p11-aside{margin-top:28px}}
+@media (max-width:760px){html.v11-spotlight .poster.p11-poster{padding:18px;grid-template-columns:1fr}}
+
+/* =====================================================================
+   8. BRAG MAKER  (?v11=maker): on PC the bench is centred and the card preview is bigger. Nothing else.
+   ===================================================================== */
+@media (min-width:1100px){
+  html.v11-maker main.wrap{max-width:1320px}
+  html.v11-maker{--p11-pw:min(600px,calc((100vh - 120px) * .8))}
+  html.v11-maker main.wrap > div:first-child{width:100%;max-width:calc(520px + 56px + var(--p11-pw));margin-inline:auto}
+  html.v11-maker .bench{grid-template-columns:minmax(0,520px) auto;justify-content:center;gap:56px}
+  html.v11-maker .preview{width:var(--p11-pw);top:96px}
+}

@@ -1,0 +1,159 @@
+/* v1.1 effect proposals (fx11). Every rule is behind html.v11-<key>; nothing here runs unless the key is on.
+   Keys: bigd:a|b|c|d · heroparticles:a|b · socials:a|b|c · submitfx · tilehover. Preview: index.html?v11=bigd:a */
+
+/* ===================== 1. BigD title: molten gold from the logo's sword ===================== */
+/* colours sampled from emblem.jpg (sword blade): #9d4a00 #c66600 #d97c15 #efad21 #ffca4e #f2dd8e #fdf6bf */
+@property --fx-p{syntax:"<number>";inherits:false;initial-value:0}
+@property --fx-g{syntax:"<number>";inherits:false;initial-value:0}
+@property --fx-ray-a{syntax:"<angle>";inherits:false;initial-value:0deg}
+@property --fx-ray-r{syntax:"<percentage>";inherits:false;initial-value:18%}
+
+html[class*="v11-bigd"]{
+  --fx-noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .13 0 0 0 0 .02 0 0 0 -2.2 1.25'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --fx-gold:linear-gradient(176deg,#fdf0b8 0%,#ffd45e 18%,#f2b026 36%,#e08a1a 56%,#cc6c06 74%,#a85200 100%);
+  --fx-bd-sh:color-mix(in srgb,var(--crimson,#b3261e) 75%,transparent);
+}
+html[class*="v11-bigd"][data-side="alliance"]{
+  --fx-gold:linear-gradient(176deg,#fff4c6 0%,#ffd866 20%,#f3b62c 40%,#e3951e 60%,#cf760a 80%,#ab5a00 100%);
+  --fx-bd-sh:#1b3a73;
+}
+html[class*="v11-bigd"] .fx-bd{
+  background-image:var(--fx-noise),var(--fx-gold);background-size:180px 180px,100% 100%;background-repeat:repeat,no-repeat;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  text-shadow:none;filter:drop-shadow(3px 3px 0 var(--fx-bd-sh));
+}
+html[class*="v11-bigd"] .fx-bd-j{filter:drop-shadow(2px 2px 0 var(--fx-bd-sh))}
+
+/* a: molten metal flowing slowly inside the letters */
+html.v11-bigd-a .fx-bd{
+  background-image:var(--fx-noise),
+    radial-gradient(closest-side,rgba(255,244,200,.55),rgba(255,214,110,.18) 55%,transparent),
+    linear-gradient(180deg,#ffd45e 0%,#f6b52c 10%,#e08a1a 22%,#c96a06 32%,#e59420 44%,#ffd060 56%,#fff0b0 62%,#f2b026 72%,#d47a10 86%,#ffd45e 100%);
+  background-size:180px 180px,130% 140%,100% 220%;background-repeat:repeat,repeat-x,repeat;
+  background-position:0 0,0 50%,0 0;
+  animation:fx-molten 16s linear infinite;
+}
+@keyframes fx-molten{to{background-position:0 0,-433% 50%,0 -183%}}
+
+/* b: textured gold + a canvas behind the word (embers / light glints) */
+.fx-bd-host{position:relative;isolation:isolate}
+.fx-bd-cv{position:absolute;z-index:-1;pointer-events:none;display:block}
+
+/* c: rim light that breathes out from the middle of the word */
+html.v11-bigd-c .fx-bd{
+  background-image:var(--fx-noise),
+    radial-gradient(calc(14% + var(--fx-p) * 120%) calc(22% + var(--fx-p) * 150%) at 50% 58%,
+      rgba(255,248,215,calc(.8 - var(--fx-p) * .8)),rgba(255,206,90,calc(.45 - var(--fx-p) * .45)) 50%,transparent 100%),
+    var(--fx-gold);
+  background-size:180px 180px,100% 100%,100% 100%;background-repeat:repeat,no-repeat,no-repeat;
+  filter:drop-shadow(3px 3px 0 var(--fx-bd-sh)) drop-shadow(0 0 calc(var(--fx-g) * 16px) rgba(255,150,30,calc(var(--fx-g) * .5)));
+  animation:fx-breath-p 5.2s cubic-bezier(.3,.1,.3,1) infinite,fx-breath-g 5.2s ease-in-out infinite;
+}
+html.v11-bigd-c .fx-bd-j{filter:drop-shadow(2px 2px 0 var(--fx-bd-sh)) drop-shadow(0 0 calc(var(--fx-g) * 12px) rgba(255,150,30,calc(var(--fx-g) * .45)))}
+@keyframes fx-breath-p{0%{--fx-p:0}75%,100%{--fx-p:1}}
+@keyframes fx-breath-g{0%,100%{--fx-g:0}40%{--fx-g:1}}
+
+/* d: forge-in reveal (once), then a faint heat flicker every ~8 s (letters glow together, no sweep) */
+.fx-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+html.v11-bigd-d .fx-bd.fx-split{background:none;filter:none}
+html.v11-bigd-d .fx-l{display:inline-block;line-height:1.2;margin-block:-.17em;padding-block:.0em;
+  background-image:var(--fx-noise),var(--fx-gold);background-repeat:repeat,no-repeat;
+  background-size:180px 180px,var(--fx-w,100%) var(--fx-h,100%);background-position:var(--fx-nx,0) 0,var(--fx-x,0) 0;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;text-shadow:none;
+  filter:brightness(1) saturate(1) blur(0) drop-shadow(0 0 0 rgba(255,150,40,0)) drop-shadow(3px 3px 0 var(--fx-bd-sh))}
+html.v11-bigd-d .fx-bd-j .fx-l{filter:brightness(1) saturate(1) blur(0) drop-shadow(0 0 0 rgba(255,150,40,0)) drop-shadow(2px 2px 0 var(--fx-bd-sh))}
+html.v11-bigd-d .fx-forge .fx-l{animation:fx-forge 1.7s cubic-bezier(.2,.7,.25,1) both;animation-delay:calc(var(--i) * 120ms + 200ms)}
+html.v11-bigd-d .fx-forged .fx-l{animation:fx-heat 8s ease-in-out infinite;animation-delay:calc(var(--j) * 140ms + 3s)}
+@keyframes fx-forge{
+  0%{opacity:0;transform:translateY(.14em) scale(1.12);filter:brightness(2.6) saturate(.55) blur(9px) drop-shadow(0 0 18px rgba(255,170,60,.9)) drop-shadow(0 0 0 transparent)}
+  30%{opacity:1;transform:translateY(0) scale(1.03);filter:brightness(2.1) saturate(.7) blur(0) drop-shadow(0 0 20px rgba(255,140,30,.85)) drop-shadow(0 0 0 transparent)}
+  100%{opacity:1;transform:none;filter:brightness(1) saturate(1) blur(0) drop-shadow(0 0 0 rgba(255,150,40,0)) drop-shadow(3px 3px 0 var(--fx-bd-sh))}}
+@keyframes fx-heat{
+  0%,86%,100%{filter:brightness(1) saturate(1) blur(0) drop-shadow(0 0 0 rgba(255,150,40,0)) drop-shadow(3px 3px 0 var(--fx-bd-sh))}
+  92%{filter:brightness(1.22) saturate(1.05) blur(0) drop-shadow(0 0 10px rgba(255,150,40,.42)) drop-shadow(3px 3px 0 var(--fx-bd-sh))}}
+
+/* ===================== 2. Living hero background (wind-blown particles) ===================== */
+.fx-hero-cv{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0;
+  -webkit-mask:linear-gradient(90deg,rgba(0,0,0,.5),rgba(0,0,0,.55) 38%,#000 66%);mask:linear-gradient(90deg,rgba(0,0,0,.5),rgba(0,0,0,.55) 38%,#000 66%)}
+@media (max-width:760px){.fx-hero-cv{-webkit-mask:linear-gradient(180deg,#000 0 30%,rgba(0,0,0,.5) 48%);mask:linear-gradient(180deg,#000 0 30%,rgba(0,0,0,.5) 48%)}}
+/* b: the light-ray burst behind the emblem slowly turns and a soft ring ripples outward through it */
+html.v11-heroparticles-b .hero::after{
+  background:repeating-conic-gradient(from var(--fx-ray-a) at var(--fx-rx,72%) var(--fx-ry,50%),color-mix(in srgb,var(--gold) 10%,transparent) 0deg 6deg,transparent 6deg 18deg);
+  -webkit-mask:radial-gradient(circle at var(--fx-rx,72%) var(--fx-ry,50%),#000 0 14%,rgba(0,0,0,.55) calc(var(--fx-ray-r) - 7%),#000 var(--fx-ray-r),rgba(0,0,0,.55) calc(var(--fx-ray-r) + 7%),transparent 42%);
+  mask:radial-gradient(circle at var(--fx-rx,72%) var(--fx-ry,50%),#000 0 14%,rgba(0,0,0,.55) calc(var(--fx-ray-r) - 7%),#000 var(--fx-ray-r),rgba(0,0,0,.55) calc(var(--fx-ray-r) + 7%),transparent 42%);
+  animation:fx-rays-turn 140s linear infinite,fx-rays-ripple 7s cubic-bezier(.35,.1,.4,1) infinite}
+@media (max-width:760px){html.v11-heroparticles-b .hero::after{
+  background:repeating-conic-gradient(from var(--fx-ray-a) at var(--fx-rx,50%) var(--fx-ry,22%),color-mix(in srgb,var(--gold) 10%,transparent) 0deg 6deg,transparent 6deg 18deg);
+  -webkit-mask:radial-gradient(circle at var(--fx-rx,50%) var(--fx-ry,22%),#000 0 12%,rgba(0,0,0,.55) calc(var(--fx-ray-r) - 6%),#000 var(--fx-ray-r),rgba(0,0,0,.55) calc(var(--fx-ray-r) + 6%),transparent 44%);
+  mask:radial-gradient(circle at var(--fx-rx,50%) var(--fx-ry,22%),#000 0 12%,rgba(0,0,0,.55) calc(var(--fx-ray-r) - 6%),#000 var(--fx-ray-r),rgba(0,0,0,.55) calc(var(--fx-ray-r) + 6%),transparent 44%)}}
+@keyframes fx-rays-turn{to{--fx-ray-a:360deg}}
+@keyframes fx-rays-ripple{0%{--fx-ray-r:14%}100%{--fx-ray-r:44%}}
+html.v11-heroparticles-b .hero.fx-off::after{animation-play-state:paused}
+
+/* ===================== 3. Socials row: brand icons + hover ===================== */
+html.v11-socials .links a{position:relative;gap:10px}
+.fx-ico{width:1.2em;height:1.2em;flex:none;fill:currentColor;display:block}
+html.v11-socials .links a[data-fx="discord"] .fx-ico{color:var(--fx-ico-dc,#8f98ff)}
+html.v11-socials .links .btn:not(.ghost)[data-fx="discord"] .fx-ico{color:currentColor}
+html.v11-socials .links a[data-fx="youtube"] .fx-ico{color:#ff3b4f}
+html.v11-socials .links a[data-fx="tiktok"] .fx-ico{color:#fff;filter:drop-shadow(-1.2px -1px 0 #25f4ee) drop-shadow(1.2px 1px 0 #fe2c55)}
+html.v11-socials .links a[data-fx="kofi"] .fx-ico{color:#4cc0ee}
+html.v11-socials .links a[data-fx="brag"] .fx-ico{color:var(--fx-fac,var(--gold))}
+html.v11-socials .links a[data-fx="reddit"] .fx-ico{color:#ff5a1f}
+html.v11-socials{--fx-fac:var(--gold)}
+html.v11-socials[data-side="horde"]{--fx-fac:#e0352a}
+html.v11-socials[data-side="alliance"]{--fx-fac:#c9a24a}
+html.v11-socials .links a[data-fx="discord"]{--fx-c:#5865f2;--fx-on:#fff}
+html.v11-socials .links a[data-fx="youtube"]{--fx-c:#ff0033;--fx-on:#fff}
+html.v11-socials .links a[data-fx="tiktok"]{--fx-c:#111;--fx-on:#fff}
+html.v11-socials .links a[data-fx="kofi"]{--fx-c:#29abe0;--fx-on:#fff}
+html.v11-socials .links a[data-fx="brag"]{--fx-c:var(--fx-fac);--fx-on:#fff}
+html.v11-socials[data-side="alliance"] .links a[data-fx="brag"]{--fx-on:#0b1834}
+html.v11-socials .links a[data-fx="reddit"]{--fx-c:#ff4500;--fx-on:#fff}
+
+@media (hover:hover){
+  /* a: fill with the brand / faction colour and glow */
+  html.v11-socials-a .links a{transition:background-color .25s,border-color .25s,color .25s,box-shadow .3s}
+  html.v11-socials-a .links a:hover,html.v11-socials-a .links a:focus-visible{background:var(--fx-c);border-color:var(--fx-c);color:var(--fx-on);
+    box-shadow:0 0 0 1px color-mix(in srgb,var(--fx-c) 60%,#fff),0 0 26px -2px color-mix(in srgb,var(--fx-c) 70%,transparent)}
+  html.v11-socials-a .links a:hover .fx-ico,html.v11-socials-a .links a:focus-visible .fx-ico{color:currentColor}
+  html.v11-socials-a .links a[data-fx="tiktok"]:hover{border-color:#25f4ee;box-shadow:-3px -2px 18px -4px rgba(37,244,238,.75),3px 2px 18px -4px rgba(254,44,85,.75)}
+  html.v11-socials-a .links a[data-fx="tiktok"]:hover .fx-ico{color:#fff}
+
+  /* b: springy grow (~25 %) with an overshoot back and forth */
+  html.v11-socials-b .links a{transition:transform .9s linear(0, .092, .312, .58, .835, 1.036, 1.167, 1.227, 1.228, 1.19, 1.131, 1.068, 1.014, .975, .952, .945, .95, .962, .977, .991, 1.002, 1.009, 1.012, 1.012, 1.01, 1.007, 1.004, 1.001, .999, .997, 1),border-color .2s,box-shadow .3s}
+  html.v11-socials-b .links a:hover,html.v11-socials-b .links a:focus-visible{transform:scale(1.25);z-index:2;border-color:var(--paper);box-shadow:0 14px 30px -12px #000}
+  html.v11-socials-b .links a.ghost:hover{background:var(--panel)}
+
+  /* c: hovered lifts and grows a little, the others dim */
+  html.v11-socials-c .links a{transition:transform .28s cubic-bezier(.2,.8,.3,1.2),opacity .25s,filter .25s,border-color .2s,box-shadow .28s}
+  html.v11-socials-c .links:has(> a:hover) > a:not(:hover){opacity:.42;filter:saturate(.4)}
+  html.v11-socials-c .links a:hover,html.v11-socials-c .links a:focus-visible{transform:translateY(-4px) scale(1.06);z-index:2;border-color:var(--paper);box-shadow:0 16px 28px -14px #000,0 0 0 1px color-mix(in srgb,var(--fx-c) 70%,transparent)}
+}
+@media (max-width:700px){html.v11-socials-b .links a:hover{transform:scale(1.06)}}
+html.v11-socials .join{overflow-x:clip}
+
+/* ===================== 4. Submit a brag = main hero button, with drifting sparks ===================== */
+html.v11-submitfx .hero .cta{align-items:center;gap:14px 16px}
+html.v11-submitfx #cta-submit{order:-1;position:relative;isolation:isolate;font-size:22px;padding:21px 34px;min-height:72px}
+html.v11-submitfx #cta-discord{gap:10px}
+html.v11-submitfx #cta-discord .fx-ico{color:#8f98ff;width:1.25em;height:1.25em}
+html.v11-submitfx #cta-discord:hover{border-color:#5865f2}
+html.v11-submitfx #cta-discord:hover .fx-ico{color:#aab1ff}
+.fx-sub-cv{position:absolute;left:-56px;top:-46px;width:calc(100% + 112px);height:calc(100% + 92px);z-index:-1;pointer-events:none;display:block}
+@media (max-width:420px){html.v11-submitfx #cta-submit{font-size:20px;padding:18px 24px;min-height:64px}}
+
+/* ===================== 5. Tiles / cards: faction particle burst on hover + clean coloured border ===================== */
+html.v11-tilehover{--fx-tile:#e0352a;--fx-tile-glow:rgba(224,53,42,.38)}
+html.v11-tilehover[data-side="alliance"]{--fx-tile:#c9a24a;--fx-tile-glow:rgba(233,196,106,.34)}
+html.v11-tilehover :is(.war-links .wl,.chaos .tile,#feed .card){transition:border-color .3s,box-shadow .45s,transform .2s}
+html.v11-tilehover :is(.war-links .wl,.chaos .tile,#feed .card):hover{border-color:var(--fx-tile);box-shadow:0 0 0 1px var(--fx-tile),0 12px 34px -16px var(--fx-tile-glow)}
+html.v11-tilehover #feed .card.a:hover{box-shadow:inset 0 3px 0 var(--navy-hi),0 0 0 1px var(--fx-tile),0 12px 34px -16px var(--fx-tile-glow)}
+html.v11-tilehover #feed .card.h:hover{box-shadow:inset 0 3px 0 var(--crimson-hi),0 0 0 1px var(--fx-tile),0 12px 34px -16px var(--fx-tile-glow)}
+.fx-tile-cv{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:15;display:block}
+
+@media (prefers-reduced-motion:reduce){
+  html[class*="v11-bigd"] .fx-bd,html.v11-bigd-d .fx-l,html.v11-heroparticles-b .hero::after{animation:none!important}
+  html.v11-bigd-c .fx-bd{--fx-p:.5;--fx-g:.3}
+  html.v11-socials-b .links a{transition:none}
+}
