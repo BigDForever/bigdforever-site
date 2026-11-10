@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Hall of Fame · BigDForever</title>
+<title>WoW Forever Hall of Fame &amp; Hall of Shame · BigDForever</title>
+<link rel="canonical" href="https://bigdforever.com/halls">
+<meta property="og:url" content="https://bigdforever.com/halls">
 <meta name="description" content="The WoW Forever Hall of Fame and Hall of Shame. Heroes, villains, fakes and Tiny D moments, voted by both factions.">
 <meta property="og:title" content="Hall of Fame and Shame · BigDForever">
 <meta property="og:image" content="https://bigdforever.com/assets/art/share.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:type" content="website"><meta property="og:site_name" content="BigDForever"><meta name="twitter:card" content="summary_large_image">
@@ -138,7 +140,7 @@ const hallEl = document.getElementById('hall');
 function show(which){
   const h = HALLS[which];
   document.body.dataset.hall = which;
-  document.title = (which === 'fame' ? 'Hall of Fame' : 'Hall of Shame') + ' · BigDForever';
+  document.title = (which === 'fame' ? 'Hall of Fame' : 'Hall of Shame') + ' · WoW Forever · BigDForever';
   document.getElementById('eyebrow').textContent = h.eyebrow;
   document.getElementById('title').textContent = h.title;
   document.getElementById('lede').textContent = h.lede;
