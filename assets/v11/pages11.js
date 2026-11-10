@@ -357,6 +357,12 @@
     if (V.halls && D.getElementById("hall")) halls();
     if (V.warmap && D.getElementById("war")) warmap(V.warmap === "b" ? "b" : "a");
     if (V.challenge && $(".boards")) challenge();
+    // [challenge:b] trash talk has its own Discord channel: #trash-talk, not #challenges (Dejan 10 Nov), on every page
+    if (V.challenge === "b") {
+      var w = D.createTreeWalker(D.body, NodeFilter.SHOW_TEXT), n, hits = [];
+      while ((n = w.nextNode())) if (/#challenges/.test(n.nodeValue) && /trash/i.test(n.nodeValue)) hits.push(n);
+      hits.forEach(function (t) { t.nodeValue = t.nodeValue.replace(/#challenges/g, "#trash-talk"); });
+    }
     if (V.vault && $(".bar") && D.getElementById("grid")) vault(V.vault === "b" ? "b" : "a");
     if (V.howto && $(".pick") && $(".tool")) howto();
     if (V.past && D.getElementById("beta") && D.getElementById("hc")) past();

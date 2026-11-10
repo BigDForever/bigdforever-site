@@ -354,3 +354,10 @@ html.v11-spotlight .card:hover{border-color:color-mix(in srgb,var(--side,var(--g
   html.v11-maker .bench{grid-template-columns:minmax(0,520px) auto;justify-content:center;gap:56px}
   html.v11-maker .preview{width:var(--p11-pw);top:96px}
 }
+
+/* [challenge:b] only things you can click react to the mouse: the bounty boards, What you win, Coming up and the clock stay still */
+html.v11-challenge-b .bounty,html.v11-challenge-b .prize,html.v11-challenge-b .next > div,html.v11-challenge-b .clock{transition:none}
+html.v11-challenge-b .bounty:hover{transform:none;box-shadow:none}
+html.v11-challenge-b .bounty.h:hover{border-color:#5a2420;box-shadow:none} html.v11-challenge-b .bounty.a:hover{border-color:#2a4f8f;box-shadow:none}
+html.v11-challenge-b .prize:hover{border-color:#5a4520;box-shadow:none}
+html.v11-challenge-b .next > div:hover{border-style:dashed;border-color:var(--line)}

@@ -82,3 +82,37 @@ html.v11-header header.top + main, html.v11-header header.top + .wrap, html.v11-
 .v11-coin{width:1.3em;height:1.3em;vertical-align:-.3em;margin-right:.45em;object-fit:contain;filter:drop-shadow(0 1px 2px #000)}
 html.v11-menu .fx-kofi span{display:inline-flex;align-items:center}
 a:has(.fx-ico-discord) .v11-dlogo, button:has(.fx-ico-discord) .v11-dlogo{display:none}
+
+/* ---------- [warroom:c] Dejan's layout (10 Nov 17:19): map + big Spotlight on top, Clip Vault · Hall of Fame · How to clip below;
+   numbers top-left, words bottom-left in one size, pictures on the right ---------- */
+@media (min-width:861px){
+  html.v11-warroom-c .war-links{grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(2,minmax(190px,auto)) minmax(170px,auto);
+    grid-template-areas:"map map map spot spot bounty" "map map map spot spot past" "vault vault hall hall clips clips"}
+}
+html.v11-warroom-c .wl{padding:60px 20px 18px}
+html.v11-warroom-c .wl .no,html.v11-warroom-c .wl.big .no{left:20px;right:auto;top:16px;font-size:30px}
+html.v11-warroom-c .wl b,html.v11-warroom-c .wl:nth-child(1) b,html.v11-warroom-c .wl.big b{font-size:28px;padding-right:0;max-width:62%}
+html.v11-warroom-c .wl span:last-child{max-width:58%;font-size:15px}
+html.v11-warroom-c .wl:nth-child(1) b,html.v11-warroom-c .wl:nth-child(1) span:last-child,html.v11-warroom-c .wl.v11-cover b,html.v11-warroom-c .wl.v11-cover span:last-child{max-width:80%}
+html.v11-warroom-c .wl.v11-prop{background:var(--pic) right 18px center/auto min(74%,210px) no-repeat,radial-gradient(90% 120% at 88% 50%,color-mix(in srgb,var(--tint) 18%,var(--panel)) 0,var(--panel) 62%)}
+html.v11-warroom-c .wl.v11-prop::before{background:none}
+html.v11-warroom-c .wl.v11-prop:hover{background-size:auto min(80%,226px),auto}
+html.v11-warroom-c .wl.v11-cover{background:var(--panel) var(--pic) center/cover no-repeat}
+html.v11-warroom-c .wl.v11-cover::before{background:linear-gradient(0deg,color-mix(in srgb,var(--ink) 92%,transparent) 0,color-mix(in srgb,var(--ink) 55%,transparent) 45%,color-mix(in srgb,var(--ink) 25%,transparent) 100%)}
+@media (max-width:860px){html.v11-warroom-c .wl.v11-prop{background-size:auto min(64%,120px),auto}}
+@media (min-width:861px){
+  /* narrow tiles (bounty, Taste of the Past): picture top-right beside the number, words full width underneath */
+  html.v11-warroom-c .wl:nth-child(2).v11-prop,html.v11-warroom-c .wl:nth-child(4).v11-prop{background-position:right 14px top 12px,0 0;background-size:auto 46%,auto}
+  html.v11-warroom-c .wl:nth-child(2) b,html.v11-warroom-c .wl:nth-child(2) span:last-child,html.v11-warroom-c .wl:nth-child(4) b,html.v11-warroom-c .wl:nth-child(4) span:last-child{max-width:100%}
+  html.v11-warroom-c .wl:nth-child(2).v11-prop:hover,html.v11-warroom-c .wl:nth-child(4).v11-prop:hover{background-size:auto 50%,auto}
+}
+html.v11-warroom-c .wl:nth-child(1)::before{background:linear-gradient(0deg,color-mix(in srgb,var(--ink) 90%,transparent) 0,color-mix(in srgb,var(--ink) 40%,transparent) 40%,transparent 62%),radial-gradient(160px 120px at 0 0,color-mix(in srgb,var(--ink) 70%,transparent),transparent)}
+
+/* ---------- [chaos6] Launch Week Chaos: all six tiles in one row on a computer, the two buttons underneath (Dejan 10 Nov) ---------- */
+@media (min-width:1200px){
+  html.v11-chaos6 .chaos .grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+  html.v11-chaos6 .chaos .tile h3{font-size:21px}
+}
+html.v11-chaos6 .chaos-cta{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:22px}
+html.v11-chaos6 .chaos-cta .btn{width:auto;min-width:260px;display:inline-flex;align-items:center;justify-content:center}
+a:has(.p11-ico) .v11-dlogo, button:has(.p11-ico) .v11-dlogo{display:none}

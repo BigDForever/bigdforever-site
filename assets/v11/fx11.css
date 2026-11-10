@@ -1,5 +1,5 @@
 /* v1.1 effect proposals (fx11). Every rule is behind html.v11-<key>; nothing here runs unless the key is on.
-   Keys: bigd:a|b|c|d · heroparticles:a|b · socials:a|b|c · submitfx · tilehover · gate. Preview: index.html?v11=bigd:a */
+   Keys: bigd:a|b|c|d · heroparticles:a|b · socials:a|b|c|d · submitfx · tilehover · gate. Preview: index.html?v11=bigd:a */
 
 /* ===================== 1. BigD title: molten gold from the logo's sword ===================== */
 /* colours sampled from emblem.jpg (sword blade): #9d4a00 #c66600 #d97c15 #efad21 #ffca4e #f2dd8e #fdf6bf */
@@ -131,6 +131,18 @@ html.v11-socials .links a[data-fx="reddit"]{--fx-c:#ff4500;--fx-on:#fff}
   html.v11-socials-c .links a:hover,html.v11-socials-c .links a:focus-visible{transform:translateY(-4px) scale(1.06);z-index:2;border-color:var(--paper);box-shadow:0 16px 28px -14px #000,0 0 0 1px color-mix(in srgb,var(--fx-c) 70%,transparent)}
 }
 @media (max-width:700px){html.v11-socials-b .links a:hover{transform:scale(1.06)}}
+/* d (Dejan 10 Nov): A's colour fill + B's spring, grows 20 % instead of 25 % + C's dimming of the others */
+@media (hover:hover){
+  html.v11-socials-d .links a{transition:transform .9s linear(0, .092, .312, .58, .835, 1.036, 1.167, 1.227, 1.228, 1.19, 1.131, 1.068, 1.014, .975, .952, .945, .95, .962, .977, .991, 1.002, 1.009, 1.012, 1.012, 1.01, 1.007, 1.004, 1.001, .999, .997, 1),background-color .25s,border-color .25s,color .25s,box-shadow .3s,opacity .25s,filter .25s}
+  html.v11-socials-d .links:has(> a:hover) > a:not(:hover){opacity:.42;filter:saturate(.4)}
+  html.v11-socials-d .links a:hover,html.v11-socials-d .links a:focus-visible{transform:scale(1.2);z-index:2;background:var(--fx-c);border-color:var(--fx-c);color:var(--fx-on);
+    box-shadow:0 0 0 1px color-mix(in srgb,var(--fx-c) 60%,#fff),0 0 26px -2px color-mix(in srgb,var(--fx-c) 70%,transparent),0 14px 30px -12px #000}
+  html.v11-socials-d .links a:hover .fx-ico,html.v11-socials-d .links a:focus-visible .fx-ico{color:currentColor}
+  html.v11-socials-d .links a[data-fx="tiktok"]:hover{border-color:#25f4ee;box-shadow:-3px -2px 18px -4px rgba(37,244,238,.75),3px 2px 18px -4px rgba(254,44,85,.75),0 14px 30px -12px #000}
+  html.v11-socials-d .links a[data-fx="tiktok"]:hover .fx-ico{color:#fff}
+}
+@media (max-width:700px){html.v11-socials-d .links a:hover{transform:scale(1.05)}}
+@media (prefers-reduced-motion:reduce){html.v11-socials-d .links a{transition:background-color .2s,opacity .2s}}
 html.v11-socials .join{overflow-x:clip}
 
 /* ===================== 4. Submit a brag = main hero button, with drifting sparks ===================== */
@@ -162,3 +174,5 @@ html.v11-gate .fx-gate > :not(.fx-gate-cv){position:relative;z-index:1}
   html.v11-bigd-c .fx-bd{--fx-p:.5;--fx-g:.3}
   html.v11-socials-b .links a{transition:none}
 }
+/* particles over the clips video (card 16 round 2): above the dark shade, under the words */
+html.hv-on .fx-hero-cv{z-index:2} html.hv-on.v11-heroparticles .hero .wrap{z-index:3}

@@ -70,8 +70,16 @@
       $$(".war-links .wl").forEach(function (a, i) {
         if (!pics[i]) return;
         var f = i === 0 ? "assets/v11/room/map.jpg" : "assets/v11/room/props/" + pics[i] + ".webp";
-        a.style.setProperty("--pic", "url('" + new URL(f, location.href).href + "')");
-        if (i) a.classList.add("v11-prop");
+        var u = "url('" + new URL(f, location.href).href + "')";
+        // [warroom:c] Streamer Spotlight gets a real picture: the featured Hozitojones clip (fallback: a brag screenshot)
+        if (V.warroom === "c" && pics[i] === "spot") {
+          u = "url('" + new URL("assets/v11/room/spot.jpg", location.href).href + "')";
+          a.classList.add("v11-cover");
+          var tw = new Image(), tile = a;
+          tw.onload = function () { tile.style.setProperty("--pic", "url('" + tw.src + "')"); };
+          tw.src = "https://static-cdn.jtvnw.net/twitch-video-assets/twitch-vap-video-assets-prod-us-west-2/45a8c62e-1a96-49e1-8794-594755bffb4f/landscape/thumb/thumb-0000000000-1920x1080.jpg";
+        } else if (i) a.classList.add("v11-prop");
+        a.style.setProperty("--pic", u);
       });
     }
 
