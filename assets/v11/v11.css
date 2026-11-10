@@ -81,3 +81,4 @@ html.v11-header header.top + main, html.v11-header header.top + .wrap, html.v11-
 /* ---------- [menu] Change your mind + war chest ---------- */
 .v11-coin{width:1.3em;height:1.3em;vertical-align:-.3em;margin-right:.45em;object-fit:contain;filter:drop-shadow(0 1px 2px #000)}
 html.v11-menu .fx-kofi span{display:inline-flex;align-items:center}
+a:has(.fx-ico-discord) .v11-dlogo, button:has(.fx-ico-discord) .v11-dlogo{display:none}

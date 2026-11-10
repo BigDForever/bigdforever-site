@@ -532,7 +532,7 @@ tick();
 /* Hero clips: our featured clips play one after another, silent, behind the title (new clip = add a line to REEL). */
 (function () {
   var REEL = ["barrens", "silverpine", "ninja-rogue", "ninja-mage"];
-  var PHONE = true, PC = false;                           // computers wait for Dejan's OK
+  var PHONE = true, PC = true;                            // both live (computers approved on the Review Board, card 9, 10 Nov)
   var q = new URLSearchParams(location.search).get("video");
   var phone = window.matchMedia("(max-width:760px)").matches;
   var on = q === "a" || (q !== "off" && (phone ? PHONE : PC));

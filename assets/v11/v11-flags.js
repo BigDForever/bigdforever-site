@@ -2,7 +2,8 @@
    Shipping: set window.BIGD_V11 = "wide:a,ticker" in a page before this script (or edit DEFAULT below).
    Each key adds html.v11-<key> (and html.v11-<key>-<option>); window.V11[key] = option or "on". */
 (function () {
-  var DEFAULT = "";
+  // LIVE (Dejan approved on the Review Board, 10 Nov 17:19): cards 10 (wide B), 11, 12, 13, 14, 15 A, 17, 21, 22, 23, 24
+  var DEFAULT = "wide:b,header,ticker,discord,footer,bigd:a,submitfx,chaos,nolines,menu,halls";
   var q = new URLSearchParams(location.search).get("v11");
   try { if (q !== null) sessionStorage.setItem("bigd-v11", q); else q = sessionStorage.getItem("bigd-v11"); } catch (e) {}
   var list = [DEFAULT, window.BIGD_V11 || "", q || ""].join(",");
