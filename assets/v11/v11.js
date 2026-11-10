@@ -48,6 +48,21 @@
       putLogo(); setTimeout(putLogo, 500);
     }
 
+    // [menu] "Settings" becomes "Change your mind"; war chest gets its goblin grease back
+    if (V.menu) {
+      var fixMenu = function () {
+        $$(".fx-set-h").forEach(function (h) { var sp = h.querySelector("span"); if (sp && sp.textContent !== "Change your mind") { sp.textContent = "Change your mind"; var c = h.querySelector(".fx-cog"); if (c) c.remove(); } });
+        $$(".fx-swap small").forEach(function (sm) { if (/changed your mind/i.test(sm.textContent)) sm.remove(); });
+        $$(".fx-kofi").forEach(function (k) {
+          if (k.dataset.v11) return; k.dataset.v11 = "1";
+          var t = k.querySelector("span"), sm = k.querySelector("small");
+          if (t) t.innerHTML = '<svg class="v11-coin" viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="7" rx="8" ry="3.2" fill="currentColor"/><path d="M4 7v4c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2V7c0 1.8-3.6 3.2-8 3.2S4 8.8 4 7Zm0 6v4c0 1.8 3.6 3.2 8 3.2s8-1.4 8-3.2v-4c0 1.8-3.6 3.2-8 3.2S4 14.8 4 13Z" fill="currentColor" opacity=".75"/></svg>War chest';
+          if (sm) sm.textContent = "Buy the goblins some grease (Ko-fi)";
+        });
+      };
+      fixMenu(); new MutationObserver(function () { clearTimeout(fixMenu._t); fixMenu._t = setTimeout(fixMenu, 80); }).observe(document.body, { childList: true, subtree: true });
+    }
+
     // [warroom] pictures in every war-room tile (stand-ins until the ChatGPT war map arrives)
     if (V.warroom) {
       var pics = ["map", "bounty", "hall", "past", "clips", "spot", "vault"];
