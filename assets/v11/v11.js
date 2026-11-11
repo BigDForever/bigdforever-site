@@ -4,6 +4,12 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var DISCORD = '<svg class="v11-dlogo" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.32 4.37A19.8 19.8 0 0 0 15.43 2.8a13.6 13.6 0 0 0-.63 1.3 18.4 18.4 0 0 0-5.6 0 13 13 0 0 0-.64-1.3A19.7 19.7 0 0 0 3.68 4.37C.56 9.05-.29 13.6.13 18.1a19.9 19.9 0 0 0 6.04 3.06 14.7 14.7 0 0 0 1.3-2.1 12.9 12.9 0 0 1-2.04-.98l.5-.39a14.2 14.2 0 0 0 12.15 0l.5.39c-.65.39-1.33.71-2.05.98.37.74.81 1.44 1.3 2.1a19.8 19.8 0 0 0 6.05-3.06c.5-5.2-.84-9.7-3.56-13.73ZM8.02 15.33c-1.18 0-2.16-1.09-2.16-2.42s.95-2.42 2.16-2.42 2.18 1.1 2.16 2.42c0 1.33-.95 2.42-2.16 2.42Zm7.96 0c-1.18 0-2.16-1.09-2.16-2.42s.95-2.42 2.16-2.42 2.18 1.1 2.16 2.42c0 1.33-.94 2.42-2.16 2.42Z"/></svg>';
 
+  function coinFlip() {
+    var u = function (f) { return new URL("assets/v11/fx/" + f, location.href).href; };
+    var w = document.createElement("span"); w.className = "v11-flip"; w.setAttribute("aria-hidden", "true");
+    w.innerHTML = '<i><img src="' + u("goblin-coin2-64.webp") + '" srcset="' + u("goblin-coin2-128.webp") + ' 2x" alt=""><img src="' + u("goblin-coin2-back-64.webp") + '" srcset="' + u("goblin-coin2-back-128.webp") + ' 2x" alt=""></i>';
+    return w;
+  }
   function ready(f) { if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", f); else f(); }
 
   ready(function () {
@@ -56,8 +62,9 @@
         $$(".fx-kofi").forEach(function (k) {
           if (k.dataset.v11) return; k.dataset.v11 = "1";
           var t = k.querySelector("span"), sm = k.querySelector("small");
-          if (t) t.innerHTML = '<img class="v11-coin" src="' + new URL("assets/v11/fx/goblin-coin-64.webp", location.href).href + '" alt="" width="20" height="20">War chest';
+          if (t) t.innerHTML = '<img class="v11-coin" src="' + new URL("assets/v11/fx/goblin-coin2-64.webp", location.href).href + '" srcset="' + new URL("assets/v11/fx/goblin-coin2-128.webp", location.href).href + ' 2x" alt="" width="20" height="20">War chest';
           if (sm) sm.textContent = "Buy the goblins some grease (Ko-fi)";
+          if (V.coin && t) { var oc = t.querySelector(".v11-coin"); if (oc) oc.replaceWith(coinFlip()); }
         });
       };
       fixMenu(); new MutationObserver(function () { clearTimeout(fixMenu._t); fixMenu._t = setTimeout(fixMenu, 80); }).observe(document.body, { childList: true, subtree: true });
@@ -66,7 +73,7 @@
     // [warroom] pictures in every war-room tile (stand-ins until the ChatGPT war map arrives)
     if (V.warroom) {
       // tile 1 = the ChatGPT war map (cover); the others = Dejan's ChatGPT props (cut-outs, 10 Nov)
-      var pics = ["map", "bounty", "hall", "past", "clips", "spot", "vault"];
+      var pics = ["map", "bounty", "hall2", "past", "clips", "spot", "vault"];  // hall2 = chalice + crown (11 Nov, card 19 note)
       $$(".war-links .wl").forEach(function (a, i) {
         if (!pics[i]) return;
         var f = i === 0 ? "assets/v11/room/map.jpg" : "assets/v11/room/props/" + pics[i] + ".webp";
@@ -81,6 +88,15 @@
         } else if (i) a.classList.add("v11-prop");
         a.style.setProperty("--pic", u);
       });
+    }
+
+    // [coin] the goblin coin replaces the Ko-fi cup in the socials row (front + GG back, flips on hover)
+    if (V.coin) {
+      var swapKofi = function () {
+        $$('#links a[data-fx="kofi"] svg.fx-ico').forEach(function (s) { var c = coinFlip(); c.classList.add("fx-ico"); s.replaceWith(c); });
+      };
+      swapKofi(); var lk = document.getElementById("links");
+      if (lk) new MutationObserver(function () { clearTimeout(swapKofi._t); swapKofi._t = setTimeout(swapKofi, 60); }).observe(lk, { childList: true, subtree: true });
     }
 
     // [chaos] no queues in Forever: the second tile becomes Disconnects

@@ -361,3 +361,25 @@ html.v11-challenge-b .bounty:hover{transform:none;box-shadow:none}
 html.v11-challenge-b .bounty.h:hover{border-color:#5a2420;box-shadow:none} html.v11-challenge-b .bounty.a:hover{border-color:#2a4f8f;box-shadow:none}
 html.v11-challenge-b .prize:hover{border-color:#5a4520;box-shadow:none}
 html.v11-challenge-b .next > div:hover{border-style:dashed;border-color:var(--line)}
+
+/* ---------- [podium] Hall of Fame lead category stands on Dejan's stone podium (hall-podium.webp, 11 Nov).
+   Image 1499x748: steps 2nd x195-545 top 305, 1st x530-965 top 178, 3rd x965-1300 top 368; torches outside. Computers only. ---------- */
+@media (min-width:861px){
+  html.v11-podium body[data-hall="fame"] .p11-lead .p11-podium{container-type:inline-size;max-width:1100px;gap:0;
+    grid-template-columns:13.01fr 23.35fr 29.02fr 22.35fr 13.28fr;
+    background:url("art/hall-podium.webp") center bottom/100% auto no-repeat}
+  html.v11-podium body[data-hall="fame"] .p11-lead .p11-step-2{grid-column:2;padding:0 1.2cqw 0 3.4cqw}
+  html.v11-podium body[data-hall="fame"] .p11-lead .p11-step-1{grid-column:3;padding:0 1.6cqw}
+  html.v11-podium body[data-hall="fame"] .p11-lead .p11-step-3{grid-column:4;padding:0 3.4cqw 0 1.2cqw}
+  html.v11-podium body[data-hall="fame"] .p11-lead .p11-plinth{border:0;background:none;box-shadow:none;justify-content:flex-start;gap:.2cqw;
+    margin-inline:-1.6cqw}
+  html.v11-podium body[data-hall="fame"] .p11-lead .p11-step-2 .p11-plinth{height:27.9cqw;padding-top:5cqw;margin-inline:-3.4cqw -1.2cqw}
+  html.v11-podium body[data-hall="fame"] .p11-lead .p11-step-1 .p11-plinth{height:36.4cqw;padding-top:5.4cqw}
+  html.v11-podium body[data-hall="fame"] .p11-lead .p11-step-3 .p11-plinth{height:23.7cqw;padding-top:4.4cqw;margin-inline:-1.2cqw -3.4cqw;padding-left:2.6cqw}
+  /* the numbers and ranks are struck into the metal plates */
+  html.v11-podium body[data-hall="fame"] .p11-lead .p11-plinth b{font-size:5.2cqw;color:rgba(28,18,8,.86);text-shadow:0 1px 0 rgba(255,240,200,.45),0 -1px 1px rgba(0,0,0,.5)}
+  html.v11-podium body[data-hall="fame"] .p11-lead .p11-step-1 .p11-plinth b{font-size:6.2cqw}
+  html.v11-podium body[data-hall="fame"] .p11-lead .p11-plinth span{font-size:max(10px,1.05cqw);font-weight:700;color:rgba(28,18,8,.82);text-shadow:0 1px 0 rgba(255,240,200,.4)}
+  html.v11-podium body[data-hall="fame"] .p11-lead .p11-statue{border-radius:8px;margin-bottom:-.6cqw;box-shadow:0 1.4cqw 2cqw -1cqw #000}
+  html.v11-podium body[data-hall="fame"] .p11-lead .p11-vacant{background:linear-gradient(180deg,#221c14,#16120d)}
+}

@@ -116,3 +116,13 @@ html.v11-warroom-c .wl:nth-child(1)::before{background:linear-gradient(0deg,colo
 html.v11-chaos6 .chaos-cta{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:22px}
 html.v11-chaos6 .chaos-cta .btn{width:auto;min-width:260px;display:inline-flex;align-items:center;justify-content:center}
 a:has(.p11-ico) .v11-dlogo, button:has(.p11-ico) .v11-dlogo{display:none}
+
+/* ---------- [coin] the goblin coin (11 Nov, both sides): Ko-fi button + menu war chest; flips to GG / In gold we trust on hover ---------- */
+.v11-flip{display:inline-block;width:1.35em;height:1.35em;vertical-align:-.32em;perspective:240px;flex:none}
+.v11-flip i{position:relative;display:block;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.3,1.4,.5,1)}
+.v11-flip img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;backface-visibility:hidden;-webkit-backface-visibility:hidden;filter:drop-shadow(0 1px 2px #000)}
+.v11-flip img + img{transform:rotateY(180deg)}
+a:hover .v11-flip i,a:focus-visible .v11-flip i{transform:rotateY(180deg)}
+html.v11-menu .fx-kofi .v11-flip{margin-right:.45em}
+html.v11-socials .links a[data-fx="kofi"] .v11-flip{width:22px;height:22px}
+@media (prefers-reduced-motion:reduce){.v11-flip i{transition:none}}

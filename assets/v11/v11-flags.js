@@ -4,6 +4,7 @@
 (function () {
   // LIVE (Dejan approved on the Review Board, 10 Nov 17:19): cards 10 (wide B), 11, 12, 13, 14, 15 A, 17, 21, 22, 23, 24
   // + 17:29: 27 vault A, 28, 29, 30, 31, 33 (gate), 34 kill map A (with the War Map page look from 25)
+  // 11 Nov: chalice + crown (hall2) and the clean goblin coin replace the old pictures (Dejan: "use them where we discussed"); podium + coin = board cards 43/44, off
   // + 18:15 round 2: 35 warroom C, 36 socials D, 37 chaos6, 38 challenge B, 39 heroparticles B, 40 tileglow A+B, 41 bigd E, 42 killmap C
   var DEFAULT = "wide:b,header,ticker,discord,footer,bigd:e,submitfx,chaos,chaos6,nolines,menu,halls,vault:a,howto,past,spotlight,maker,gate,warmap:a,killmap:c,warroom:c,socials:d,challenge:b,heroparticles:b,tileglow:ab";
   var q = new URLSearchParams(location.search).get("v11");
