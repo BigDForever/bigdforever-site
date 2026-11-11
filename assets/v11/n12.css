@@ -1,0 +1,170 @@
+/* ===== BigDForever night batch (12 Nov): Review Board cards 45-54. Each block runs only when its key is on (v11-flags.js). ===== */
+:root{--n12-a:#1B3A73;--n12-gold:#C9A24A;--n12-h:#B3231B;--n12-br:#C08A3E}
+
+/* ---------- [shorts] 45 · our latest Shorts on the front page ---------- */
+.n12-shorts{margin:0 0 26px}
+.n12-sh-head{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.n12-dot{width:9px;height:9px;border-radius:50%;background:var(--tint);box-shadow:0 0 0 0 color-mix(in srgb,var(--tint) 60%,transparent);animation:n12pulse 2.2s ease-out infinite;flex:none;display:inline-block}
+@keyframes n12pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--tint) 55%,transparent)}70%,100%{box-shadow:0 0 0 9px transparent}}
+.n12-sh-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,230px));gap:18px;align-items:start}
+.n12-short{display:flex;flex-direction:column;gap:8px;min-width:0}
+.n12-sh-pic{position:relative;display:block;aspect-ratio:9/16;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#000;box-shadow:0 14px 30px -18px #000;transition:transform .25s,border-color .25s}
+.n12-sh-pic img{width:100%;height:100%;object-fit:cover;display:block}
+.n12-sh-pic:hover,.n12-sh-pic:focus-visible{transform:translateY(-3px);border-color:var(--tint)}
+.n12-play{position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:color-mix(in srgb,var(--ink) 55%,transparent);border:2px solid var(--paper);opacity:.0;transition:opacity .25s}
+.n12-play::after{content:"";position:absolute;left:22px;top:16px;border:13px solid transparent;border-left:20px solid var(--paper);border-right:0}
+.n12-sh-pic:hover .n12-play,.n12-sh-pic:focus-visible .n12-play{opacity:1}
+.n12-soon{position:absolute;left:10px;top:10px;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:4px;background:var(--gold);color:var(--ink)}
+.n12-short h3{font-family:var(--cond);font-weight:700;font-size:20px;text-transform:uppercase;line-height:1.1;margin:2px 0 0}
+.n12-short p{margin:0;font-size:14px;color:var(--muted)}
+.n12-sh-links{display:flex;gap:8px;flex-wrap:wrap}
+.n12-sh-links a{font-family:var(--cond);font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--paper);border:1px solid var(--line);border-radius:4px;padding:5px 10px;display:inline-flex;align-items:center;gap:6px;transition:border-color .2s,background .2s}
+.n12-sh-links a:hover,.n12-sh-links a:focus-visible{border-color:var(--tint);background:color-mix(in srgb,var(--tint) 14%,transparent)}
+.n12-sh-links svg{width:15px;height:15px;fill:currentColor}
+.n12-sh-more{aspect-ratio:9/16;border:1px dashed var(--line);border-radius:10px;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:20px;text-decoration:none;color:var(--paper);transition:border-color .25s}
+.n12-sh-more:hover,.n12-sh-more:focus-visible{border-color:var(--tint)}
+.n12-sh-more b{font-family:var(--display);font-size:28px;line-height:1.05}
+.n12-sh-more span{color:var(--muted);font-size:14px}
+.n12-sh-more i{font-style:normal;font-family:var(--cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--tint)}
+@media (max-width:700px){
+  .n12-sh-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:16px;gap:14px;padding-bottom:8px;margin-inline:-16px;padding-inline:16px;scrollbar-width:none}
+  .n12-sh-row::-webkit-scrollbar{display:none}
+  .n12-short,.n12-sh-more{flex:0 0 62vw;scroll-snap-align:start}
+  .n12-play{opacity:1}
+}
+
+/* ---------- [resetclock] 46 · live week clock under the hero buttons ---------- */
+html.v11-resetclock .countdown{align-items:center;gap:8px 12px}
+html.v11-resetclock .countdown .n12-wk{font-family:var(--cond);font-weight:700;font-size:15px;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px 5px 9px;border-radius:4px;display:inline-flex;align-items:center;gap:8px;
+  background:color-mix(in srgb,var(--tint) 20%,transparent);border:1px solid color-mix(in srgb,var(--tint) 60%,transparent);color:var(--paper)}
+html.v11-resetclock .countdown b.n12-t{font-size:22px}
+html.v11-resetclock .countdown .n12-rs{display:inline-flex;align-items:baseline;gap:8px;white-space:nowrap}
+
+/* ---------- [votes] 47 · the five votes as tokens (no table, nothing cut off on phones) ---------- */
+html.v11-votes .votes table{display:none}
+.n12-votes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:8px}
+.n12-vote{border:1px solid var(--line);border-radius:8px;padding:16px 14px 14px;display:flex;flex-direction:column;gap:6px;background:linear-gradient(180deg,color-mix(in srgb,var(--panel) 92%,var(--tint)),var(--panel));position:relative;min-width:0}
+.n12-vote .w{font-family:var(--display);font-weight:800;font-size:30px;line-height:1}
+.n12-vote .who{align-self:flex-start;font-family:var(--cond);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:3px;border:1px solid var(--line);color:var(--muted)}
+.n12-vote .who.own{border-color:color-mix(in srgb,var(--tint) 70%,transparent);color:var(--paper)}
+.n12-vote .who.enemy{border-color:#7a7a7a;color:var(--paper);background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(255,255,255,.05) 6px 12px)}
+html[data-side="horde"] .n12-vote .who.enemy{border-color:#4f78c9}
+html[data-side="alliance"] .n12-vote .who.enemy{border-color:#c9473f}
+.n12-vote .fx{font-size:14px;color:var(--muted);line-height:1.4}
+.n12-vote .ar{position:absolute;right:12px;top:14px;display:flex;gap:1px}
+.n12-vote .ar svg{width:16px;height:16px}
+.n12-vote .ar.up svg{fill:var(--tint)}
+.n12-vote .ar.down svg{fill:#8a8a8a}
+.n12-vote.best{border-color:var(--tint);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--tint) 40%,transparent)}
+@media (max-width:1000px){.n12-votes{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:600px){.n12-votes{grid-template-columns:1fr 1fr}.n12-vote:last-child{grid-column:1/-1}}
+
+/* ---------- [recruit] 48 · Your faction needs you: Grukk / Vellaris point at you in the bottom band ---------- */
+html.v11-recruit .join{position:relative;overflow:clip}
+html.v11-recruit .join .wrap{grid-template-columns:minmax(0,1fr) auto auto;align-items:end}
+.n12-eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--tint);margin-bottom:8px}
+.n12-recruit{position:relative;width:min(30vw,360px);align-self:end;margin-bottom:-56px;pointer-events:none}
+.n12-recruit img{display:block;width:100%;height:auto;filter:drop-shadow(0 18px 24px rgba(0,0,0,.6));-webkit-mask:linear-gradient(180deg,#000 82%,transparent);mask:linear-gradient(180deg,#000 82%,transparent)}
+.n12-recruit img+img{display:none}
+html[data-side="alliance"] .n12-recruit img{display:none}
+html[data-side="alliance"] .n12-recruit img+img{display:block}
+html.v11-recruit .join .links{align-self:center}
+@media (max-width:900px){
+  html.v11-recruit .join .wrap{grid-template-columns:1fr}
+  .n12-recruit{width:min(64vw,280px);justify-self:center;margin:-8px 0 -6px;order:3}
+  html.v11-recruit .join .links{order:2}
+}
+
+/* ---------- [actionbar] 49 · phones: Submit + Discord always one thumb away ---------- */
+.n12-bar{display:none}
+@media (max-width:760px){
+  .n12-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;gap:10px;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));
+    background:color-mix(in srgb,var(--ink) 88%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:1px solid var(--line);
+    transform:translateY(110%);transition:transform .3s ease}
+  .n12-bar.on{transform:none}
+  .n12-bar a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;border-radius:6px;text-decoration:none;font-family:var(--cond);font-weight:700;font-size:16px;letter-spacing:.06em;text-transform:uppercase}
+  .n12-bar .s{background:var(--tint);color:#fff}
+  html[data-side="alliance"] .n12-bar .s{background:var(--n12-gold);color:#10131f}
+  html[data-side="horde"] .n12-bar .s{box-shadow:inset 0 0 0 2px var(--n12-br)}
+  .n12-bar .d{flex:0 0 auto;padding:0 16px;background:#5865F2;color:#fff}
+  .n12-bar svg{width:20px;height:20px;fill:currentColor}
+}
+@media (max-width:760px) and (prefers-reduced-motion:reduce){.n12-bar{transition:none}}
+
+/* ---------- [decree] 50 · Pick your ruleset: Alliance decrees with a wax seal, Horde war-camp plaques ---------- */
+html.v11-decree .rule{position:relative;min-height:112px;justify-content:flex-end;padding:18px 18px 16px}
+html.v11-decree[data-side="alliance"] .rule{border:0;border-radius:3px;color:#1d2440;
+  background:radial-gradient(120% 90% at 30% 20%,#f6ecd4 0,#ead9b2 70%,#dcc595 100%);
+  box-shadow:inset 0 0 0 2px #fff6e0,inset 0 0 0 4px var(--n12-gold),inset 0 0 26px rgba(120,80,20,.28),0 10px 22px -14px #000}
+html.v11-decree[data-side="alliance"] .rule .s{color:#4a4f66;font-weight:600}
+html.v11-decree[data-side="alliance"] .rule::after{content:"";position:absolute;right:14px;top:12px;width:40px;height:40px;border-radius:50%;
+  background:radial-gradient(circle at 38% 34%,#d24a40 0,#a5231c 55%,#7a1712 100%);box-shadow:0 2px 4px rgba(0,0,0,.4),inset 0 0 0 3px rgba(0,0,0,.18)}
+html.v11-decree[data-side="alliance"] .rule::before{content:"\2605";position:absolute;right:14px;top:12px;width:40px;height:40px;z-index:1;display:grid;place-items:center;font-size:19px;color:#f1c9a0;text-shadow:0 -1px 0 rgba(0,0,0,.35)}
+html.v11-decree[data-side="alliance"] .chip{background:var(--n12-a);border-color:color-mix(in srgb,var(--n12-gold) 70%,transparent);color:#f3e7c6}
+html.v11-decree[data-side="horde"] .rule{border:2px solid var(--n12-br);border-radius:2px;
+  background:linear-gradient(180deg,rgba(0,0,0,.0),rgba(0,0,0,.35)),repeating-linear-gradient(92deg,#5a1410 0 7px,#621611 7px 15px,#56120e 15px 22px);
+  clip-path:polygon(0 4px,8% 0,22% 5px,40% 1px,58% 6px,76% 0,91% 5px,100% 2px,100% 100%,0 100%);box-shadow:0 10px 22px -14px #000}
+html.v11-decree[data-side="horde"] .rule .t{color:#f4e6cf;text-shadow:0 2px 0 #000}
+html.v11-decree[data-side="horde"] .rule .s{color:#e7c9a3}
+html.v11-decree[data-side="horde"] .rule::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--n12-br),#7a4f1c 50%,var(--n12-br))}
+@media (max-width:600px){html.v11-decree .rule .t{font-size:29px}
+  html.v11-decree[data-side="alliance"] .rule::after,html.v11-decree[data-side="alliance"] .rule::before{width:30px;height:30px;right:9px;top:9px;font-size:14px}}
+html.v11-decree[data-side="horde"] .chip{background:#160a08;border-color:color-mix(in srgb,var(--n12-br) 75%,transparent)}
+
+/* ---------- [steps] 51 · How it works as one path: post → votes → glory ---------- */
+html.v11-steps .steps{position:relative}
+html.v11-steps .step::before{display:none}
+.n12-st{display:flex;align-items:center;gap:12px;margin-bottom:6px;position:relative}
+.n12-st .ic{width:64px;height:64px;border-radius:50%;flex:none;display:grid;place-items:center;position:relative;z-index:1;
+  background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--tint) 35%,var(--panel)),var(--panel) 75%);border:2px solid var(--tint);box-shadow:0 0 0 5px var(--ink,#0a0605)}
+.n12-st .ic svg{width:30px;height:30px;fill:var(--paper)}
+.n12-st .no{position:absolute;left:46px;top:-4px;z-index:2;min-width:26px;height:26px;border-radius:13px;display:grid;place-items:center;padding:0 6px;
+  font-family:var(--cond);font-weight:700;font-size:16px;line-height:1;background:var(--tint);color:#fff;box-shadow:0 0 0 3px var(--ink,#0a0605)}
+html[data-side="alliance"] .n12-st .no{background:var(--n12-gold);color:#10131f}
+@media (min-width:761px){
+  html.v11-steps .steps::before{content:"";position:absolute;left:32px;right:calc(33.33% - 32px);top:31px;height:2px;
+    background:repeating-linear-gradient(90deg,var(--tint) 0 12px,transparent 12px 20px);opacity:.75}
+}
+@media (max-width:760px){
+  html.v11-steps .steps{gap:28px}
+  html.v11-steps .steps::before{content:"";position:absolute;left:31px;top:40px;bottom:60px;width:2px;background:repeating-linear-gradient(180deg,var(--tint) 0 12px,transparent 12px 20px);opacity:.75}
+  html.v11-steps .step{display:grid;grid-template-columns:64px minmax(0,1fr);column-gap:16px;align-items:start}
+  html.v11-steps .step .n12-st{grid-row:1/span 2;margin:0}
+  html.v11-steps .step h3{grid-column:2;margin-top:8px}
+  html.v11-steps .step p{grid-column:2}
+}
+
+/* ---------- [prize] 52 · What you win: the chalice + crown on the challenge page ---------- */
+html.v11-prize .prize{position:relative;padding-right:min(34%,230px);min-height:190px;overflow:hidden}
+html.v11-prize .prize::after{content:"";position:absolute;right:18px;bottom:-6px;width:min(30%,190px);height:calc(100% + 10px);
+  background:url("room/props/hall2.webp") right bottom/contain no-repeat;filter:drop-shadow(0 10px 18px rgba(0,0,0,.55))}
+html.v11-prize .prize::before{content:"";position:absolute;right:-40px;bottom:-60px;width:320px;height:260px;border-radius:50%;
+  background:radial-gradient(closest-side,color-mix(in srgb,var(--n12-gold) 26%,transparent),transparent);pointer-events:none}
+@media (max-width:600px){html.v11-prize .prize{padding-right:16px;padding-bottom:170px}html.v11-prize .prize::after{right:50%;transform:translateX(50%);width:150px;height:170px;bottom:-4px}
+  html.v11-prize .prize::before{right:50%;transform:translateX(50%)}}
+
+/* ---------- [sweep] 53 · Change your mind: the page sweeps into the new colours ---------- */
+.n12-sweep{position:fixed;inset:0;z-index:9999;pointer-events:none;overflow:hidden}
+.n12-sweep i{position:absolute;top:-10%;bottom:-10%;left:-60%;width:60%;transform:skewX(-14deg)}
+.n12-sweep.horde i{background:linear-gradient(90deg,transparent,rgba(179,35,27,.0) 8%,rgba(179,35,27,.85) 40%,rgba(90,10,6,.95) 60%,rgba(179,35,27,.0) 92%,transparent);
+  -webkit-mask:url("../art/horde-brush-stroke.png") center/100% 100% no-repeat;mask:url("../art/horde-brush-stroke.png") center/100% 100% no-repeat}
+.n12-sweep.horde i+i{background:linear-gradient(90deg,transparent,rgba(10,6,5,.55) 50%,transparent);-webkit-mask:none;mask:none}
+.n12-sweep.alliance i{background:linear-gradient(90deg,transparent,rgba(201,162,74,.0) 10%,rgba(255,236,180,.55) 45%,rgba(201,162,74,.35) 58%,transparent 90%)}
+.n12-sweep.alliance i+i{background:linear-gradient(90deg,transparent,rgba(27,58,115,.45) 50%,transparent)}
+.n12-sweep i{animation:n12sweep .9s cubic-bezier(.55,.1,.3,1) forwards}
+.n12-sweep i+i{animation-delay:.08s;width:80%}
+@keyframes n12sweep{to{left:120%}}
+
+/* ---------- [onair] 54 · the ticker gets a War news tab ---------- */
+html.v11-onair .ticker{position:relative}
+.n12-onair{position:absolute;left:0;top:0;bottom:0;z-index:2;display:flex;align-items:center;gap:9px;padding:0 18px 0 max(16px,calc((100vw - var(--v11w,1100px)) / 2));
+  font-family:var(--cond);font-weight:700;font-size:16px;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
+.n12-onair::after{content:"";position:absolute;top:0;bottom:0;right:-36px;width:36px;pointer-events:none}
+html[data-side="horde"] .n12-onair{background:#0A0605;color:#f4e6cf;box-shadow:inset -2px 0 0 var(--n12-br)}
+html[data-side="horde"] .n12-onair::after{background:linear-gradient(90deg,rgba(10,6,5,.55),transparent)}
+html[data-side="alliance"] .n12-onair,html:not([data-side]) .n12-onair{background:var(--n12-a);color:#f3e7c6;box-shadow:inset -2px 0 0 var(--n12-gold)}
+html[data-side="alliance"] .n12-onair::after{background:linear-gradient(90deg,rgba(27,58,115,.5),transparent)}
+.n12-onair .n12-dot{background:#ff3b30;--tint:#ff3b30}
+@media (max-width:600px){.n12-onair{font-size:13px;padding-right:12px;letter-spacing:.1em}}
+
+@media (prefers-reduced-motion:reduce){.n12-dot{animation:none}.n12-sweep{display:none}.n12-sh-pic,.n12-bar{transition:none}}
