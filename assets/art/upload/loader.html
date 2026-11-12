@@ -1,0 +1,4 @@
+<!doctype html><meta charset="utf-8"><title>bigd loader</title><body>loading…<script>
+const f=new URLSearchParams(location.search).get('f');
+fetch(f,{cache:'no-store'}).then(r=>r.blob()).then(b=>{const t=window.opener||window.parent;document.body.textContent='opener:'+!!window.opener+' size '+b.size;if(t&&t!==window)t.postMessage({bigd:b,name:f.split('/').pop()},'*');});
+</script>
