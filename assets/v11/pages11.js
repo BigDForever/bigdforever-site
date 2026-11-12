@@ -329,9 +329,12 @@
   function spotlight() {
     var list = D.getElementById("list"); if (!list) return;
     var first = $(":scope > section", list); if (!first || first.querySelector(".p11-aside")) return;
-    var poster = $(".poster", first), img = poster && $(".player img", poster);
-    if (poster) { poster.classList.add("p11-poster"); if (img) poster.style.setProperty("--p11-th", 'url("' + img.src + '")'); }
-    var tw = $(".btn.tw", first); if (tw) { tw.classList.add("p11-has-ico"); prepend(tw, "twitch"); }
+    // every streamer's poster gets the v1.1 look, not only the first (Payo, 12 Nov)
+    $$(":scope > section", list).forEach(function (sec) {
+      var poster = $(".poster", sec), img = poster && $(".player img", poster);
+      if (poster) { poster.classList.add("p11-poster"); if (img) poster.style.setProperty("--p11-th", 'url("' + img.src + '")'); }
+      var tw = $(".btn.tw", sec); if (tw && !tw.querySelector(".p11-ico")) { tw.classList.add("p11-has-ico"); prepend(tw, "twitch"); }
+    });
     var spot = typeof SPOT !== "undefined" ? SPOT : [];
     var clips = spot.reduce(function (n, p) { return n + 1 + (p.clips || []).length; }, 0);
     var views = spot.reduce(function (n, p) { return n + (p.clips || []).reduce(function (s, c) { return s + (+c.v || 0); }, 0); }, 0);
