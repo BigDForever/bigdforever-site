@@ -78,7 +78,7 @@ main.wrap{margin-top:28px}
   <section>
     <div class="eyebrow">Streamer Spotlight · they joined the war</div>
     <h1>Streamer Spotlight.</h1>
-    <p class="lede">The streamers riding with BigD this season. Their best moments, played on their own channels so the views go straight to them. Go say hi. Bring snacks.</p>
+    <p class="lede">The streamers riding with BigD this season, and the ones we spotted out there in Forever. Their best moments, played on their own channels so the views go straight to them. Go say hi. Bring snacks.</p>
     <p class="owner">All clips belong to their creators. Want yours down? Tell us and it's gone the same day.</p>
   </section>
 
@@ -96,8 +96,8 @@ main.wrap{margin-top:28px}
   <footer>BigDForever is a fan site. Not affiliated with or endorsed by Blizzard Entertainment or Twitch. Clips belong to their creators and play from Twitch; nothing is re-hosted. Clip titles are the ones Twitch viewers gave them. Numbers from 4 November 2026.</footer>
 </main>
 <script>
-// EDIT THIS BLOCK. One entry per streamer who said yes. Clip "s" = the Twitch clip slug (the end of the clip link), "th" = thumbnail id.
-// Only add a streamer after they said yes. If they ask to be removed, delete their entry.
+// EDIT THIS BLOCK. One entry per streamer. Clip "s" = the Twitch clip slug (the end of the clip link), "th" = thumbnail id; "yt" = a YouTube video id instead.
+// Streamers who said yes get "Joined"; public clips we feature without a yes (clip policy, 11 Nov) get sinceLabel "Spotted". Remove anyone who asks, same day.
 const SPOT = [
   {
     login: "hozitojones", name: "Hozitojones", no: 1, since: "4 Nov 2026",
@@ -113,6 +113,13 @@ const SPOT = [
       {s:"MagnificentRepleteRadishSeemsGood-IHMDsLlTUNVAHXVY", t:"Spider trinket flag carrier", v:1510, len:25, d:"8 Oct", th:"41aaab1b-1a59-457b-a9b5-96b498202a15", tag:"Run, Forrest, Run"},
       {s:"CooperativeAdorableBeaverANELE-DpzN_0HVbj0NI3Je", t:"WoW Forever roomp", v:20, len:36, d:"2 Nov", th:"404d2d1a-784b-49e1-8bca-60e0e8114d81", tag:"Fresh"}
     ]
+  },
+  {
+    login: "payo", name: "Payo", no: 2, since: "12 Nov 2026", sinceLabel: "Spotted", stamp: "Spotted in Forever",
+    blurb: "WoW creator on YouTube and Twitch. In his first week of Forever, three players decided one Payo was worth a whole group. Press play and see how that worked out for them.",
+    followers: 143000, followersLabel: "on YouTube", youtube: "https://www.youtube.com/@Payowow",
+    featured: {yt:"2KZ-_4htu48", t:"They tried to 3v1 me in WoW Forever"},
+    clips: []
   }
 ];
 const TH = id => `https://static-cdn.jtvnw.net/twitch-video-assets/twitch-vap-video-assets-prod-us-west-2/${id}/landscape/thumb/thumb-0000000000-1920x1080.jpg`;
@@ -121,17 +128,20 @@ const embed = s => `https://clips.twitch.tv/embed?clip=${encodeURIComponent(s)}&
 const clipUrl = (login,s) => `https://www.twitch.tv/${login}/clip/${s}`;
 const fmt = n => n >= 1000 ? (n/1000).toFixed(1).replace(/\.0$/,'') + 'K' : String(n);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const player = (c, label) => `<div class="player"><img src="${TH(c.th)}" alt="" loading="lazy" onerror="this.remove()"><button type="button" data-clip="${esc(c.s)}" aria-label="Play: ${esc(label)}"></button></div>`;
+const player = (c, label) => c.yt
+  ? `<div class="player"><img src="https://i.ytimg.com/vi/${esc(c.yt)}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()"><button type="button" data-yt="${esc(c.yt)}" aria-label="Play: ${esc(label)}"></button></div>`
+  : `<div class="player"><img src="${TH(c.th)}" alt="" loading="lazy" onerror="this.remove()"><button type="button" data-clip="${esc(c.s)}" aria-label="Play: ${esc(label)}"></button></div>`;
 document.getElementById("list").innerHTML = SPOT.map(p => `
   <section aria-labelledby="sp-${p.login}">
     <article class="poster">
       <div class="who">
         <span class="stamp">${esc(p.stamp)}</span>
         <h2 id="sp-${p.login}">${esc(p.name)}</h2>
-        <div class="stats"><span>No. <b>${String(p.no).padStart(2,'0')}</b></span><span><b>${fmt(p.followers)}</b> followers</span><span>Joined <b>${esc(p.since)}</b></span></div>
+        <div class="stats"><span>No. <b>${String(p.no).padStart(2,'0')}</b></span><span><b>${fmt(p.followers)}</b> ${esc(p.followersLabel || "followers")}</span><span>${esc(p.sinceLabel || "Joined")} <b>${esc(p.since)}</b></span></div>
         <p>${esc(p.blurb)}</p>
         <div class="cta" style="margin-top:16px">
-          <a class="btn tw" href="https://www.twitch.tv/${p.login}" target="_blank" rel="noopener">Watch live on Twitch</a>
+          <a class="btn tw" href="https://www.twitch.tv/${p.login}" target="_blank" rel="noopener">Watch live on Twitch</a>${p.youtube ? `
+          <a class="btn ghost" href="${esc(p.youtube)}" target="_blank" rel="noopener">YouTube channel</a>` : ""}
         </div>
       </div>
       <div>
@@ -139,15 +149,15 @@ document.getElementById("list").innerHTML = SPOT.map(p => `
         <div class="cap">${esc(p.featured.t)}</div>
       </div>
     </article>
-    <div class="grid">${[...p.clips].sort((a,b) => b.v - a.v).slice(0, 3).map(c => `
+    ${p.clips.length ? `<div class="grid">${[...p.clips].sort((a,b) => b.v - a.v).slice(0, 3).map(c => `
       <article class="card">
         ${player(c, c.t)}
         <h3>${esc(c.t)}</h3>
         <span class="tag${c.shame ? ' shame' : ''}">${esc(c.tag)}</span>
         <div class="meta"><span>${esc(c.d)}</span><span>${c.len}s</span><span>${fmt(c.v)} views</span><a href="${clipUrl(p.login,c.s)}" target="_blank" rel="noopener">Open on Twitch</a></div>
       </article>`).join('')}
-    </div>
-    <div class="cta" style="margin-top:16px"><a class="btn ghost" data-all="${p.login}" href="vault.html?who=${encodeURIComponent(p.login)}">See all ${p.clips.length + 1} ${esc(p.name)} clips in the Vault →</a></div>
+    </div>` : ""}
+    <div class="cta" style="margin-top:16px"><a class="btn ghost" data-all="${p.login}" href="vault.html?who=${encodeURIComponent(p.login)}">${p.clips.length ? `See all ${p.clips.length + 1} ${esc(p.name)} clips in the Vault →` : `${esc(p.name)} in the Clip Vault →`}</a></div>
   </section>`).join('');
 // Live clip count per streamer from the Clips tab of the moderation sheet (same source as the Vault).
 fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSML71-50n_CFnIRmaFP1wiJG7Lw41zfRsSMJcQ_gvIa04f5SYwQy-s5gga52sbK9KZ6sFjzqL2mNAw/pub?single=true&output=csv&gid=2110458744", {cache:"no-store"})
@@ -157,13 +167,14 @@ fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSML71-50n_CFnIRmaFP1wiJG
       const login = a.dataset.all.toLowerCase();
       const n = lines.filter(l => !/^hide,/i.test(l) && l.toLowerCase().includes(`,${login},`)).length;
       const p = SPOT.find(s => s.login === a.dataset.all);
-      if (n) a.textContent = `See all ${n} ${p.name} clips in the Vault →`;
+      if (n > 1) a.textContent = `See all ${n} ${p.name} clips in the Vault →`;
     });
   }).catch(() => {});
 document.addEventListener("click", e => {
-  const b = e.target.closest("button[data-clip]"); if (!b) return;
+  const b = e.target.closest("button[data-clip], button[data-yt]"); if (!b) return;
   const f = document.createElement("iframe");
-  f.src = embed(b.dataset.clip); f.allowFullscreen = true; f.title = b.getAttribute("aria-label");
+  f.src = b.dataset.yt ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(b.dataset.yt)}?autoplay=1&rel=0` : embed(b.dataset.clip);
+  f.allow = "autoplay; encrypted-media; picture-in-picture"; f.allowFullscreen = true; f.title = b.getAttribute("aria-label");
   b.parentElement.replaceChildren(f);
 });
 </script>
