@@ -24,8 +24,8 @@
     // [shorts] 45 · our latest Shorts (newest first). A Short shows from the minute it goes public.
     if (V.shorts) {
       var SHORTS = [
-        { t: "She came back", d: "Silverpine · Her Lightness", yt: "5jAKIHe_Vuk", tt: "7706988084730154248", img: "short-came-back.webp", at: "2026-11-12T15:15:00Z", when: "Thu 16:15" },
-        { t: "Ping. Ping. Ping.", d: "Pyrewood · Light + Wind", yt: "AwrLbE74SDo", tt: "7706982326063992072", img: "short-ping.webp", at: "2026-11-11T18:30:00Z", when: "Wed 19:30" }
+        { t: "She came back", d: "Silverpine · Her Lightness", yt: "RNZBVtTWrFg", tt: "7706988084730154248", img: "short-came-back.webp", at: "2026-11-12T15:15:00Z", when: "Thu 16:15" },
+        { t: "Ping. Ping. Ping.", d: "Pyrewood · Light + Wind", yt: "65PO6v84deQ", tt: "7706982326063992072", img: "short-ping.webp", at: "2026-11-11T18:30:00Z", when: "Wed 19:30" }
       ];
       var sec = $("#brags .wrap"), head = sec && $(".head", sec);
       if (head && !$(".n12-shorts")) {
