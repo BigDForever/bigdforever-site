@@ -15,7 +15,7 @@
   ready(function () {
     // [ticker] fill the track so it never shows an empty stretch, and add more news
     if (V.ticker) $$(".ticker .track").forEach(function (tr) {
-      var extra = ["Week 1: Gnomilation 1 – Milk Run 0. Horde takes it", "Beard Trimming + Ear Trophy: Horde, bring scissors", "Double Dead: Alliance, make it official", "Sky Elf Extravaganza: every Skyborne counts",
+      var extra = ["Open Season: every fair kill counts", "Bruh. It's on. 18 Nov – 2 Dec", "Week 1 bounty: Horde shipped a gnome", "Every race. Every zone. Clip it.",
         "Clip it. Post it. Get read on air.", "New Short every day at 16:15", "Character names only", "Tag your clip on Discord"];
       var base = $$("span", tr).slice(0, Math.ceil($$("span", tr).length / 2)).map(function (s) { return s.textContent; });
       base = base.concat(extra);

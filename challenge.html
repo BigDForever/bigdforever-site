@@ -6,7 +6,7 @@
 <title>WoW Forever Weekly PvP Challenge, Alliance vs Horde · BigDForever</title>
 <link rel="canonical" href="https://bigdforever.com/challenge">
 <meta property="og:url" content="https://bigdforever.com/challenge">
-<meta name="description" content="WoW Forever faction challenge, 18 Nov to 2 Dec: Beard Trimming and Ear Trophy for the Horde, Double Dead for the Alliance, Sky Elf Extravaganza for both. Rules, standings and the clock.">
+<meta name="description" content="WoW Forever Open Season, 18 Nov to 2 Dec: every fair world PvP kill counts, every race, both factions. Rules, standings and the clock.">
 <meta property="og:title" content="Week 1: Hunting season is open · BigDForever">
 <meta property="og:image" content="https://bigdforever.com/assets/art/share.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:type" content="website"><meta property="og:site_name" content="BigDForever"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/art/icon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="assets/art/icon-192.png"><link rel="apple-touch-icon" href="assets/art/apple-touch-icon.png">
@@ -80,16 +80,16 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);paddin
 /*fix-top*/main.wrap{margin-top:28px}
 @media (max-width:420px){.top .back{font-size:14px}.top a.brand{font-size:21px}}
 </style>
-<link rel="stylesheet" href="assets/faction.css?v=20261106b"><script src="assets/v11/v11-flags.js?v=20261111a"></script><link rel="stylesheet" href="assets/v11/v11.css?v=20261111a"><link rel="stylesheet" href="assets/v11/fx11.css?v=20261111a"><script src="assets/v11/v11.js?v=20261117a" defer></script><script src="assets/v11/fx11.js?v=20261111a" defer></script><link rel="stylesheet" href="assets/v11/pages11.css?v=20261111a"><script src="assets/v11/pages11.js?v=20261111a" defer></script>
+<link rel="stylesheet" href="assets/faction.css?v=20261106b"><script src="assets/v11/v11-flags.js?v=20261111a"></script><link rel="stylesheet" href="assets/v11/v11.css?v=20261111a"><link rel="stylesheet" href="assets/v11/fx11.css?v=20261111a"><script src="assets/v11/v11.js?v=20261117b" defer></script><script src="assets/v11/fx11.js?v=20261111a" defer></script><link rel="stylesheet" href="assets/v11/pages11.css?v=20261111a"><script src="assets/v11/pages11.js?v=20261111a" defer></script>
 <script src="assets/faction.js?v=20261106b"></script>
 </head>
 <body>
 <header class="top"><a class="brand" href="./"><img src="emblem.jpg" alt="">Big<span>D</span>Forever</a><a class="back" href="./">Back to the war</a></header>
 <main class="wrap">
   <section>
-    <div class="eyebrow" id="wk">Weeks 2–3 challenges</div>
-    <h1 id="ttl">Trophy season is open.</h1>
-    <p class="lede">Two weeks, one bounty per faction plus a bonus for both. Fair fights in the open world, proof in a clip or chat, first three hunters per side to hit the target get carved into the Hall of Fame. The faction with more challenge kills takes the fortnight.</p>
+    <div class="eyebrow" id="wk">Weeks 2–3: Open Season</div>
+    <h1 id="ttl">Bruh. It's on.</h1>
+    <p class="lede">Open Season: two weeks, every race, every fair kill in the open world counts. Proof in a clip or chat, first three hunters per side to hit the target get carved into the Hall of Fame. The faction with more kills takes the fortnight.</p>
   </section>
 
   <div class="clock" aria-live="polite"><span class="l" id="clock-l">Ends in</span><span class="t" id="clock">--</span><span class="end" id="clock-end"></span></div>
@@ -97,28 +97,23 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);paddin
   <section class="boards" aria-label="This week's bounties">
     <article class="bounty h">
       <span class="who">Horde only</span>
-      <h3>Beard Trimming + Ear Trophy</h3>
-      <p class="target"><b>Target:</b> Dwarf and night elf players killed in world PvP. Trim a beard, take an ear.</p>
-      <div class="total"><span class="n" id="tot-h">0</span><span class="u">beards and ears</span></div>
+      <h3>Open Season on the Alliance</h3>
+      <p class="target"><b>Target:</b> Any Alliance player killed in world PvP. Trim a beard, take an ear, shave a gnome. It all counts.</p>
+      <div class="total"><span class="n" id="tot-h">0</span><span class="u">Alliance down</span></div>
       <div class="slots" id="slots-h"></div>
     </article>
     <article class="bounty a">
       <span class="who">Alliance only</span>
-      <h3>Double Dead</h3>
-      <p class="target"><b>Target:</b> Undead players killed in world PvP. They're already dead. Make it official.</p>
-      <div class="total"><span class="n" id="tot-a">0</span><span class="u">undead re-killed</span></div>
+      <h3>Open Season on the Horde</h3>
+      <p class="target"><b>Target:</b> Any Horde player killed in world PvP. Kill the undead twice, milk a tauren. It all counts.</p>
+      <div class="total"><span class="n" id="tot-a">0</span><span class="u">Horde down</span></div>
       <div class="slots" id="slots-a"></div>
     </article>
   </section>
 
   <div class="prize">
-    <b>Bonus, both sides: Sky Elf Extravaganza</b>
-    <p>Skyborne play for both factions, so everyone gets a shot. Every Skyborne you kill on the other side counts for your faction's total.</p>
-  </div>
-
-  <div class="prize">
-    <b>Week 1 results: Gnomilation 1 – Milk Run 0</b>
-    <p>One gnome, shipped (Her Lightness, Silverpine: <a href="https://youtube.com/shorts/Fj7Eoll_WdY" target="_blank" rel="noopener">watch it</a>). The tauren are still out there, mooing in peace. Horde takes week 1.</p>
+    <b>Week 1: Gnomilation vs Milk Run</b>
+    <p>A gnome got shipped in Silverpine (<a href="https://youtube.com/shorts/Fj7Eoll_WdY" target="_blank" rel="noopener">watch it</a>). The tauren are still out there, mooing in peace. Horde takes the week 1 bounty.</p>
   </div>
 
   <section>
@@ -135,7 +130,7 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);paddin
 
   <div class="prize">
     <b>What you win</b>
-    <p>The first 3 hunters per faction to reach the target go into the <a href="halls.html">Hall of Fame</a> and get named in the first War Report. The faction with more challenge kills (bonus included) wins weeks 2–3 and gets bragging rights until the next reset.</p>
+    <p>The first 3 hunters per faction to reach the target go into the <a href="halls.html">Hall of Fame</a> and get named in the first War Report. The faction with more kills wins Open Season and gets bragging rights until the next reset.</p>
   </div>
 
   <section>
@@ -164,13 +159,13 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);paddin
 // EDIT THIS BLOCK. hunters: [{name, kills}] (checked kills only). Standings sort themselves.
 const CH = {
   week: "2–3",
-  title: "Trophy season is open.",
+  title: "Bruh. It's on.",
   target: 3,
   starts: "2026-11-18T04:00:00Z",
   ends: "2026-12-02T04:00:00Z",   // EU weekly reset (Wed 04:00 UTC = 05:00 Belgrade). Every week ends at EU reset.
   endsText: "at EU weekly reset: Wednesday 2 December, 04:00 UTC (05:00 CET)",
-  horde:    { hunters: [] },  // Beard Trimming + Ear Trophy (+ Skyborne bonus)
-  alliance: { hunters: [] }   // Double Dead (+ Skyborne bonus)
+  horde:    { hunters: [] },  // Open Season: Horde kills on any Alliance player
+  alliance: { hunters: [] }   // Open Season: Alliance kills on any Horde player
 };
 const esc = s => String(s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function board(side, el, totEl){
