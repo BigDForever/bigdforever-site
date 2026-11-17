@@ -227,7 +227,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 .ch::after{content:"WANTED";position:absolute;top:16px;right:14px;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.18em;color:var(--muted);border:1.5px solid var(--line);padding:2px 6px;transform:rotate(4deg)}
 </style>
 
-<link rel="stylesheet" href="assets/faction.css?v=20261106b"><script src="assets/v11/v11-flags.js?v=20261111a"></script><link rel="stylesheet" href="assets/v11/v11.css?v=20261111a"><link rel="stylesheet" href="assets/v11/fx11.css?v=20261111a"><script src="assets/v11/v11.js?v=20261111a" defer></script><script src="assets/v11/fx11.js?v=20261111a" defer></script><link rel="stylesheet" href="assets/v11/pages11.css?v=20261111a"><script src="assets/v11/pages11.js?v=20261111a" defer></script><script src="assets/v11/tileglow.js?v=20261111a" defer></script>
+<link rel="stylesheet" href="assets/faction.css?v=20261106b"><script src="assets/v11/v11-flags.js?v=20261111a"></script><link rel="stylesheet" href="assets/v11/v11.css?v=20261111a"><link rel="stylesheet" href="assets/v11/fx11.css?v=20261111a"><script src="assets/v11/v11.js?v=20261117a" defer></script><script src="assets/v11/fx11.js?v=20261111a" defer></script><link rel="stylesheet" href="assets/v11/pages11.css?v=20261111a"><script src="assets/v11/pages11.js?v=20261111a" defer></script><script src="assets/v11/tileglow.js?v=20261111a" defer></script>
 <script src="assets/faction.js?v=20261106b"></script>
 </head>
 <body>
@@ -274,7 +274,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
       </div>
       <div class="war-links">
         <a class="wl big" href="map.html"><span class="no">I</span><b>The War Map</b><span>Every zone, coloured by who's winning it.</span></a>
-        <a class="wl" href="challenge.html"><span class="no">II</span><b>This week's bounty</b><span>Gnomilation vs Milk Run. Rules and standings.</span></a>
+        <a class="wl" href="challenge.html"><span class="no">II</span><b>This week's bounty</b><span>Beard Trimming, Ear Trophy, Double Dead. Rules and standings.</span></a>
         <a class="wl" href="halls.html"><span class="no">III</span><b>Hall of Fame</b><span>Heroes, villains, and next door, the Hall of Shame.</span></a>
         <a class="wl" href="past.html"><span class="no">IV</span><b>Taste of the Past</b><span>Beta chaos and Classic Hardcore legends.</span></a>
         <a class="wl" href="clips.html"><span class="no">V</span><b>How to clip</b><span>Save the moment with one key.</span></a>
@@ -361,13 +361,13 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
   <section class="sec band" id="challenge" aria-labelledby="ch-h">
     <div class="wrap">
       <div class="head">
-        <div class="eyebrow" id="ch-eyebrow">Week 1 challenges</div>
-        <h2 id="ch-h">Hunting season is open</h2>
+        <div class="eyebrow" id="ch-eyebrow">Weeks 2–3 challenges</div>
+        <h2 id="ch-h">Trophy season is open</h2>
         <p class="lede" id="ch-lede"></p>
       </div>
       <div class="chal">
-        <div class="ch h"><span class="who">Horde only</span><h3>Gnomilation</h3><p class="tg" id="ch-gnome"></p><p>Player gnomes, world PvP, fair fights only.</p></div>
-        <div class="ch a"><span class="who">Alliance only</span><h3>Milk Run</h3><p class="tg" id="ch-milk"></p><p>Player tauren, world PvP, fair fights only.</p></div>
+        <div class="ch h"><span class="who">Horde only</span><h3>Beard Trimming + Ear Trophy</h3><p class="tg" id="ch-gnome"></p><p>Player dwarves and night elves, world PvP, fair fights only.</p></div>
+        <div class="ch a"><span class="who">Alliance only</span><h3>Double Dead</h3><p class="tg" id="ch-milk"></p><p>Player undead, world PvP, fair fights only. Bonus for both sides: every Skyborne counts.</p></div>
       </div>
       <p class="note"><a href="challenge.html" style="color:var(--paper)">Full rules, standings and the clock</a>. Talk trash in #challenges on Discord. Kill-trading lands you in the Hall of Shame.</p>
     </div>
@@ -424,7 +424,7 @@ const BIGD = {
   },
   // Manual fallback, used when the sheet links are empty or can't be loaded
   score: { alliance: 0, horde: 0, updated: "" },   // e.g. updated: "Thu 5 Nov, 18:00"
-  challenge: { week: 1, target: 10, ends: "at EU weekly reset: Wednesday 11 November, 04:00 UTC (05:00 CET)" },
+  challenge: { week: "2–3", target: 3, ends: "at EU weekly reset: Wednesday 2 December, 04:00 UTC (05:00 CET)" },
   featured: [
     // { title: "1v3 at the Crossroads", character: "Gnomeslayer", faction: "horde", category: "Brag", url: "https://...", image: "" }
   ]
@@ -456,7 +456,7 @@ renderScore(BIGD.score.alliance, BIGD.score.horde, BIGD.score.updated, false);
 // challenge
 $("ch-eyebrow").textContent = "Week " + BIGD.challenge.week + " challenges";
 $("ch-gnome").textContent = $("ch-milk").textContent = "Target: " + BIGD.challenge.target + " kills";
-$("ch-lede").textContent = "Ends " + BIGD.challenge.ends + ". First three per faction to hit the target go into the Hall of Fame.";
+$("ch-lede").textContent = "Starts Wed 18 Nov at the EU reset, ends " + BIGD.challenge.ends + ". First three per faction to hit the target go into the Hall of Fame. Week 1: Gnomilation 1 – Milk Run 0, Horde takes it.";
 
 // feed
 const isLink = u => /^https?:\/\//i.test(String(u || "").trim());
