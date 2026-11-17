@@ -7,7 +7,7 @@
 <link rel="canonical" href="https://bigdforever.com/challenge">
 <meta property="og:url" content="https://bigdforever.com/challenge">
 <meta name="description" content="WoW Forever Open Season, 18 Nov to 2 Dec: every fair world PvP kill counts, every race, both factions. Rules, standings and the clock.">
-<meta property="og:title" content="Week 1: Hunting season is open · BigDForever">
+<meta property="og:title" content="Open Season: Bruh. It's on · BigDForever">
 <meta property="og:image" content="https://bigdforever.com/assets/art/share.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:type" content="website"><meta property="og:site_name" content="BigDForever"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/art/icon-32.png"><link rel="icon" type="image/png" sizes="192x192" href="assets/art/icon-192.png"><link rel="apple-touch-icon" href="assets/art/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -80,14 +80,14 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);paddin
 /*fix-top*/main.wrap{margin-top:28px}
 @media (max-width:420px){.top .back{font-size:14px}.top a.brand{font-size:21px}}
 </style>
-<link rel="stylesheet" href="assets/faction.css?v=20261106b"><script src="assets/v11/v11-flags.js?v=20261111a"></script><link rel="stylesheet" href="assets/v11/v11.css?v=20261111a"><link rel="stylesheet" href="assets/v11/fx11.css?v=20261111a"><script src="assets/v11/v11.js?v=20261117b" defer></script><script src="assets/v11/fx11.js?v=20261111a" defer></script><link rel="stylesheet" href="assets/v11/pages11.css?v=20261111a"><script src="assets/v11/pages11.js?v=20261111a" defer></script>
+<link rel="stylesheet" href="assets/faction.css?v=20261106b"><script src="assets/v11/v11-flags.js?v=20261111a"></script><link rel="stylesheet" href="assets/v11/v11.css?v=20261111a"><link rel="stylesheet" href="assets/v11/fx11.css?v=20261111a"><script src="assets/v11/v11.js?v=20261117c" defer></script><script src="assets/v11/fx11.js?v=20261111a" defer></script><link rel="stylesheet" href="assets/v11/pages11.css?v=20261111a"><script src="assets/v11/pages11.js?v=20261111a" defer></script>
 <script src="assets/faction.js?v=20261106b"></script>
 </head>
 <body>
 <header class="top"><a class="brand" href="./"><img src="emblem.jpg" alt="">Big<span>D</span>Forever</a><a class="back" href="./">Back to the war</a></header>
 <main class="wrap">
   <section>
-    <div class="eyebrow" id="wk">Weeks 2–3: Open Season</div>
+    <div class="eyebrow" id="wk">Open Season · 18 Nov – 2 Dec</div>
     <h1 id="ttl">Bruh. It's on.</h1>
     <p class="lede">Open Season: two weeks, every race, every fair kill in the open world counts. Proof in a clip or chat, first three hunters per side to hit the target get carved into the Hall of Fame. The faction with more kills takes the fortnight.</p>
   </section>
@@ -98,22 +98,22 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);paddin
     <article class="bounty h">
       <span class="who">Horde only</span>
       <h3>Open Season on the Alliance</h3>
-      <p class="target"><b>Target:</b> Any Alliance player killed in world PvP. Trim a beard, take an ear, shave a gnome. It all counts.</p>
+      <p class="target"><b>Target:</b> Any Alliance player killed in world PvP. <i class="quip" data-q="a"></i></p>
       <div class="total"><span class="n" id="tot-h">0</span><span class="u">Alliance down</span></div>
       <div class="slots" id="slots-h"></div>
     </article>
     <article class="bounty a">
       <span class="who">Alliance only</span>
       <h3>Open Season on the Horde</h3>
-      <p class="target"><b>Target:</b> Any Horde player killed in world PvP. Kill the undead twice, milk a tauren. It all counts.</p>
+      <p class="target"><b>Target:</b> Any Horde player killed in world PvP. <i class="quip" data-q="h"></i></p>
       <div class="total"><span class="n" id="tot-a">0</span><span class="u">Horde down</span></div>
       <div class="slots" id="slots-a"></div>
     </article>
   </section>
 
   <div class="prize">
-    <b>Week 1: Gnomilation vs Milk Run</b>
-    <p>A gnome got shipped in Silverpine (<a href="https://youtube.com/shorts/Fj7Eoll_WdY" target="_blank" rel="noopener">watch it</a>). The tauren are still out there, mooing in peace. Horde takes the week 1 bounty.</p>
+    <b>The first hunt (5–18 Nov): Gnomilation vs Milk Run</b>
+    <p>A gnome got shipped in Silverpine (<a href="https://youtube.com/shorts/Fj7Eoll_WdY" target="_blank" rel="noopener">watch it</a>). The tauren are still out there, mooing in peace. Horde takes the first bounty.</p>
   </div>
 
   <section>
@@ -158,7 +158,7 @@ footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);paddin
 <script>
 // EDIT THIS BLOCK. hunters: [{name, kills}] (checked kills only). Standings sort themselves.
 const CH = {
-  week: "2–3",
+  week: "Open Season",
   title: "Bruh. It's on.",
   target: 3,
   starts: "2026-11-18T04:00:00Z",
@@ -179,7 +179,9 @@ function board(side, el, totEl){
   document.getElementById(el).innerHTML = rows.join('');
 }
 board('horde','slots-h','tot-h'); board('alliance','slots-a','tot-a');
-document.getElementById('wk').textContent = `Week ${CH.week} challenges`;
+document.getElementById('wk').textContent = 'Open Season · 18 Nov – 2 Dec';
+const QUIPS = {a:["Belittle a gnome.","Trim a beard.","Take an ear. They have spares.","Ground a sky elf.","Dwarves: short temper, shorter health bar.","Night elves: pretty ears, ugly deaths.","Gnomes: small target, big points.","Humans: so average it hurts. Make it hurt more.","Sky elves: what goes up…"], h:["Just die already.","Green, smelly and dead.","Milk runner-up.","Undead: second death's the charm.","Trolls: regenerate this.","Tauren: the bigger they are…","Orcs: zug zug, thud thud.","Sky elves: clip their wings."]};
+document.querySelectorAll('.quip').forEach(q => { const l = QUIPS[q.dataset.q]; q.textContent = l[Math.floor(Math.random()*l.length)]; });
 document.getElementById('ttl').textContent = CH.title;
 document.getElementById('clock-end').textContent = 'Ends ' + CH.endsText;
 function tick(){
