@@ -5,7 +5,8 @@
   if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   /* ?spark=1|2|3 previews size/brightness options on the live site (0 = current). */
   var V = 0; try { V = +(new URLSearchParams(location.search).get("spark") || 0); } catch (e) {}
-  var INT = [0.48, 0.48, 0.75, 1][V] || 0.48, TAU = Math.PI * 2, M = 46, K = 1, BOLD = V === 3;
+  var INT = [0.48, 0.48, 0.75, 1][V] || 0.48, TAU = Math.PI * 2, M = 46, K = 1, BOLD = V === 3, SPD = V === 4 ? 2 : 1;
+  /* 4 = current look, twice as fast (Dejan 19 Nov) */
   function rnd(a, b) { return a + Math.random() * (b - a); }
 
   function start() {
@@ -17,7 +18,7 @@
 
     function place() {
       var s = em.offsetWidth; if (!s) return;
-      K = V ? s / 220 : 1; M = Math.round(46 * K);
+      K = (V && V < 4) ? s / 220 : 1; M = Math.round(46 * K);
       var W = s + 2 * M, d = Math.min(2, window.devicePixelRatio || 1);
       cv.width = Math.round(W * d); cv.height = Math.round(W * d); cv.style.width = W + "px"; cv.style.height = W + "px";
       cv.style.left = (em.offsetLeft - M) + "px"; cv.style.top = (em.offsetTop - M) + "px";
@@ -55,7 +56,7 @@
         f = (i - (m.hist.length - n)) / n; a = P(geo.rRed, m.hist[i - 1]); b = P(geo.rRed, m.hist[i]);
         ctx.strokeStyle = "rgba(" + c + "," + (.12 + .75 * f * Math.min(1, INT * 1.3)) + ")"; ctx.lineWidth = (1.5 + 6 * f * INT) * K;
         ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
-        if (V ? i % 2 === 0 : i % 3 === 0) glow(b[0], b[1], (3 + 8 * f * INT) * K, c, (.05 + .35 * f * f * INT) * (V ? .55 : 1));
+        if ((V && V < 4) ? i % 2 === 0 : i % 3 === 0) glow(b[0], b[1], (3 + 8 * f * INT) * K, c, (.05 + .35 * f * f * INT) * ((V && V < 4) ? .55 : 1));
       }
       a = P(geo.rRed, m.th); glow(a[0], a[1], (10 + 14 * INT) * K, c, .9 * Math.min(1, INT * 1.4)); glow(a[0], a[1], (3 + 3 * INT) * K, cc[1], 1);
       if (BOLD) { glow(a[0], a[1], 34 * K, c, .25); if (Math.random() < .6) sparks.push({ th: m.th, r: geo.rRed, vr: (Math.random() < .7 ? 1 : -1) * rnd(4, 16) * K, vt: -m.w * rnd(.03, .2), life: rnd(.5, 1.1), age: 0 }); }
@@ -79,7 +80,7 @@
       var dt = Math.min(.05, (now - last) / 1000); last = now;
       if (geo.W) {
         ctx.clearRect(0, 0, geo.W, geo.W); ctx.globalCompositeOperation = "lighter";
-        red.step(dt); comet(red); ribbon(gold, dt); drawSparks(dt);
+        var sd = dt * SPD; red.step(sd); comet(red); ribbon(gold, sd); drawSparks(dt);
         ctx.globalCompositeOperation = "source-over";
       }
       requestAnimationFrame(frame);
