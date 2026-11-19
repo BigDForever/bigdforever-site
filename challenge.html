@@ -164,7 +164,7 @@ const CH = {
   starts: "2026-11-18T04:00:00Z",
   ends: "2026-12-02T04:00:00Z",   // EU weekly reset (Wed 04:00 UTC = 05:00 Belgrade). Every week ends at EU reset.
   endsText: "at EU weekly reset: Wednesday 2 December, 04:00 UTC (05:00 CET)",
-  horde:    { hunters: [{name:"Skelf", kills:1}] },  // Open Season: Horde kills on any Alliance player
+  horde:    { hunters: [{name:"Skelf", kills:1}, {name:"Light", kills:1}] },  // Open Season: Horde kills on any Alliance player
   alliance: { hunters: [] }   // Open Season: Alliance kills on any Horde player
 };
 const esc = s => String(s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));

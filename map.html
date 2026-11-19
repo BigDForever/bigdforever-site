@@ -204,7 +204,7 @@ const WAR = {
     "Thousand Needles": {a:0,h:0}, "Un'Goro Crater": {a:0,h:0}, "Winterspring": {a:0,h:0},
     // Eastern Kingdoms
     "Alterac Mountains": {a:0,h:0}, "Arathi Highlands": {a:0,h:0}, "Badlands": {a:0,h:0}, "Blasted Lands": {a:0,h:0},
-    "Burning Steppes": {a:0,h:0}, "Deadwind Pass": {a:0,h:0}, "Dun Morogh": {a:0,h:0}, "Duskwood": {a:0,h:0},
+    "Burning Steppes": {a:0,h:0}, "Deadwind Pass": {a:0,h:0}, "Dun Morogh": {a:0,h:0}, "Duskwood": {a:0,h:1},
     "Elwynn Forest": {a:0,h:0}, "Eastern Plaguelands": {a:0,h:0}, "Hillsbrad Foothills": {a:0,h:0}, "Loch Modan": {a:0,h:0},
     "Redridge Mountains": {a:0,h:0}, "Searing Gorge": {a:0,h:0}, "Silverpine Forest": {a:3,h:3}, "Stranglethorn Vale": {a:0,h:0},
     "Swamp of Sorrows": {a:0,h:0}, "The Hinterlands": {a:0,h:0}, "Tirisfal Glades": {a:0,h:0}, "Western Plaguelands": {a:0,h:0},
@@ -453,7 +453,7 @@ function render(){
     b.setAttribute("aria-pressed",String(current===o.n));
     const col={a:"#3f6cb4",h:"#b73a2c",c:"repeating-linear-gradient(45deg,#3f6cb4 0 3px,#b73a2c 3px 6px)",n:"#514431"}[s];
     const d=DATA[o.n],t=d.a+d.h;
-    b.innerHTML=`<i style="background:${col}"></i>${esc(o.short||o.n)}<small>${t?t+" kills":esc(o.sub)}</small>`;
+    b.innerHTML=`<i style="background:${col}"></i>${esc(o.short||o.n)}<small>${t?t+(t===1?" kill":" kills"):esc(o.sub)}</small>`;
     b.addEventListener("click",()=>openZone(o.n));chips.appendChild(b);});
   // totals, empty note, top 5
   const tot=ALL.reduce((s,z)=>({a:s.a+DATA[z.n].a,h:s.h+DATA[z.n].h}),{a:0,h:0});
@@ -462,7 +462,7 @@ function render(){
   window.TOT=tot;
   const top=ALL.map(z=>({n:z.n,...DATA[z.n],t:DATA[z.n].a+DATA[z.n].h})).filter(z=>z.t>0).sort((x,y)=>y.t-x.t||x.n.localeCompare(y.n)).slice(0,5);
   const ol=document.getElementById("top5");
-  ol.innerHTML=top.length?top.map((z,i)=>`<li><button type="button" data-zone="${esc(z.n)}"><span class="no">${i+1}</span><span class="nm">${esc(shortName(z.n))}</span><span class="k">${z.t} kills</span>${bar(z.a,z.h)}</button></li>`).join("")
+  ol.innerHTML=top.length?top.map((z,i)=>`<li><button type="button" data-zone="${esc(z.n)}"><span class="no">${i+1}</span><span class="nm">${esc(shortName(z.n))}</span><span class="k">${z.t} ${z.t===1?"kill":"kills"}</span>${bar(z.a,z.h)}</button></li>`).join("")
     :`<li class="none">Nothing yet. The first kill takes the top spot.</li>`;
   ol.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>openZone(b.dataset.zone)));
   if(current)openZone(current,true);else showDefault();
