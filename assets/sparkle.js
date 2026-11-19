@@ -3,7 +3,9 @@
    Canvas sits over the <img class="emblem">; nothing else on the page changes. Off for reduced motion. */
 (function () {
   if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  var INT = 0.48, TAU = Math.PI * 2, M = 46;
+  /* ?spark=1|2|3 previews size/brightness options on the live site (0 = current). */
+  var V = 0; try { V = +(new URLSearchParams(location.search).get("spark") || 0); } catch (e) {}
+  var INT = [0.48, 0.48, 0.75, 1][V] || 0.48, TAU = Math.PI * 2, M = 46, K = 1, BOLD = V === 3;
   function rnd(a, b) { return a + Math.random() * (b - a); }
 
   function start() {
@@ -15,6 +17,7 @@
 
     function place() {
       var s = em.offsetWidth; if (!s) return;
+      K = V ? s / 220 : 1; M = Math.round(46 * K);
       var W = s + 2 * M, d = Math.min(2, window.devicePixelRatio || 1);
       cv.width = Math.round(W * d); cv.height = Math.round(W * d); cv.style.width = W + "px"; cv.style.height = W + "px";
       cv.style.left = (em.offsetLeft - M) + "px"; cv.style.top = (em.offsetTop - M) + "px";
@@ -37,7 +40,8 @@
 
     var red = new Mover(1.1, { cruise: 5, slow: 1.5, reverse: 1.5, dash: 1 });
     var gold = new Mover(.9, {}), g3 = { phase: 0, lap: 0, center: Math.random() * TAU };
-    var GOLD = ["255,200,90", "255,245,200"];
+    var GOLD = ["255,200,90", "255,245,200"], sparks = [];
+    function drawSparks(dt) { var c = redCol()[0]; for (var i = sparks.length - 1; i >= 0; i--) { var p = sparks[i]; p.age += dt; var k = 1 - p.age / p.life; if (k <= 0) { sparks.splice(i, 1); continue; } p.r += p.vr * dt; p.th += p.vt * dt; var q = P(p.r, p.th); glow(q[0], q[1], (2 + 2.5 * k) * K, c, .9 * k); } }
 
     function P(r, th) { return [geo.c + r * Math.cos(th), geo.c + r * Math.sin(th)]; }
     function glow(x, y, rad, col, a) { var g = ctx.createRadialGradient(x, y, 0, x, y, rad); g.addColorStop(0, "rgba(" + col + "," + a + ")"); g.addColorStop(.35, "rgba(" + col + "," + a * .45 + ")"); g.addColorStop(1, "rgba(" + col + ",0)"); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, rad, 0, TAU); ctx.fill(); }
@@ -49,11 +53,12 @@
       ctx.lineCap = "round";
       for (i = s0; i < m.hist.length; i++) {
         f = (i - (m.hist.length - n)) / n; a = P(geo.rRed, m.hist[i - 1]); b = P(geo.rRed, m.hist[i]);
-        ctx.strokeStyle = "rgba(" + c + "," + (.12 + .75 * f * Math.min(1, INT * 1.3)) + ")"; ctx.lineWidth = 1.5 + 6 * f * INT;
+        ctx.strokeStyle = "rgba(" + c + "," + (.12 + .75 * f * Math.min(1, INT * 1.3)) + ")"; ctx.lineWidth = (1.5 + 6 * f * INT) * K;
         ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
-        if (i % 3 === 0) glow(b[0], b[1], 3 + 8 * f * INT, c, .05 + .35 * f * f * INT);
+        if (V ? i % 2 === 0 : i % 3 === 0) glow(b[0], b[1], (3 + 8 * f * INT) * K, c, (.05 + .35 * f * f * INT) * (V ? .55 : 1));
       }
-      a = P(geo.rRed, m.th); glow(a[0], a[1], 10 + 14 * INT, c, .9 * Math.min(1, INT * 1.4)); glow(a[0], a[1], 3 + 3 * INT, cc[1], 1);
+      a = P(geo.rRed, m.th); glow(a[0], a[1], (10 + 14 * INT) * K, c, .9 * Math.min(1, INT * 1.4)); glow(a[0], a[1], (3 + 3 * INT) * K, cc[1], 1);
+      if (BOLD) { glow(a[0], a[1], 34 * K, c, .25); if (Math.random() < .6) sparks.push({ th: m.th, r: geo.rRed, vr: (Math.random() < .7 ? 1 : -1) * rnd(4, 16) * K, vt: -m.w * rnd(.03, .2), life: rnd(.5, 1.1), age: 0 }); }
     }
     function ribbon(m, dt) { /* swings back and forth like it's playing, sometimes breaks into a full lap */
       if (g3.lap > 0) { g3.lap -= dt; m.th += m.dir * 2.6 * dt; if (g3.lap <= 0) { g3.center = m.th; g3.phase = 0; } }
@@ -62,10 +67,11 @@
       var n = Math.round(8 + 22 * INT), i, f, a, b; ctx.lineCap = "round";
       for (i = Math.max(1, m.hist.length - n); i < m.hist.length; i++) {
         f = (i - (m.hist.length - n)) / n; a = P(geo.rGold, m.hist[i - 1]); b = P(geo.rGold, m.hist[i]);
-        ctx.strokeStyle = "rgba(" + GOLD[0] + "," + (.7 * f * INT + .05) + ")"; ctx.lineWidth = 1 + 4 * f * INT;
+        ctx.strokeStyle = "rgba(" + GOLD[0] + "," + (.7 * f * INT + .05) + ")"; ctx.lineWidth = (1 + 4 * f * INT) * K;
         ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
       }
-      a = P(geo.rGold, m.th); glow(a[0], a[1], 7 + 10 * INT, GOLD[0], .85 * Math.min(1, INT * 1.5)); glow(a[0], a[1], 2.5 + 2 * INT, GOLD[1], 1);
+      a = P(geo.rGold, m.th); glow(a[0], a[1], (7 + 10 * INT) * K, GOLD[0], .85 * Math.min(1, INT * 1.5)); glow(a[0], a[1], (2.5 + 2 * INT) * K, GOLD[1], 1);
+      if (BOLD) glow(a[0], a[1], 26 * K, GOLD[0], .22);
     }
 
     function frame(now) {
@@ -73,7 +79,7 @@
       var dt = Math.min(.05, (now - last) / 1000); last = now;
       if (geo.W) {
         ctx.clearRect(0, 0, geo.W, geo.W); ctx.globalCompositeOperation = "lighter";
-        red.step(dt); comet(red); ribbon(gold, dt);
+        red.step(dt); comet(red); ribbon(gold, dt); drawSparks(dt);
         ctx.globalCompositeOperation = "source-over";
       }
       requestAnimationFrame(frame);
