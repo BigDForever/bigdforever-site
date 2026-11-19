@@ -56,34 +56,35 @@
          1) one soft glow stroke along the whole tail, 2) a solid core whose colour cools along the tail */
       var s0 = Math.max(1, h.length - n), i, f, k, q, a0, a1, steps, st = Math.max(1, Math.round(n / 40)), C = function (f) { return typeof col === "function" ? col(f) : col; };
       ctx.save(); ctx.lineCap = "round"; ctx.lineJoin = "round";
-      ctx.beginPath(); q = P(r, h[s0 - 1]); ctx.moveTo(q[0], q[1]);
-      for (i = s0; i < h.length; i++) { q = P(r, h[i]); ctx.lineTo(q[0], q[1]); }
-      ctx.strokeStyle = "rgba(" + C(.8) + ",.22)"; ctx.lineWidth = wFn(.7) * 2.6; ctx.stroke();
-      ctx.globalCompositeOperation = "source-over";
+      var g0 = s0 + Math.floor((h.length - s0) * .5);   /* soft glow only on the hot half near the head */
+      ctx.beginPath(); q = P(r, h[g0 - 1]); ctx.moveTo(q[0], q[1]);
+      for (i = g0; i < h.length; i++) { q = P(r, h[i]); ctx.lineTo(q[0], q[1]); }
+      ctx.strokeStyle = "rgba(" + C(.75) + ",.18)"; ctx.lineWidth = wFn(.7) * 2.4; ctx.stroke();
+      ctx.globalCompositeOperation = "source-over"; ctx.lineCap = "butt";
       for (i = s0; i < h.length; i += st) {
         a0 = h[i - 1]; a1 = h[Math.min(h.length - 1, i + st - 1)];
         f = (i - (h.length - n)) / n; steps = Math.max(1, Math.ceil(Math.abs(a1 - a0) / .03));
         ctx.beginPath(); q = P(r, a0); ctx.moveTo(q[0], q[1]);
         for (k = 1; k <= steps; k++) { q = P(r, a0 + (a1 - a0) * k / steps); ctx.lineTo(q[0], q[1]); }
-        ctx.strokeStyle = "rgb(" + C(f) + ")"; ctx.lineWidth = wFn(f); ctx.stroke();   /* solid: overlaps stay invisible */
+        ctx.strokeStyle = "rgb(" + C(f) + ")"; ctx.globalAlpha = Math.min(1, aFn(f)); ctx.lineWidth = wFn(f); ctx.stroke();   /* flat ends + thin line: no dots where pieces meet */
       }
       ctx.restore();
     }
     /* heat ramp: cool ember red at the end of the tail -> orange -> yellow -> white-hot at the head */
-    var HOT = [[0, [60, 0, 0]], [.35, [160, 8, 8]], [.65, [235, 25, 20]], [.88, [255, 60, 45]], [1, [255, 140, 120]]];   /* all red: dark ember -> scarlet -> hot red, no yellow (Dejan 19 Nov) */
+    var HOT = [[0, [90, 8, 4]], [.3, [200, 35, 12]], [.58, [255, 115, 20]], [.82, [255, 205, 85]], [1, [255, 250, 230]]];   /* hot comet look Dejan picked 19 Nov 09:55 (from the ?spark=5 stills) */   /* all red: dark ember -> scarlet -> hot red, no yellow (Dejan 19 Nov) */
     var ICE = [[0, [15, 30, 90]], [.3, [40, 90, 210]], [.58, [90, 160, 255]], [.82, [170, 220, 255]], [1, [245, 252, 255]]];
     function ramp(R, t) { t = Math.max(0, Math.min(1, t)); for (var i = 1; i < R.length; i++) if (t <= R[i][0]) { var a = R[i - 1], b = R[i], u = (t - a[0]) / (b[0] - a[0]); return Math.round(a[1][0] + (b[1][0] - a[1][0]) * u) + "," + Math.round(a[1][1] + (b[1][1] - a[1][1]) * u) + "," + Math.round(a[1][2] + (b[1][2] - a[1][2]) * u); } return R[R.length - 1][1].join(","); }
     var heat = .5, lastDt = .016;
     function hotComet(m) {
       var R = document.documentElement.getAttribute("data-side") === "alliance" ? ICE : HOT;
       var target = Math.min(1, Math.abs(m.w) / (m.base * 1.6)); heat += (target - heat) * Math.min(1, lastDt * 2.5);   /* speeds up = heats up, slows down = cools */
-      heat = Math.max(heat, .35); var n = Math.min(m.hist.length - 1, Math.round(150 * (.75 + .6 * heat)));
+      var n = Math.min(m.hist.length - 1, Math.round((70 + 110 * INT) * (.55 + .7 * heat)));
       var top = .5 + .5 * heat;
-      tail(m.hist, n, geo.rRed, function (f) { return ramp(R, .08 + f * (.77 + .15 * heat)); }, function (f) { return (3.5 + 8 * f) * (.85 + .3 * heat) * K; }, function (f) { return .35 + .65 * f; });
+      tail(m.hist, n, geo.rRed, function (f) { return ramp(R, f * top); }, function (f) { return (1.2 + 3.3 * f * (.6 + .6 * INT)) * K; }, function (f) { return .08 + .92 * f; });
       var a = P(geo.rRed, m.th), fl = .9 + .1 * Math.random();
-      glow(a[0], a[1], (15 + 10 * heat) * K * fl, ramp(R, .75), .8);
-      glow(a[0], a[1], (7 + 3 * heat) * K, ramp(R, .9), 1);
-      glow(a[0], a[1], (3 + 1.2 * heat) * K, ramp(R, 1), 1);
+      glow(a[0], a[1], (12 + 8 * heat) * K * fl, ramp(R, .62 * top + .1), .7);
+      glow(a[0], a[1], (5 + 3 * heat) * K, ramp(R, .85 * top + .1), .95);
+      glow(a[0], a[1], (2.2 + 1 * heat) * K, ramp(R, 1), 1);
     }
     function comet(m) {
       if (SMOOTH) return hotComet(m);
