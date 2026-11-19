@@ -47,7 +47,7 @@
       var putLogo = function () {
         var t = document.querySelector(".fx-talents"); if (!t || t.querySelector(".v11-tslogo")) return;
         var im = new Image(); im.className = "v11-tslogo"; im.alt = "";
-        var srcs = ["assets/v11/fx/talentsmith-logo.svg", "assets/v11/fx/talentsmith-logo.png"], i = 0;
+        var srcs = ["assets/v11/fx/talentsmith-logo.png"], i = 0;
         im.onerror = function () { i++; if (i < srcs.length) im.src = srcs[i]; else im.remove(); };
         im.src = srcs[0]; t.insertBefore(im, t.firstChild);
       };

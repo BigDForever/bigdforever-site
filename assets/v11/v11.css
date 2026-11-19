@@ -17,6 +17,7 @@ html.v11-wide-b{--v11w:min(1760px, 92vw)}
 html.v11-header body{overflow-x:clip}
 html.v11-header header.top, html.v11-header header.fx-head{max-width:none!important;margin:0!important;border-bottom:0!important;
   padding-inline:max(16px, calc((100vw - var(--v11w)) / 2))!important;padding-block:10px!important}
+html.v11-header body > header.top, html.v11-header body > header.fx-head{margin-inline:calc(50% - 50vw)!important}
 html.v11-header header.fx-head > .wrap{max-width:none!important;padding:0!important;margin:0!important;width:100%}
 html.v11-header .fx-burger{margin-right:0!important}
 html.v11-header .fx-talents{margin-left:auto}

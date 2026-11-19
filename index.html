@@ -147,6 +147,8 @@ table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
 th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
 td b{font-family:var(--cond);font-size:19px;letter-spacing:.03em;text-transform:uppercase}
+/* phones: the vote table fits the screen (was cut off on the right, 19 Nov audit) */
+@media (max-width:560px){table{min-width:0;font-size:14px}th,td{padding:10px 6px}td b{font-size:17px}}
 
 /* featured */
 .feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
@@ -227,7 +229,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 .ch::after{content:"WANTED";position:absolute;top:16px;right:14px;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.18em;color:var(--muted);border:1.5px solid var(--line);padding:2px 6px;transform:rotate(4deg)}
 </style>
 
-<link rel="stylesheet" href="assets/faction.css?v=20261119a"><script src="assets/v11/v11-flags.js?v=20261111a"></script><link rel="stylesheet" href="assets/v11/v11.css?v=20261111a"><link rel="stylesheet" href="assets/v11/fx11.css?v=20261111a"><script src="assets/v11/v11.js?v=20261117d" defer></script><script src="assets/v11/fx11.js?v=20261111a" defer></script><link rel="stylesheet" href="assets/v11/pages11.css?v=20261111a"><script src="assets/v11/pages11.js?v=20261111a" defer></script><script src="assets/v11/tileglow.js?v=20261111a" defer></script>
+<link rel="stylesheet" href="assets/faction.css?v=20261119a"><script src="assets/v11/v11-flags.js?v=20261111a"></script><link rel="stylesheet" href="assets/v11/v11.css?v=20261119b"><link rel="stylesheet" href="assets/v11/fx11.css?v=20261111a"><script src="assets/v11/v11.js?v=20261119b" defer></script><script src="assets/v11/fx11.js?v=20261111a" defer></script><link rel="stylesheet" href="assets/v11/pages11.css?v=20261111a"><script src="assets/v11/pages11.js?v=20261111a" defer></script><script src="assets/v11/tileglow.js?v=20261111a" defer></script>
 <script src="assets/faction.js?v=20261119a"></script><script src="assets/sparkle.js?v=20261119h" defer></script>
 </head>
 <body>
@@ -274,7 +276,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
       </div>
       <div class="war-links">
         <a class="wl big" href="map.html"><span class="no">I</span><b>The War Map</b><span>Every zone, coloured by who's winning it.</span></a>
-        <a class="wl" href="challenge.html"><span class="no">II</span><b>This week's bounty</b><span>Open Season: every fair kill counts. Rules and standings.</span></a>
+        <a class="wl" href="challenge.html"><span class="no">II</span><b>The bounty</b><span>Open Season: every fair kill counts. Rules and standings.</span></a>
         <a class="wl" href="halls.html"><span class="no">III</span><b>Hall of Fame</b><span>Heroes, villains, and next door, the Hall of Shame.</span></a>
         <a class="wl" href="past.html"><span class="no">IV</span><b>Taste of the Past</b><span>Beta chaos and Classic Hardcore legends.</span></a>
         <a class="wl" href="clips.html"><span class="no">V</span><b>How to clip</b><span>Save the moment with one key.</span></a>
@@ -434,7 +436,7 @@ renderScore(BIGD.score.alliance, BIGD.score.horde, BIGD.score.updated, false);
 // challenge
 $("ch-eyebrow").textContent = "Open Season · 18 Nov – 2 Dec";
 $("ch-gnome").textContent = $("ch-milk").textContent = "Target: " + BIGD.challenge.target + " kills";
-$("ch-lede").textContent = "Starts Wed 18 Nov at the EU reset, ends " + BIGD.challenge.ends + ". First three per faction to hit the target go into the Hall of Fame. The first bounty went to the Horde.";
+$("ch-lede").textContent = "Started Wed 18 Nov at the EU reset, ends " + BIGD.challenge.ends + ". First three per faction to hit the target go into the Hall of Fame. The first bounty went to the Horde.";
 const QUIPS = {a:["Belittle a gnome.", "Trim a beard.", "Take an ear. They have spares.", "Ground a sky elf.", "Dwarves: short temper, shorter health bar.", "Night elves: pretty ears, ugly deaths.", "Gnomes: small target, big points.", "Humans: so average it hurts. Make it hurt more.", "Sky elves: what goes up…", "Gnomes: no ladder needed.", "Humans: Stormwind's finest. Allegedly.", "Dwarves: drunk on ale, drunker on defeat.", "Night elves: Shadowmeld can't hide a corpse.", "Make the gnome's day shorter. Like the gnome.", "Paladins bubble. Bubbles pop.", "Kick a gnome. It's tradition.", "Sky elves: the fall is the fun part.", "Corpse run? That's a you problem.", "Fair fight. Unfair result.", "Spirit healer's getting overtime."], h:["Just die already.", "Green, smelly and dead.", "Milk runner-up.", "Undead: second death's the charm.", "Trolls: regenerate this.", "Tauren: the bigger they are…", "Orcs: zug zug, thud thud.", "Sky elves: clip their wings.", "Tauren: well done, not medium rare.", "Trolls: no regen for that.", "Undead: rot faster.", "Tauren: the steak is high.", "Zug zug? Zug done.", "Undead: rotten to the core.", "Rot purged.", "Corpse run? That's a you problem.", "Fair fight. Unfair result.", "Spirit healer's getting overtime."]};
 document.querySelectorAll(".quip").forEach(q => { const l = QUIPS[q.dataset.q]; q.textContent = l[Math.floor(Math.random()*l.length)]; });
 
@@ -504,7 +506,7 @@ if (BIGD.sheets.clips) loadCSV(BIGD.sheets.clips).then(rows => {
   const fresh = list.filter(c => c.date >= weekAgo);
   const pick = (fresh.length >= 3 ? fresh : list).slice(0, 6);
   if (fresh.length < 3) { $("brags-h").textContent = "Latest from the Vault"; }
-  renderFeed(pick.map(c => ({ ...c, category: (c.category || "Clip") + " · " + c.date.slice(8, 10) + "." + c.date.slice(5, 7) + ".", character: c.character })));
+  renderFeed(pick.map(c => ({ ...c, category: (c.category || "Clip") + " · " + (+c.date.slice(8, 10)) + " " + ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+c.date.slice(5, 7) - 1], character: c.character })));
 }).catch(() => {});
 
 // countdown
