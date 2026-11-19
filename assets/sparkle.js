@@ -52,14 +52,22 @@
 
     /* unbroken tail: each step is an arc on the ring with flat ends, so nothing overlaps into dots at any speed */
     function tail(h, n, r, col, wFn, aFn) {
-      var s0 = Math.max(1, h.length - n), i, f, a0, a1, p, passes = [[2.8, .22], [1, 1]], st = Math.max(1, Math.round(n / 40));
-      ctx.lineCap = "butt";
-      for (p = 0; p < passes.length; p++) for (i = s0; i < h.length; i += st) {
-        a0 = h[i - 1]; a1 = h[Math.min(h.length - 1, i + st - 1)]; if (a0 === a1) continue;   /* ~40 pieces: light enough for phones */
-        f = (i - (h.length - n)) / n;
-        ctx.strokeStyle = "rgba(" + (typeof col === "function" ? col(f) : col) + "," + Math.min(1, aFn(f) * passes[p][1]) + ")"; ctx.lineWidth = wFn(f) * passes[p][0];
-        ctx.beginPath(); ctx.arc(geo.c, geo.c, r, a0, a1, a1 < a0); ctx.stroke();
+      /* no arc() (Safari mis-draws it) and no see-through overlaps (they show as dots/stripes):
+         1) one soft glow stroke along the whole tail, 2) a solid core whose colour cools along the tail */
+      var s0 = Math.max(1, h.length - n), i, f, k, q, a0, a1, steps, st = Math.max(1, Math.round(n / 40)), C = function (f) { return typeof col === "function" ? col(f) : col; };
+      ctx.save(); ctx.lineCap = "round"; ctx.lineJoin = "round";
+      ctx.beginPath(); q = P(r, h[s0 - 1]); ctx.moveTo(q[0], q[1]);
+      for (i = s0; i < h.length; i++) { q = P(r, h[i]); ctx.lineTo(q[0], q[1]); }
+      ctx.strokeStyle = "rgba(" + C(.8) + ",.22)"; ctx.lineWidth = wFn(.7) * 2.6; ctx.stroke();
+      ctx.globalCompositeOperation = "source-over";
+      for (i = s0; i < h.length; i += st) {
+        a0 = h[i - 1]; a1 = h[Math.min(h.length - 1, i + st - 1)];
+        f = (i - (h.length - n)) / n; steps = Math.max(1, Math.ceil(Math.abs(a1 - a0) / .03));
+        ctx.beginPath(); q = P(r, a0); ctx.moveTo(q[0], q[1]);
+        for (k = 1; k <= steps; k++) { q = P(r, a0 + (a1 - a0) * k / steps); ctx.lineTo(q[0], q[1]); }
+        ctx.strokeStyle = "rgb(" + C(f) + ")"; ctx.lineWidth = wFn(f); ctx.stroke();   /* solid: overlaps stay invisible */
       }
+      ctx.restore();
     }
     /* heat ramp: cool ember red at the end of the tail -> orange -> yellow -> white-hot at the head */
     var HOT = [[0, [60, 0, 0]], [.35, [160, 8, 8]], [.65, [235, 25, 20]], [.88, [255, 60, 45]], [1, [255, 140, 120]]];   /* all red: dark ember -> scarlet -> hot red, no yellow (Dejan 19 Nov) */
@@ -69,9 +77,9 @@
     function hotComet(m) {
       var R = document.documentElement.getAttribute("data-side") === "alliance" ? ICE : HOT;
       var target = Math.min(1, Math.abs(m.w) / (m.base * 1.6)); heat += (target - heat) * Math.min(1, lastDt * 2.5);   /* speeds up = heats up, slows down = cools */
-      var n = Math.min(m.hist.length - 1, Math.round((90 + 150 * INT) * (.55 + .7 * heat)));
+      heat = Math.max(heat, .35); var n = Math.min(m.hist.length - 1, Math.round(150 * (.75 + .6 * heat)));
       var top = .5 + .5 * heat;
-      tail(m.hist, n, geo.rRed, function (f) { return ramp(R, .15 + f * (.6 + .25 * heat)); }, function (f) { return (2.5 + 6 * f) * (.75 + .35 * heat) * K; }, function (f) { return .25 + .75 * f; });
+      tail(m.hist, n, geo.rRed, function (f) { return ramp(R, .08 + f * (.77 + .15 * heat)); }, function (f) { return (3.5 + 8 * f) * (.85 + .3 * heat) * K; }, function (f) { return .35 + .65 * f; });
       var a = P(geo.rRed, m.th), fl = .9 + .1 * Math.random();
       glow(a[0], a[1], (15 + 10 * heat) * K * fl, ramp(R, .75), .8);
       glow(a[0], a[1], (7 + 3 * heat) * K, ramp(R, .9), 1);
