@@ -57,11 +57,28 @@
       for (p = 0; p < passes.length; p++) for (i = s0; i < h.length; i++) {
         a0 = h[i - 1]; a1 = h[i]; if (a0 === a1) continue;
         f = (i - (h.length - n)) / n;
-        ctx.strokeStyle = "rgba(" + col + "," + Math.min(1, aFn(f) * passes[p][1]) + ")"; ctx.lineWidth = wFn(f) * passes[p][0];
+        ctx.strokeStyle = "rgba(" + (typeof col === "function" ? col(f) : col) + "," + Math.min(1, aFn(f) * passes[p][1]) + ")"; ctx.lineWidth = wFn(f) * passes[p][0];
         ctx.beginPath(); ctx.arc(geo.c, geo.c, r, a0, a1, a1 < a0); ctx.stroke();
       }
     }
+    /* heat ramp: cool ember red at the end of the tail -> orange -> yellow -> white-hot at the head */
+    var HOT = [[0, [90, 8, 4]], [.3, [200, 35, 12]], [.58, [255, 115, 20]], [.82, [255, 205, 85]], [1, [255, 250, 230]]];
+    var ICE = [[0, [15, 30, 90]], [.3, [40, 90, 210]], [.58, [90, 160, 255]], [.82, [170, 220, 255]], [1, [245, 252, 255]]];
+    function ramp(R, t) { t = Math.max(0, Math.min(1, t)); for (var i = 1; i < R.length; i++) if (t <= R[i][0]) { var a = R[i - 1], b = R[i], u = (t - a[0]) / (b[0] - a[0]); return Math.round(a[1][0] + (b[1][0] - a[1][0]) * u) + "," + Math.round(a[1][1] + (b[1][1] - a[1][1]) * u) + "," + Math.round(a[1][2] + (b[1][2] - a[1][2]) * u); } return R[R.length - 1][1].join(","); }
+    var heat = .5, lastDt = .016;
+    function hotComet(m) {
+      var R = document.documentElement.getAttribute("data-side") === "alliance" ? ICE : HOT;
+      var target = Math.min(1, Math.abs(m.w) / (m.base * 1.6)); heat += (target - heat) * Math.min(1, lastDt * 2.5);   /* speeds up = heats up, slows down = cools */
+      var n = Math.min(m.hist.length - 1, Math.round((90 + 150 * INT) * (.55 + .7 * heat)));
+      var top = .5 + .5 * heat;
+      tail(m.hist, n, geo.rRed, function (f) { return ramp(R, f * top); }, function (f) { return (2 + 5.5 * f * (.6 + .6 * INT)) * K; }, function (f) { return .2 + .8 * f; });
+      var a = P(geo.rRed, m.th), fl = .9 + .1 * Math.random();
+      glow(a[0], a[1], (16 + 12 * heat) * K * fl, ramp(R, .62 * top + .1), .75);
+      glow(a[0], a[1], (7 + 4 * heat) * K, ramp(R, .85 * top + .1), .95);
+      glow(a[0], a[1], (3 + 1.5 * heat) * K, ramp(R, 1), 1);
+    }
     function comet(m) {
+      if (SMOOTH) return hotComet(m);
       var cc = redCol(), c = cc[0], n = Math.round(70 + 170 * INT), s0 = Math.max(1, m.hist.length - n), i, f, a, b;
       if (SMOOTH) tail(m.hist, n, geo.rRed, c, function (f) { return (1.2 + 5.5 * f * INT) * K; }, function (f) { return .1 + .8 * f * Math.min(1, INT * 1.3); });
       ctx.lineCap = "round";
@@ -94,7 +111,7 @@
       var dt = Math.min(.05, (now - last) / 1000); last = now;
       if (geo.W) {
         ctx.clearRect(0, 0, geo.W, geo.W); ctx.globalCompositeOperation = "lighter";
-        var sd = dt * SPD; red.step(sd); comet(red); ribbon(gold, sd); drawSparks(dt);
+        lastDt = dt; var sd = dt * SPD; red.step(sd); comet(red); ribbon(gold, sd); drawSparks(dt);
         ctx.globalCompositeOperation = "source-over";
       }
       requestAnimationFrame(frame);
