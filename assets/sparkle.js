@@ -5,7 +5,8 @@
   if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   /* ?spark=1|2|3 previews size/brightness options on the live site (0 = current). */
   var V = 0; try { V = +(new URLSearchParams(location.search).get("spark") || 0); } catch (e) {}
-  var INT = [0.48, 0.48, 0.75, 1][V] || 0.48, TAU = Math.PI * 2, M = 46, K = 1, BOLD = V === 3, SPD = V === 4 ? 2 : 1;
+  var INT = [0.48, 0.48, 0.75, 1][V] || 0.48, TAU = Math.PI * 2, M = 46, K = 1, BOLD = V === 3, SPD = V === 4 ? 2 : 1, SMOOTH = V === 5;
+  /* 5 = current look, unbroken comet tail drawn as arcs (Dejan 19 Nov: no dotted trail) */
   /* 4 = current look, twice as fast (Dejan 19 Nov) */
   function rnd(a, b) { return a + Math.random() * (b - a); }
 
@@ -49,10 +50,22 @@
     /* the outer line is gold on the Alliance site, so the comet turns pale blue there */
     function redCol() { return document.documentElement.getAttribute("data-side") === "alliance" ? ["130,175,255", "220,235,255"] : ["255,70,40", "255,190,120"]; }
 
+    /* unbroken tail: each step is an arc on the ring with flat ends, so nothing overlaps into dots at any speed */
+    function tail(h, n, r, col, wFn, aFn) {
+      var s0 = Math.max(1, h.length - n), i, f, a0, a1, p, passes = [[3.4, .16], [1.9, .32], [1, 1]];
+      ctx.lineCap = "butt";
+      for (p = 0; p < passes.length; p++) for (i = s0; i < h.length; i++) {
+        a0 = h[i - 1]; a1 = h[i]; if (a0 === a1) continue;
+        f = (i - (h.length - n)) / n;
+        ctx.strokeStyle = "rgba(" + col + "," + Math.min(1, aFn(f) * passes[p][1]) + ")"; ctx.lineWidth = wFn(f) * passes[p][0];
+        ctx.beginPath(); ctx.arc(geo.c, geo.c, r, a0, a1, a1 < a0); ctx.stroke();
+      }
+    }
     function comet(m) {
       var cc = redCol(), c = cc[0], n = Math.round(70 + 170 * INT), s0 = Math.max(1, m.hist.length - n), i, f, a, b;
+      if (SMOOTH) tail(m.hist, n, geo.rRed, c, function (f) { return (1.2 + 5.5 * f * INT) * K; }, function (f) { return .1 + .8 * f * Math.min(1, INT * 1.3); });
       ctx.lineCap = "round";
-      for (i = s0; i < m.hist.length; i++) {
+      for (i = SMOOTH ? m.hist.length : s0; i < m.hist.length; i++) {
         f = (i - (m.hist.length - n)) / n; a = P(geo.rRed, m.hist[i - 1]); b = P(geo.rRed, m.hist[i]);
         ctx.strokeStyle = "rgba(" + c + "," + (.12 + .75 * f * Math.min(1, INT * 1.3)) + ")"; ctx.lineWidth = (1.5 + 6 * f * INT) * K;
         ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
@@ -66,7 +79,8 @@
       else { g3.phase += dt * rnd(1.6, 2.2); m.th = g3.center + .9 * Math.sin(g3.phase) * (.6 + .4 * Math.sin(g3.phase * .37)); if (Math.random() < dt * .18) { g3.lap = rnd(1.8, 2.6); m.dir = Math.random() < .5 ? 1 : -1; } }
       m.push();
       var n = Math.round(8 + 22 * INT), i, f, a, b; ctx.lineCap = "round";
-      for (i = Math.max(1, m.hist.length - n); i < m.hist.length; i++) {
+      if (SMOOTH) tail(m.hist, n, geo.rGold, GOLD[0], function (f) { return (1 + 4 * f * INT) * K; }, function (f) { return .7 * f * INT + .05; });
+      for (i = SMOOTH ? m.hist.length : Math.max(1, m.hist.length - n); i < m.hist.length; i++) {
         f = (i - (m.hist.length - n)) / n; a = P(geo.rGold, m.hist[i - 1]); b = P(geo.rGold, m.hist[i]);
         ctx.strokeStyle = "rgba(" + GOLD[0] + "," + (.7 * f * INT + .05) + ")"; ctx.lineWidth = (1 + 4 * f * INT) * K;
         ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
