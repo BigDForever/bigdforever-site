@@ -284,28 +284,6 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
     </div>
   </section>
 
-  <section class="sec band chaos" aria-labelledby="chaos-h">
-    <div class="wrap">
-      <div class="head">
-        <div class="eyebrow">Launch weeks · anything goes</div>
-        <h2 id="chaos-h">Launch Weeks Chaos</h2>
-        <p class="lede">Everyone's levelling, so it's not all PvP yet. Post the madness too. Never recorded a clip? <a href="clips.html" style="color:var(--paper)">Clip it in one key</a>.</p>
-      </div>
-      <div class="grid">
-        <div class="tile"><h3>Boar wars</h3><p>Forty players, one quest boar, zero patience.</p></div>
-        <div class="tile"><h3>Queue pain</h3><p>Your login screen, your position, your despair.</p></div>
-        <div class="tile"><h3>Show your main</h3><p>Fresh from character creation. Judge away.</p></div>
-        <div class="tile"><h3>Firsts</h3><p>First epic, first ding, first embarrassing death.</p></div>
-        <div class="tile"><h3>Tiny D moments</h3><p>You played yourself. The Tiny D Award is waiting.</p></div>
-        <div class="tile"><h3>Postcards</h3><p>Loot, scenery, mounts, outfits. Make Love Not War.</p></div>
-      </div>
-      <div class="chaos-cta">
-        <a class="btn" id="chaos-submit" href="#" target="_blank" rel="noopener">Post it on the form</a>
-        <a class="btn discord" id="chaos-discord" href="#" target="_blank" rel="noopener">Drop it in Discord #brags</a>
-      </div>
-    </div>
-  </section>
-
   <section class="sec band" id="how" aria-labelledby="how-h">
     <div class="wrap">
       <div class="head">
@@ -335,7 +313,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
   <section class="sec band" id="brags" aria-labelledby="brags-h">
     <div class="wrap">
       <div class="head">
-        <div class="eyebrow">Featured brags</div>
+        <div class="eyebrow" id="brags-eyebrow">Newest in the Clip Vault</div>
         <h2 id="brags-h">This week's best</h2>
       </div>
       <div id="feed"></div>
@@ -420,6 +398,7 @@ const BIGD = {
   // Featured tab rows: title,character,faction,category,url,image (first row = these headers)
   sheets: {
     score:    "",   // 18 Nov: Body Count = kills in our posted videos (claude/score-ledger.md + kill sheets), set by hand below. Old Score tab (approved brags only): https://docs.google.com/spreadsheets/d/e/2PACX-1vSML71-50n_CFnIRmaFP1wiJG7Lw41zfRsSMJcQ_gvIa04f5SYwQy-s5gga52sbK9KZ6sFjzqL2mNAw/pub?single=true&output=csv&gid=1623430928   // Score tab (alliance / horde / updated)
+    clips:    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSML71-50n_CFnIRmaFP1wiJG7Lw41zfRsSMJcQ_gvIa04f5SYwQy-s5gga52sbK9KZ6sFjzqL2mNAw/pub?single=true&output=csv&gid=2110458744",
     featured: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSML71-50n_CFnIRmaFP1wiJG7Lw41zfRsSMJcQ_gvIa04f5SYwQy-s5gga52sbK9KZ6sFjzqL2mNAw/pub?single=true&output=csv&gid=890798058"     // Featured tab (title,character,faction,category,url,image)
   },
   // Manual fallback, used when the sheet links are empty or can't be loaded
@@ -434,7 +413,6 @@ const BIGD = {
 const $ = id => document.getElementById(id);
 ["nav-discord","cta-discord"].forEach(id => $(id).href = BIGD.discord);
 $("cta-submit").href = BIGD.form;
-$("chaos-submit").href = BIGD.form; $("chaos-discord").href = BIGD.discord;
 
 // links
 // Socials (menu "Socials" jumps here). Every new social goes in this list.
@@ -473,11 +451,11 @@ function renderFeed(list) {
   }
   const g = document.createElement("div"); g.className = "feed";
   list.forEach(p => {
-    const fac = String(p.faction || "").toLowerCase().includes("alliance") ? "alliance" : "horde";
+    const fl = String(p.faction || "").toLowerCase(), fac = fl.includes("alliance") ? "alliance" : fl.includes("horde") ? "horde" : "";
     const a = document.createElement("a"); a.className = "card " + (fac === "alliance" ? "a" : "h"); a.href = p.url.trim(); a.target = "_blank"; a.rel = "noopener";
-    const im = document.createElement("div"); im.className = "img"; const pic = isLink(p.image) ? p.image.trim() : "/thumb?u=" + encodeURIComponent(p.url.trim()); im.style.backgroundImage = "url('" + pic.replace(/'/g, "%27") + "')";
+    const im = document.createElement("div"); im.className = "img"; const yt = (p.url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{11})/i) || [])[1]; const pic = isLink(p.image) ? p.image.trim() : yt ? "https://i.ytimg.com/vi/" + yt + "/hqdefault.jpg" : "/thumb?u=" + encodeURIComponent(p.url.trim()); im.style.backgroundImage = "url('" + pic.replace(/'/g, "%27") + "')";
     const bd = document.createElement("div"); bd.className = "bd";
-    const m = document.createElement("span"); m.className = "meta"; m.textContent = fac + " · " + (p.category || "Brag");
+    const m = document.createElement("span"); m.className = "meta"; m.textContent = (fac ? fac + " · " : "") + (p.category || "Brag");
     const h = document.createElement("h3"); h.textContent = p.title;
     const c = document.createElement("span"); c.className = "meta"; c.textContent = p.character ? "by " + p.character : "";
     bd.append(m, h, c); a.append(im, bd); g.append(a);
@@ -509,10 +487,24 @@ if (BIGD.sheets.score) loadCSV(BIGD.sheets.score).then(rows => {
   const v = {}; rows.forEach(r => { v[(r[0] || "").toLowerCase()] = r[1]; });
   if (v.alliance !== undefined || v.horde !== undefined) renderScore(v.alliance, v.horde, v.updated, true);
 }).catch(() => {});
-if (BIGD.sheets.featured) loadCSV(BIGD.sheets.featured).then(rows => {
+// "This week's best" = the newest clips in the Clip Vault (Clips tab: our own Shorts, approved spotted clips, player brags).
+// Last 7 days first; if fewer than 3, it tops up with the newest older ones and the heading says "Latest from the Vault". Max 6 cards.
+if (BIGD.sheets.clips) loadCSV(BIGD.sheets.clips).then(rows => {
   if (rows.length < 2) return;
   const head = rows[0].map(h => h.toLowerCase());
-  renderFeed(rows.slice(1).map(r => Object.fromEntries(head.map((h, i) => [h, r[i] || ""]))));
+  const col = n => head.indexOf(n);
+  const list = rows.slice(1).map(r => ({
+    show: (r[col("show")] || "").toLowerCase(), url: r[col("link")] || "", title: r[col("title")] || "",
+    character: r[col("who")] || "", kind: r[col("kind")] || "", faction: r[col("faction")] || "",
+    category: r[col("tag")] || r[col("category")] || "", date: r[col("date")] || ""
+  })).filter(c => c.show !== "hide" && isLink(c.url) && c.title && c.kind.toLowerCase() !== "past" && /^\d{4}-\d{2}-\d{2}/.test(c.date))
+    .sort((p, q) => q.date.localeCompare(p.date));
+  if (!list.length) return;
+  const weekAgo = new Date(Date.now() - 7 * 864e5).toISOString().slice(0, 10);
+  const fresh = list.filter(c => c.date >= weekAgo);
+  const pick = (fresh.length >= 3 ? fresh : list).slice(0, 6);
+  if (fresh.length < 3) { $("brags-h").textContent = "Latest from the Vault"; }
+  renderFeed(pick.map(c => ({ ...c, category: (c.category || "Clip") + " · " + c.date.slice(8, 10) + "." + c.date.slice(5, 7) + ".", character: c.character })));
 }).catch(() => {});
 
 // countdown
