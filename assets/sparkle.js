@@ -5,7 +5,7 @@
   if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   /* ?spark=1|2|3 previews size/brightness options on the live site (0 = current). */
   var V = 0; try { V = +(new URLSearchParams(location.search).get("spark") || 0); } catch (e) {}
-  var INT = [0.48, 0.48, 0.75, 1][V] || 0.48, TAU = Math.PI * 2, M = 46, K = 1, BOLD = V === 3, SPD = V === 4 ? 2 : 1, SMOOTH = V === 5;
+  var INT = [0.48, 0.48, 0.75, 1][V] || 0.48, TAU = Math.PI * 2, M = 46, K = 1, BOLD = V === 3, SPD = V === 4 ? 2 : 1, SMOOTH = V === 0 || V === 5;   /* default since 19 Nov 07:50: red hot comet, unbroken tail */
   /* 5 = current look, unbroken comet tail drawn as arcs (Dejan 19 Nov: no dotted trail) */
   /* 4 = current look, twice as fast (Dejan 19 Nov) */
   function rnd(a, b) { return a + Math.random() * (b - a); }
@@ -19,7 +19,7 @@
 
     function place() {
       var s = em.offsetWidth; if (!s) return;
-      K = (V && V < 4) ? s / 220 : 1; M = Math.round(46 * K);
+      K = V === 4 ? 1 : s / 220; M = Math.round(46 * K);
       var W = s + 2 * M, d = Math.min(2, window.devicePixelRatio || 1);
       cv.width = Math.round(W * d); cv.height = Math.round(W * d); cv.style.width = W + "px"; cv.style.height = W + "px";
       cv.style.left = (em.offsetLeft - M) + "px"; cv.style.top = (em.offsetTop - M) + "px";
@@ -62,7 +62,7 @@
       }
     }
     /* heat ramp: cool ember red at the end of the tail -> orange -> yellow -> white-hot at the head */
-    var HOT = [[0, [90, 8, 4]], [.3, [200, 35, 12]], [.58, [255, 115, 20]], [.82, [255, 205, 85]], [1, [255, 250, 230]]];
+    var HOT = [[0, [60, 0, 0]], [.35, [160, 8, 8]], [.65, [235, 25, 20]], [.88, [255, 60, 45]], [1, [255, 140, 120]]];   /* all red: dark ember -> scarlet -> hot red, no yellow (Dejan 19 Nov) */
     var ICE = [[0, [15, 30, 90]], [.3, [40, 90, 210]], [.58, [90, 160, 255]], [.82, [170, 220, 255]], [1, [245, 252, 255]]];
     function ramp(R, t) { t = Math.max(0, Math.min(1, t)); for (var i = 1; i < R.length; i++) if (t <= R[i][0]) { var a = R[i - 1], b = R[i], u = (t - a[0]) / (b[0] - a[0]); return Math.round(a[1][0] + (b[1][0] - a[1][0]) * u) + "," + Math.round(a[1][1] + (b[1][1] - a[1][1]) * u) + "," + Math.round(a[1][2] + (b[1][2] - a[1][2]) * u); } return R[R.length - 1][1].join(","); }
     var heat = .5, lastDt = .016;
@@ -71,11 +71,11 @@
       var target = Math.min(1, Math.abs(m.w) / (m.base * 1.6)); heat += (target - heat) * Math.min(1, lastDt * 2.5);   /* speeds up = heats up, slows down = cools */
       var n = Math.min(m.hist.length - 1, Math.round((90 + 150 * INT) * (.55 + .7 * heat)));
       var top = .5 + .5 * heat;
-      tail(m.hist, n, geo.rRed, function (f) { return ramp(R, f * top); }, function (f) { return (2 + 5.5 * f * (.6 + .6 * INT)) * K; }, function (f) { return .2 + .8 * f; });
+      tail(m.hist, n, geo.rRed, function (f) { return ramp(R, .15 + f * (.6 + .25 * heat)); }, function (f) { return (2.5 + 6 * f) * (.75 + .35 * heat) * K; }, function (f) { return .25 + .75 * f; });
       var a = P(geo.rRed, m.th), fl = .9 + .1 * Math.random();
-      glow(a[0], a[1], (16 + 12 * heat) * K * fl, ramp(R, .62 * top + .1), .75);
-      glow(a[0], a[1], (7 + 4 * heat) * K, ramp(R, .85 * top + .1), .95);
-      glow(a[0], a[1], (3 + 1.5 * heat) * K, ramp(R, 1), 1);
+      glow(a[0], a[1], (15 + 10 * heat) * K * fl, ramp(R, .75), .8);
+      glow(a[0], a[1], (7 + 3 * heat) * K, ramp(R, .9), 1);
+      glow(a[0], a[1], (3 + 1.2 * heat) * K, ramp(R, 1), 1);
     }
     function comet(m) {
       if (SMOOTH) return hotComet(m);
