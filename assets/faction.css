@@ -208,3 +208,8 @@ html[data-side="horde"] .btn:not(.ghost):not(.discord){color:#fff}
   font-family:var(--cond,"Barlow Condensed",sans-serif);font-weight:700;font-size:17px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--paper);background:color-mix(in srgb,var(--panel) 85%,transparent);white-space:nowrap}
 .fx-talents:hover,.fx-talents:focus-visible{background:var(--side,var(--gold));color:#0a0605;outline:none}
 @media (max-width:420px){.fx-talents{padding:0 10px;font-size:15px}}
+
+/* phone menu never taller than 90% of the screen; scrolls inside (Dejan 19 Nov). Computer menu strip unchanged. */
+@media (max-width:999px){
+  .fx-menu-in{max-height:min(90vh,calc(100vh - 90px));max-height:min(90dvh,calc(100dvh - 90px));overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+}

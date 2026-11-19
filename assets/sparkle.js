@@ -15,7 +15,7 @@
     var cv = document.createElement("canvas"); cv.className = "emblem-sparkle"; cv.setAttribute("aria-hidden", "true");
     cv.style.cssText = "position:absolute;pointer-events:none;z-index:2";
     em.parentNode.appendChild(cv);
-    var ctx = cv.getContext("2d"), geo = {}, visible = true, running = false, last = 0;
+    var ctx = cv.getContext("2d"), geo = {}, visible = true, running = false, last = 0, tick = 0, lastL = -1, lastT = -1, lastW = -1;
 
     function place() {
       var s = em.offsetWidth; if (!s) return;
@@ -23,7 +23,7 @@
       var W = s + 2 * M, d = Math.min(2, window.devicePixelRatio || 1);
       cv.width = Math.round(W * d); cv.height = Math.round(W * d); cv.style.width = W + "px"; cv.style.height = W + "px";
       cv.style.left = (em.offsetLeft - M) + "px"; cv.style.top = (em.offsetTop - M) + "px";
-      ctx.setTransform(d, 0, 0, d, 0, 0);
+      ctx.setTransform(d, 0, 0, d, 0, 0); lastL = em.offsetLeft; lastT = em.offsetTop; lastW = s;
       geo = { W: W, c: W / 2, r: s / 2, rRed: s / 2 + 7, rGold: s / 2 * 0.892 };
     }
 
@@ -52,10 +52,10 @@
 
     /* unbroken tail: each step is an arc on the ring with flat ends, so nothing overlaps into dots at any speed */
     function tail(h, n, r, col, wFn, aFn) {
-      var s0 = Math.max(1, h.length - n), i, f, a0, a1, p, passes = [[3.4, .16], [1.9, .32], [1, 1]];
+      var s0 = Math.max(1, h.length - n), i, f, a0, a1, p, passes = [[2.8, .22], [1, 1]], st = Math.max(1, Math.round(n / 40));
       ctx.lineCap = "butt";
-      for (p = 0; p < passes.length; p++) for (i = s0; i < h.length; i++) {
-        a0 = h[i - 1]; a1 = h[i]; if (a0 === a1) continue;
+      for (p = 0; p < passes.length; p++) for (i = s0; i < h.length; i += st) {
+        a0 = h[i - 1]; a1 = h[Math.min(h.length - 1, i + st - 1)]; if (a0 === a1) continue;   /* ~40 pieces: light enough for phones */
         f = (i - (h.length - n)) / n;
         ctx.strokeStyle = "rgba(" + (typeof col === "function" ? col(f) : col) + "," + Math.min(1, aFn(f) * passes[p][1]) + ")"; ctx.lineWidth = wFn(f) * passes[p][0];
         ctx.beginPath(); ctx.arc(geo.c, geo.c, r, a0, a1, a1 < a0); ctx.stroke();
@@ -108,6 +108,7 @@
 
     function frame(now) {
       if (!visible || document.hidden) { running = false; return; }
+      if (++tick % 30 === 0 && (em.offsetLeft !== lastL || em.offsetTop !== lastT || em.offsetWidth !== lastW)) place();
       var dt = Math.min(.05, (now - last) / 1000); last = now;
       if (geo.W) {
         ctx.clearRect(0, 0, geo.W, geo.W); ctx.globalCompositeOperation = "lighter";
