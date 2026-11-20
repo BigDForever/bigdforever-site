@@ -81,6 +81,17 @@ html[data-side="alliance"] .hero h1{text-shadow:3px 3px 0 #1b3a73,-2px -1px 0 rg
 .countdown{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;font-family:var(--mono);font-size:14px;color:var(--muted)}
 .countdown b{font-weight:500;color:var(--paper);font-size:22px;font-variant-numeric:tabular-nums}
 @media (max-width:760px){.hero .wrap{grid-template-columns:1fr;padding-block:36px}.emblem{max-width:220px;grid-row:1}}
+/* hero clip (test, branch hero-clip): a Short plays where the emblem was. Change the clip in HERO_CLIP at the bottom. */
+.hero-clip{margin:0;width:100%;max-width:300px;justify-self:center;display:flex;flex-direction:column;gap:10px}
+.hc-frame{position:relative;aspect-ratio:9/16;border-radius:14px;overflow:hidden;background:#000;box-shadow:0 0 0 2px color-mix(in srgb,var(--gold) 70%,transparent),0 0 0 7px var(--ink),0 0 0 8px var(--line),0 30px 80px -20px #000}
+html[data-side="horde"] .hc-frame{box-shadow:0 0 0 2px #c08a3e,0 0 0 7px var(--ink),0 0 0 8px var(--line),0 30px 80px -20px #000}
+.hc-frame img,.hc-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
+.hc-play{position:absolute;inset:auto 0 0 0;margin:auto;top:0;width:68px;height:68px;border-radius:50%;border:2px solid var(--paper);background:color-mix(in srgb,var(--ink) 60%,transparent);color:var(--paper);font-size:26px;cursor:pointer}
+.hc-play:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
+.hero-clip figcaption{display:flex;flex-direction:column;gap:2px;font-size:14px;color:var(--muted);text-align:center}
+.hero-clip figcaption b{color:var(--paper);font-size:16px}
+.hero-clip figcaption a{color:var(--gold);margin-top:4px}
+@media (max-width:760px){.hero-clip{max-width:170px;grid-row:1;gap:6px}.hero-clip figcaption{font-size:12px}.hero-clip figcaption b{font-size:14px}}
 
 /* hero video: real clips play one after another behind the title. Phones: on (Dejan 10 Nov). Computers: preview only (?video=a) until approved. */
 .hero-vid,.hero-shade{display:none}
@@ -229,7 +240,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 .ch::after{content:"WANTED";position:absolute;top:16px;right:14px;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.18em;color:var(--muted);border:1.5px solid var(--line);padding:2px 6px;transform:rotate(4deg)}
 </style>
 
-<link rel="stylesheet" href="assets/faction.css?v=20261119a"><script src="assets/v11/v11-flags.js?v=20261111a"></script><link rel="stylesheet" href="assets/v11/v11.css?v=20261119b"><link rel="stylesheet" href="assets/v11/fx11.css?v=20261111a"><script src="assets/v11/v11.js?v=20261120a" defer></script><script src="assets/v11/fx11.js?v=20261111a" defer></script><link rel="stylesheet" href="assets/v11/pages11.css?v=20261111a"><script src="assets/v11/pages11.js?v=20261120a" defer></script><script src="assets/v11/tileglow.js?v=20261111a" defer></script>
+<link rel="stylesheet" href="assets/faction.css?v=20261119a"><script src="assets/v11/v11-flags.js?v=20261111a"></script><link rel="stylesheet" href="assets/v11/v11.css?v=20261119b"><link rel="stylesheet" href="assets/v11/fx11.css?v=20261111a"><script src="assets/v11/v11.js?v=20261120a" defer></script><script src="assets/v11/fx11.js?v=20261120c" defer></script><link rel="stylesheet" href="assets/v11/pages11.css?v=20261111a"><script src="assets/v11/pages11.js?v=20261120a" defer></script><script src="assets/v11/tileglow.js?v=20261111a" defer></script>
 <script src="assets/faction.js?v=20261119a"></script><script src="assets/sparkle.js?v=20261119h" defer></script>
 </head>
 <body>
@@ -261,7 +272,10 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
         </div>
         <div class="countdown" id="countdown" aria-live="polite"></div>
       </div>
-      <img class="emblem" src="emblem.jpg" alt="BigDForever emblem: a golden D made of a sword and a battle-axe">
+      <figure class="hero-clip" id="hero-clip">
+        <div class="hc-frame"><img class="hc-poster" alt="" loading="eager"><button class="hc-play" type="button" aria-label="Play the clip">&#9654;</button></div>
+        <figcaption><b class="hc-title"></b><span class="hc-who"></span><a href="vault.html">More clips in the Vault &rarr;</a></figcaption>
+      </figure>
     </div>
   </section>
 
@@ -535,7 +549,7 @@ tick();
 /* Hero clips: our featured clips play one after another, silent, behind the title (new clip = add a line to REEL). */
 (function () {
   var REEL = ["barrens", "silverpine", "ninja-rogue", "ninja-mage"];
-  var PHONE = true, PC = true;                            // both live (computers approved on the Review Board, card 9, 10 Nov)
+  var PHONE = false, PC = false;                          // hero-clip TEST: background clips off so the Short is the only thing moving (live main: both true)
   var q = new URLSearchParams(location.search).get("video");
   var phone = window.matchMedia("(max-width:760px)").matches;
   var on = q === "a" || (q !== "off" && (phone ? PHONE : PC));
@@ -556,6 +570,32 @@ tick();
   document.addEventListener("visibilitychange", sync);
   if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { seen = es[0].isIntersecting; sync(); }).observe(v);
   sync();
+})();
+</script>
+<script>
+/* HERO_CLIP: the Short in the hero (test). id = the YouTube Short id. It starts muted after the page has loaded; the player's own button turns the sound on. */
+(function () {
+  var HERO_CLIP = { id: "uSbmvr7EC5Y", title: "Dead even.", who: "Skelf (Horde) \u00b7 level 25 vs level 25, Ashenvale" };
+  var f = document.getElementById("hero-clip"); if (!f) return;
+  var frame = f.querySelector(".hc-frame"), btn = f.querySelector(".hc-play");
+  f.querySelector(".hc-title").textContent = HERO_CLIP.title;
+  f.querySelector(".hc-who").textContent = HERO_CLIP.who;
+  f.querySelector(".hc-poster").src = "/thumb?u=" + encodeURIComponent("https://www.youtube.com/shorts/" + HERO_CLIP.id);
+  function play(sound) {
+    if (frame.querySelector("iframe")) return;
+    var id = HERO_CLIP.id, i = document.createElement("iframe");
+    i.src = "https://www.youtube-nocookie.com/embed/" + id + "?autoplay=1&playsinline=1&rel=0&loop=1&playlist=" + id + (sound ? "" : "&mute=1");
+    i.title = HERO_CLIP.title + " " + HERO_CLIP.who;
+    i.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+    i.allowFullscreen = true;
+    frame.appendChild(i); btn.remove();
+  }
+  btn.addEventListener("click", function () { play(true); });
+  var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var saver = navigator.connection && navigator.connection.saveData;
+  if (!still && !saver) {
+    if (document.readyState === "complete") play(false); else window.addEventListener("load", function () { play(false); });
+  }
 })();
 </script>
 </body>
