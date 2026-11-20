@@ -88,10 +88,11 @@ html[data-side="horde"] .hc-frame{box-shadow:0 0 0 2px #c08a3e,0 0 0 7px var(--i
 .hc-frame img,.hc-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
 .hc-play{position:absolute;inset:auto 0 0 0;margin:auto;top:0;width:68px;height:68px;border-radius:50%;border:2px solid var(--paper);background:color-mix(in srgb,var(--ink) 60%,transparent);color:var(--paper);font-size:26px;cursor:pointer}
 .hc-play:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
-.hero-clip figcaption{display:flex;flex-direction:column;gap:2px;font-size:14px;color:var(--muted);text-align:center}
-.hero-clip figcaption b{color:var(--paper);font-size:16px}
-.hero-clip figcaption a{color:var(--gold);margin-top:4px}
-@media (max-width:760px){.hero-clip{max-width:170px;grid-row:1;gap:6px}.hero-clip figcaption{font-size:12px}.hero-clip figcaption b{font-size:14px}}
+.hero-clip figcaption{text-align:center}
+.hero-clip figcaption a{display:inline-block;padding:6px 4px;font-family:var(--cond);font-weight:700;font-size:24px;letter-spacing:.06em;text-transform:uppercase;color:#d9a441;white-space:nowrap;text-decoration:none;text-shadow:0 2px 0 rgba(0,0,0,.6)}
+.hero-clip figcaption a:hover{text-decoration:underline;text-underline-offset:5px}
+.hero-clip figcaption a:focus-visible{outline:2px solid #d9a441;outline-offset:3px}
+@media (max-width:760px){.hero-clip{max-width:170px;grid-row:1;gap:6px}.hero-clip figcaption a{font-size:20px}}
 
 /* hero video: real clips play one after another behind the title. Phones: on (Dejan 10 Nov). Computers: preview only (?video=a) until approved. */
 .hero-vid,.hero-shade{display:none}
@@ -274,7 +275,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
       </div>
       <figure class="hero-clip" id="hero-clip">
         <div class="hc-frame"><img class="hc-poster" alt="" loading="eager"><button class="hc-play" type="button" aria-label="Play the clip">&#9654;</button></div>
-        <figcaption><b class="hc-title"></b><span class="hc-who"></span><a href="vault.html">More clips in the Vault &rarr;</a></figcaption>
+        <figcaption><a href="vault.html">More clips &rarr;</a></figcaption>
       </figure>
     </div>
   </section>
@@ -578,8 +579,6 @@ tick();
   var HERO_CLIP = { id: "uSbmvr7EC5Y", title: "Dead even.", who: "Skelf (Horde) \u00b7 level 25 vs level 25, Ashenvale" };
   var f = document.getElementById("hero-clip"); if (!f) return;
   var frame = f.querySelector(".hc-frame"), btn = f.querySelector(".hc-play");
-  f.querySelector(".hc-title").textContent = HERO_CLIP.title;
-  f.querySelector(".hc-who").textContent = HERO_CLIP.who;
   f.querySelector(".hc-poster").src = "/thumb?u=" + encodeURIComponent("https://www.youtube.com/shorts/" + HERO_CLIP.id);
   function play(sound) {
     if (frame.querySelector("iframe")) return;
