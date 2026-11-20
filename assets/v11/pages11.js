@@ -346,7 +346,7 @@
       "<b>Want to be featured?</b><p>Streamers: free, no contract, no catch. We clip your Forever moments, credit you every time, link back to your stream and pull anything you want gone.</p>" +
       '<a class="btn discord p11-has-ico" href="' + DISCORD + '" target="_blank" rel="noopener">' + ico("discord") + "Ask on Discord</a>" +
       '<small>or email <a href="mailto:bigdforever.gg@gmail.com">bigdforever.gg@gmail.com</a></small></div>' +
-      '<div class="p11-facts"><div><b>' + spot.length + "</b><span>streamer" + (spot.length === 1 ? "" : "s") + " on the wall</span></div><div><b>" + clips + "</b><span>clips in the vault</span></div><div><b>" + fmt(views) + "</b><span>clip views sent their way</span></div></div>" +
+      '<div class="p11-facts"><div><b>' + spot.length + "</b><span>streamer" + (spot.length === 1 ? "" : "s") + " on the wall</span></div><div><b>" + clips + "</b><span>clips in the vault</span></div><div><b>" + fmt(views) + "</b><span>views on their clips</span></div></div>" +
       '<a class="p11-slot" href="' + DISCORD + '" target="_blank" rel="noopener"><span class="p11-slot-no">No. ' + next + "</span>" + ico("user") + "<b>This spot is open</b><span>Know a streamer who belongs here? Tell us on Discord.</span></a>" +
       '<a class="p11-pastlink" href="past.html">' + ico("film") + "<span><b>Taste of the Past</b><small>Beta legends and Hardcore graves</small></span>" + ico("arrow", "p11-sm") + "</a>";
     first.classList.add("p11-spot");

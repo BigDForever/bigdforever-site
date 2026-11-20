@@ -229,7 +229,7 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opa
 .ch::after{content:"WANTED";position:absolute;top:16px;right:14px;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.18em;color:var(--muted);border:1.5px solid var(--line);padding:2px 6px;transform:rotate(4deg)}
 </style>
 
-<link rel="stylesheet" href="assets/faction.css?v=20261119a"><script src="assets/v11/v11-flags.js?v=20261111a"></script><link rel="stylesheet" href="assets/v11/v11.css?v=20261119b"><link rel="stylesheet" href="assets/v11/fx11.css?v=20261111a"><script src="assets/v11/v11.js?v=20261120a" defer></script><script src="assets/v11/fx11.js?v=20261111a" defer></script><link rel="stylesheet" href="assets/v11/pages11.css?v=20261111a"><script src="assets/v11/pages11.js?v=20261111a" defer></script><script src="assets/v11/tileglow.js?v=20261111a" defer></script>
+<link rel="stylesheet" href="assets/faction.css?v=20261119a"><script src="assets/v11/v11-flags.js?v=20261111a"></script><link rel="stylesheet" href="assets/v11/v11.css?v=20261119b"><link rel="stylesheet" href="assets/v11/fx11.css?v=20261111a"><script src="assets/v11/v11.js?v=20261120a" defer></script><script src="assets/v11/fx11.js?v=20261111a" defer></script><link rel="stylesheet" href="assets/v11/pages11.css?v=20261111a"><script src="assets/v11/pages11.js?v=20261120a" defer></script><script src="assets/v11/tileglow.js?v=20261111a" defer></script>
 <script src="assets/faction.js?v=20261119a"></script><script src="assets/sparkle.js?v=20261119h" defer></script>
 </head>
 <body>
@@ -405,7 +405,7 @@ const BIGD = {
   },
   // Manual fallback, used when the sheet links are empty or can't be loaded
   score: { alliance: 4, horde: 10, updated: "19 Nov" },   // kills in our posted videos (score-ledger.md); add every checked kill sheet   // e.g. updated: "Thu 5 Nov, 18:00"
-  challenge: { week: "Open Season", target: 3, ends: "at EU weekly reset: Wednesday 2 December, 04:00 UTC (05:00 CET)" },
+  challenge: { week: "Open Season", target: 3, endsAt: "2026-12-02T04:00:00Z", ends: "at EU weekly reset: Wednesday 2 December, 04:00 UTC (05:00 CET)" },
   featured: [
     // { title: "1v3 at the Crossroads", character: "Gnomeslayer", faction: "horde", category: "Brag", url: "https://...", image: "" }
   ]
@@ -513,7 +513,14 @@ if (BIGD.sheets.clips) loadCSV(BIGD.sheets.clips).then(rows => {
 const launch = new Date(BIGD.launch).getTime();
 function tick() {
   const d = launch - Date.now(), el = $("countdown");
-  if (d <= 0) { el.innerHTML = "<b>Forever is live.</b> Go make some brags."; return; }
+  if (d <= 0) {
+    // after launch: count down to the end of the current bounty (Dejan 20 Nov: Open Season countdown instead of "Forever is live")
+    const end = new Date(BIGD.challenge.endsAt || 0).getTime(), left = end - Date.now();
+    if (!(left > 0)) { el.innerHTML = "<b>" + BIGD.challenge.week + " is over.</b> Next bounty soon."; return; }
+    const t = Math.floor(left / 1000), D = Math.floor(t / 86400), Hh = Math.floor(t % 86400 / 3600), Mm = Math.floor(t % 3600 / 60), Ss = t % 60;
+    el.innerHTML = '<a href="challenge.html" style="color:inherit;text-decoration:none">' + BIGD.challenge.week + " ends in <b style=\"white-space:nowrap\">" + D + "d " + String(Hh).padStart(2, "0") + "h " + String(Mm).padStart(2, "0") + "m " + String(Ss).padStart(2, "0") + "s</b></a>";
+    setTimeout(tick, 1000); return;
+  }
   const s = Math.floor(d / 1000), dd = Math.floor(s / 86400), hh = Math.floor(s % 86400 / 3600), mm = Math.floor(s % 3600 / 60), ss = s % 60;
   const local = new Date(launch).toLocaleString([], { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
   el.innerHTML = "Servers open in <b>" + dd + "d " + String(hh).padStart(2, "0") + "h " + String(mm).padStart(2, "0") + "m " + String(ss).padStart(2, "0") + "s</b> <span>(" + local + " your time)</span>";
