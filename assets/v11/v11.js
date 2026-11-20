@@ -16,7 +16,7 @@
     // [ticker] fill the track so it never shows an empty stretch, and add more news
     if (V.ticker) $$(".ticker .track").forEach(function (tr) {
       var extra = ["Open Season: every fair kill counts", "Bruh. It's on. 18 Nov – 2 Dec", "First bounty: gnomes got shipped", "Every race. Every zone. Clip it.", "Belittle a gnome", "Just die already", "Milk runner-up", "Trim a beard, take an ear",
-        "Clip it. Post it. Get read on air.", "New Short every day at 16:15", "Character names only", "Tag your clip on Discord"];
+        "Clip it. Post it. Get read on air.", "New Short every day", "Character names only", "Tag your clip on Discord"];
       var base = $$("span", tr).slice(0, Math.ceil($$("span", tr).length / 2)).map(function (s) { return s.textContent; });
       base = base.concat(extra);
       var half = document.createElement("div"); half.style.display = "flex";
