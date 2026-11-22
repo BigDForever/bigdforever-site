@@ -286,7 +286,7 @@
   if (V.heroparticles) heroParticles();
   /* option b: centre the ray burst on the emblem (the ::after box is the hero grown by 40 % on each side) */
   if (V.heroparticles === "b") (function () {
-    var hero = document.querySelector(".hero"), em = hero && hero.querySelector(".emblem"); if (!em) return;
+    var hero = document.querySelector(".hero"), em = hero && hero.querySelector(".emblem, .hero-clip"); if (!em) return;
     function c() {
       var h = hero.getBoundingClientRect(), e = em.getBoundingClientRect(); if (!h.width || !e.width) return;
       hero.style.setProperty("--fx-rx", ((e.left + e.width / 2 - h.left + .4 * h.width) / (1.8 * h.width) * 100).toFixed(2) + "%");
