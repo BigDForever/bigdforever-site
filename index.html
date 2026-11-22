@@ -575,9 +575,9 @@ tick();
 })();
 </script>
 <script>
-/* HERO_REEL: our own fight clips play one after another, muted, in the wide frame. Add a clip = add its name (assets/video/reel-pc/NAME.mp4 + NAME.jpg). */
+/* HERO_REEL: PvP fight highlights only (Dejan 22 Nov: no salt, no non-PvP clips), 10–15 s each, play one after another, muted, in the wide frame. Add a clip = add its name (assets/video/reel-pc/NAME.mp4 + NAME.jpg). */
 (function () {
-  var HERO_REEL = ["barrens", "silverpine", "ninja-rogue", "ninja-mage"];
+  var HERO_REEL = ["nail", "light", "crash", "numbers", "counter", "stalker", "heads", "barrens", "silverpine"];
   var v = document.querySelector("#hero-clip .hc-vid"); if (!v) return;
   var dir = "assets/video/reel-pc/", n = Math.floor(Math.random() * HERO_REEL.length);
   var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
