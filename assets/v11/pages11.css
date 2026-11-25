@@ -77,9 +77,11 @@ html.v11-halls .p11-lead .wing-head h2{font-size:clamp(34px,5vw,52px)}
 body[data-hall="shame"] .p11-plinth{--m:#e0352a;background:
   linear-gradient(115deg,transparent 47%,rgba(0,0,0,.55) 47.5% 48.5%,transparent 49%),
   linear-gradient(180deg,color-mix(in srgb,#e0352a 10%,var(--panel2)),var(--panel) 70%)}
-body[data-hall="shame"] .p11-step-1 .p11-plinth{height:60px;--m:#e0352a}
-body[data-hall="shame"] .p11-step-2 .p11-plinth{height:92px;--m:#9a6a5c}
-body[data-hall="shame"] .p11-step-3 .p11-plinth{height:124px;--m:#7d6a5d}
+/* shame cards are all the same width, so the tops step down into the pit: 3 highest, 2 lower, 1 lowest (Dejan 25 Nov) */
+body[data-hall="shame"] .p11-podium{grid-template-columns:repeat(3,minmax(0,1fr))}
+body[data-hall="shame"] .p11-step-1 .p11-plinth{height:56px;--m:#e0352a}
+body[data-hall="shame"] .p11-step-2 .p11-plinth{height:96px;--m:#9a6a5c}
+body[data-hall="shame"] .p11-step-3 .p11-plinth{height:136px;--m:#7d6a5d}
 body[data-hall="shame"] .p11-step-1 .p11-plinth b{font-size:30px}
 body[data-hall="shame"] .p11-step-2 .p11-statue:not(.p11-vacant){transform:rotate(-1.2deg);transform-origin:bottom center}
 body[data-hall="shame"] .p11-step-3 .p11-statue:not(.p11-vacant){transform:rotate(1deg);transform-origin:bottom center}
@@ -94,9 +96,9 @@ body[data-hall="shame"] .p11-step-1 .p11-plinth b{font-size:28px!important}
 .p11-sub .p11-step-1 .p11-plinth{height:84px}
 .p11-sub .p11-step-2 .p11-plinth{height:60px}
 .p11-sub .p11-step-3 .p11-plinth{height:42px}
-body[data-hall="shame"] .p11-sub .p11-step-1 .p11-plinth{height:50px}
-body[data-hall="shame"] .p11-sub .p11-step-2 .p11-plinth{height:60px}
-body[data-hall="shame"] .p11-sub .p11-step-3 .p11-plinth{height:88px}
+body[data-hall="shame"] .p11-sub .p11-step-1 .p11-plinth{height:42px}
+body[data-hall="shame"] .p11-sub .p11-step-2 .p11-plinth{height:70px}
+body[data-hall="shame"] .p11-sub .p11-step-3 .p11-plinth{height:98px}
 .p11-sub .p11-plinth span{font-size:10px;letter-spacing:.08em}
 /* 4th place and down */
 .p11-rest{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,300px));justify-content:center;gap:10px;width:100%}
